@@ -16,6 +16,8 @@ Will make function pork also. Which will receive a function and two others and
 does the job of porking (and the functions can be calls to execve! :P So it's
 functionality is easily exported as a program.
 
+pork -- Scraped idea, bash will do
+
 
 Merging trees: Add a command for merging trees of directories into a third one
 that will contain links (or symbolic links) for the first ones).  Scraped idea,

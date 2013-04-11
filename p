@@ -16,36 +16,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#
-#
-# Runs parallel processes tagging the output with the process name when switch
-# -t is passed
-# $ p -t "proc1 args" "proc2 args" "proc3 args"
-#
-# proc1 args: output of the process
-# proc2 args: output of the process2
-# proc1 args: output of the process
-# proc3 args: output of the process3
-# proc3 args: output of the process3
-# proc1 args: output of the process
-# proc2 args: output of the process2
-#
-# Ideal for:
-# $ p -t "hg pull project1" "hg pull project2" "hg pull project3"
-# hg pull project1: pulling changes from
-# hg pull project2: pulling changes from
-# hg pull project3: pulling changes from
-# hg pull project1: pulling changes from
-# etc...
-#
-#
-# To "tail -f" multiple log files into one:
-# $ p "tail -f /var/log/foo" "tail -f /var/log/goo" "tail -f /var/log/bar"
-# woohooo
-# log lines
-#
-# TODO: This has a lot of other features. Document them.
 
 sigint() {
 	kill $pids
@@ -86,11 +56,15 @@ p() {
 			-*) ;;
 			*)
 				if [ -n "$code" ]; then
-					$1 | sed -e "s/^/$code/" -e "s/$/$N/" &
+					pidfile=`mktemp -t evenmoreutils-p-XXXXXXXXXX`
+					( echo $BASHPID > $pidfile; exec $1 ) |
+						sed -e "s/^/$code/" -e "s/$/$N/" &
+					pids="$pids `cat $pidfile` $!"
+					rm $pidfile
 				else
 					$1 &
+					pids="$pids $!"
 				fi
-				pids="$pids $!"
 				code=
 				;;
 		esac

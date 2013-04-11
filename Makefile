@@ -20,12 +20,12 @@
 #
 # Targets: all, clean, install, homeinstall, dist VERSION=x.x
 
-BINS=sgetopt_test hilite randpar untl
-# TODO: Make whle be installed as a symbolic link!!!!
-SHS=anywait easy-getopt fit hl mime nup p pad whle
+BINS=sgetopt_test hilite randpar untl fit
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh
+SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
-# TODO: Install whle.1 as a symbolic link
-MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 pad.1 randpar.1 untl.1 whle.1
+SMANS=pad.1 whle.1 # symlinks to manpages
+MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1
 CFLAGS=-ansi -pedantic -Wall -Werror -Wno-variadic-macros
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share
@@ -38,6 +38,8 @@ sgetopt_test: sgetopt.o
 
 randpar: sgetopt.o
 
+fit: sgetopt.o
+
 clean:
 	rm -f $(BINS) $(OBJS)
 
@@ -45,8 +47,10 @@ install: all
 	mkdir -p               $(DESTDIR)$(PREFIX)/bin
 	install -s     $(BINS) $(DESTDIR)$(PREFIX)/bin
 	install        $(SHS)  $(DESTDIR)$(PREFIX)/bin
+	cp -P          $(SYMS) $(DESTDIR)$(PREFIX)/bin
 	mkdir -p               $(DESTDIR)$(MANPREFIX)/man/man1
 	install -m 644 $(MANS) $(DESTDIR)$(MANPREFIX)/man/man1
+	cp -P         $(SMANS) $(DESTDIR)$(MANPREFIX)/man/man1
 
 homeinstall:
 	make DESTDIR=~ PREFIX= MANPREFIX= install

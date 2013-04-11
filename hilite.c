@@ -44,92 +44,86 @@
 #define HEADER "\033[91m"
 #define FOOTER "\033[0m"
 
-#define FAIL(msg) { fprintf (stderr, "%s: " msg "() failed: %s\n", argv[0], \
-                              strerror (errno)); return 1; }
+#define FAIL(msg) { \
+	fprintf (stderr, "%s: " msg "() failed: %s\n", argv[0], strerror (errno)); \
+	return 1; \
+}
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-  int p[2];
-  int f;
+	int p[2];
+	int f;
 
-  if (argc < 2)
-    {
-      fprintf (stderr, "%s: specify a command to execute\n", argv[0]);
-      return 1;
-    }
-
-  if (pipe (p) != 0)
-    FAIL ("pipe");
-
-  f = fork ();
-
-  if (f == -1)
-    FAIL ("fork");
-
-  if (f)
-    {
-      int status;
-
-      close (p[1]);
-
-    again:
-      errno = 0;
-
-      while (1) 
-        {
-          int r;
-          char buf[BUFSIZ];
-
-	  r = read (p[0], buf, BUFSIZ - 1);
-
-	  if (r <= 0)
-            break;
-
-          buf[r] = 0;
-          fprintf (stderr, "%s%s%s", HEADER, buf, FOOTER);
+	if (argc < 2) {
+		fprintf(stderr, "%s: specify a command to execute\n", argv[0]);
+		return 1;
 	}
 
-      if (errno == EINTR) 
-        {
-          fprintf (stderr, "%s: read interrupted, trying again\n", argv[0]);
-          goto again;
-        }
+	if (pipe(p) != 0)
+		FAIL("pipe");
 
-      if (errno != 0) 
-          FAIL ("read");
+	f = fork();
 
-      if (wait (&status) != f)
-          FAIL ("wait");
-      
-      return WEXITSTATUS (status);
-    }
-  else
-    {
-      int fd;
+	if (f == -1)
+		FAIL("fork");
 
-      close (p[0]);
-      close (fileno (stderr));
+	if (f) {
+		int status;
 
-      fd = dup (p[1]); /* dup() uses the lowest available fd, which should be stderr's 
-                        * since we just closed it */
+		close(p[1]);
 
-      /* Can't use stderr for these problems, since we just closed it */
-      if (fd < 0)
-	{
-	  printf ("%s: dup() failed: %s\n", argv[0], strerror (errno));
-	  return 1;
+		again:
+		errno = 0;
+
+		while (1) {
+			int r;
+			char buf[BUFSIZ];
+
+			r = read(p[0], buf, BUFSIZ - 1);
+
+			if (r <= 0)
+				break;
+
+			buf[r] = 0;
+			fprintf(stderr, "%s%s%s", HEADER, buf, FOOTER);
+		}
+
+		if (errno == EINTR) {
+			fprintf(stderr, "%s: read interrupted, trying again\n",
+					argv[0]);
+			goto again;
+		}
+
+		if (errno != 0)
+			FAIL("read");
+
+		if (wait(&status) != f)
+			FAIL("wait");
+
+		return WEXITSTATUS(status);
+	} else {
+		int fd;
+
+		close(p[0]);
+		close(fileno(stderr));
+
+		fd = dup(p[1]);			/* dup() uses the lowest available fd, which should be stderr's 
+								 * since we just closed it */
+
+		/* Can't use stderr for these problems, since we just closed it */
+		if (fd < 0) {
+			printf("%s: dup() failed: %s\n", argv[0], strerror(errno));
+			return 1;
+		}
+
+		if (fd != fileno(stderr)) {
+			printf("%s: dup returned %d instead of %d\n", argv[0], fd,
+				   fileno(stderr));
+			return 1;
+		}
+
+		execvp(argv[1], &argv[1]);
+
+		FAIL("exec");
 	}
-
-      if (fd != fileno (stderr))
-        {
-	  printf ("%s: dup returned %d instead of %d\n", argv[0], fd, 
-                  fileno (stderr));
-          return 1;
-        }
-
-      execvp (argv[1], &argv[1]);
-
-      FAIL ("exec");
-    }
 }

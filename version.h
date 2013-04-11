@@ -23,7 +23,7 @@
 
 #define VERSION_DISCLAIMER \
 "%s (evenmoreutils) " VERSION "\n" \
-"Copyright (C) 2013  Rudy Matela\n" \
+"Copyright (C) 2012-2013  Rudy Matela\n" \
 "This is free software; see the source for copying conditions.  There is NO\n" \
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 

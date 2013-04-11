@@ -16,39 +16,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#
-#
-# nup command
-#
-# Examples:
-#
-# $ cat somefile.txt
-# This is a
-# test file
-# with 4 lines
-# to test nup
-#
-# $ cat somefile.txt | nup
-# This is a     with 4 lines
-# test file     to test nup
-#
-# $ nup somefile.txt
-# This is a     with 4 lines
-# test file     to test nup
-#
-# $ nup -4 somefile.txt
-# This is a     test file    with 4 lines     to test nup
-#
-# $ nup -s somefile.txt  # puts a separator
-# This is a  |  with 4 lines
-# test file  |  to test nup
-#
-# $ nup -i somefile.txt  # inversion mode
-# This is a     test file
-# with 4 lines  to test nup
-#
-# TODO: Ended up a bit different from planned, redocument
 
 while [ "$#" -gt 0 ]; do
 	case $1 in

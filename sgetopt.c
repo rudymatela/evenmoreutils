@@ -15,6 +15,12 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * NOTE: This implementation is (hopefully) effective but a bit inefficient.
+ * The parsing of arguments takes O(N*M) time, when it could be done in O(N)
+ * time. N is the number of parameters and M is the number of options in the
+ * option table.
  */
 #include "sgetopt.h"
 #include <stdio.h>
@@ -32,26 +38,49 @@ const static struct soption *sgetoptfroms(const char *s, const struct soption op
 int sgetopt(int argc, char * const argv[], const struct soption optable[])
 {
 	int i, j, r;
+	int end_options = 0; /* reached `--' parameter */
 	const struct soption *popt;
 	for (i=1; i<argc; i++) {
-		if (argv[i][0] != '-') { /* normal parameter */
+		/*  reached --  or not start with -  or one char "-" */
+		if (end_options || argv[i][0] != '-' || argv[i][1] == 0) { /* normal parameter */
 			popt = sgetoptfromc(0, optable);
 			if (popt->func)
 				r = popt->func(argv[i], popt->arg);
 		} else if (argv[i][1] == '-') { /* --long parameter */
-			popt = sgetoptfroms(argv[i]+2, optable);
+			const char *option = argv[i]+2;
+			const char *argument = NULL;
+			if (option[0] == '\0') { /* `--', end of parsing */
+				end_options = 1;
+				continue;
+			}
+			popt = sgetoptfroms(option, optable);
 			if (!popt)
-				EPRINTFR("Unknown option `%s'\n", argv[i]);
-			if (popt->has_arg && i+1 >= argc)
-				EPRINTFR("Missing argument to `%s'\n", argv[i]);
-			r = popt->func(popt->has_arg?argv[++i]:NULL, popt->arg);
+				EPRINTFR("Unknown option `--%s'\n", option);
+			if (popt->has_arg) {
+				argument = strchr(option, '=');
+				if (argument) { /* argument is --like=this */
+					argument++; /* skips = */
+				} else { /* argument should be --like this */
+					if (i+1 >= argc)
+						EPRINTFR("Missing argument to `--%s'\n", option);
+					argument = argv[++i];
+				}
+			}
+			r = popt->func(argument, popt->arg);
 		} else for (j=1; argv[i][j]; j++) { /* -short parameters (-s -h -o -r -t) */
-			popt = sgetoptfromc(argv[i][j], optable);
+			char option = argv[i][j];
+			popt = sgetoptfromc(option, optable);
 			if (!popt)
-				EPRINTFR("Unknown option -%c\n", argv[i][j]);
-			if (popt->has_arg && (i+1 >= argc || argv[i][j+1]))
-				EPRINTFR("Missing argument to `-%c'\n", argv[i][j])
-			r = popt->func(popt->has_arg?argv[++i]:NULL, popt->arg);
+				EPRINTFR("Unknown option -%c\n", option);
+			if (popt->has_arg && !(i<argc || argv[i][j+1]))
+				EPRINTFR("Missing argument to `-%c'\n", option)
+			/* supports -oPARAM or -o PARAM (argv ternary) */
+			r = popt->func(
+				popt->has_arg ?
+					argv[i][j+1] ? &argv[i][j+1] : argv[++i] :
+					NULL,
+				popt->arg
+			);
 			if (r)
 				return r;
 			if (popt->has_arg)
@@ -75,10 +104,21 @@ const static struct soption *sgetoptfromc(char c, const struct soption optable[]
 }
 
 
+/* Compares two strings until reaching <delim> or end */
+const static int strchrcmp(const char *s1, const char *s2, char delim)
+{
+	int r;
+	while ((*s1 && *s1 != delim) || (*s2 && *s2 != delim))
+		if ((r = *(s1++) - *(s2++)))
+			return r;
+	return 0;
+}
+
+
 const static struct soption *sgetoptfroms(const char *s, const struct soption optable[])
 {
 	while (optable->sname || optable->lname) {
-		if (optable->lname && strcmp(optable->lname,s) == 0)
+		if (optable->lname && strchrcmp(optable->lname,s,'=') == 0)
 			return optable;
 		optable++;
 	}
@@ -86,12 +126,23 @@ const static struct soption *sgetoptfroms(const char *s, const struct soption op
 }
 
 
-/* TODO: Make a version of this that gives an error */
 int capture_int(const char *carg, void *pvar)
 {
 	int *pi = pvar;
-	*pi = atoi(carg);
-	return 0;
+	char *end;
+	*pi = strtol(carg, &end, 10);
+	/* Fails if it cannot find an int */
+	return end!=carg ? 0: 1;
+}
+
+
+int capture_int_pedantic(const char *carg, void *pvar)
+{
+	int *pi = pvar;
+	char *end;
+	*pi = strtol(carg, &end, 10);
+	/* Success only if anything but the int is on carg */
+	return end!=carg && !*end ? 0: 1;
 }
 
 
@@ -107,6 +158,14 @@ int capture_presence(const char *carg, void *pvar)
 {
 	int *pi = pvar;
 	*pi = 1;
+	return 0;
+}
+
+
+int capture_presence_as_0(const char *carg, void *pvar)
+{
+	int *pi = pvar;
+	*pi = 0;
 	return 0;
 }
 

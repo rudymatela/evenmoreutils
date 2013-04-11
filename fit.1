@@ -1,35 +1,91 @@
 .TH FIT 1
 .SH NAME
-fit \- truncates a stream by fitting it into a certain width
+fit, pad \- truncates files by width and print on the standard output
 .SH SYNOPSIS
 .B fit
-\fIwidth\fR
+[\fB-h\fR]
+[\fB-v\fR]
+[\fB-w\fR]
+[\fB-t\fR]
+[\fB-c\fR]
+[\fB-p\fR]
+[\fB-W\fR]
+[\fB-M\fR]
+[\fIfiles\fR]...
+.br
+.B pad
+[\fB-h\fR]
+[\fB-v\fR]
+[\fB-w\fR]
+[\fB-t\fR]
+[\fB-c\fR]
+[\fB-p\fR]
+[\fB-W\fR]
+[\fB-M\fR]
+[\fIfiles\fR]...
 .SH DESCRIPTION
 .B fit
-truncates a stream by fitting it into a certain width. The width is read from
+truncates a stream by fitting it into a certain width.  The width is read from
 the environment variable \fICOLUMNS\fR or guessed using termcap information. It
-can be overridden by passing a parameter.
+can be overridden by passing a parameter.  It is capable of padding the output
+making it exactly the width.
+
+.B pad
+pads the output wrapping lines when necessary.  This is the same as ``\fBfit -w
+-p\fR''.
 .SH OPTIONS
 .TP
-.BR \-h
-Shows help (not implemented)
+.BR \-h ", " \-\-help
+Shows help
 .TP
-.BR \-v
-Shows version (not implemented)
+.BR \-v ", " \-\-version
+Shows version
+.TP
+.BR \-w ", " \-\-width
+Forces the width. When no value is passed it is guessed by the \fICOLUMNS\fR
+environment variable. When it has no value, from the termcap. If guessing is
+not possible and no value is passed 80 is the value.
+.TP
+.BR \-t ", " \-\-tabsize
+Sets the tabsize. Default is 8.
+.TP
+.BR \-c ", " \-\-converttabs
+Convert tabs to \fItabsize\fR spaces.
+.TP
+.BR \-p ", " \-\-pad
+Pads output with spaces until it fits exactly the width.
+.TP
+.BR \-W ", " \-\-wrap
+Wraps output. Default is no.  When called as pad default is yes.
+.TP
+.BR \-M ", " \-\-no-wrap
+Do not wrap output. Default is yes.  When called as pad default is no.
 .SH EXAMPLES
 .nf
-.B cat somefilewithlonglines.txt | fit
+.B cat somefile.txt
+Well this is a text file
+with two lines
+
+.B fit somefile.txt
+Well this is a text file
+with two lines
+
+.B fit -w 10 somefile.txt
+Well, this
+with two l
+
+.B pad -w 30 somefile.txt
+Well, this is a text file     
+with two lines.               
+
+.B cat somefile.txt | pad -w 30 | tr ' ' _
+Well,_this_is_a_text_file_____
+with_two_lines._______________
+
+.B fit -w 20 --pad somefile.txt | tr ' ' _
+Well,_this_is_a_text
+with_two_lines._____
 .fi
-
-Prints out the content of somefilewithlonglines truncating by the size of the
-current terminal.
-
-.nf
-.B cat somefilewithlonglines.txt | fit 80
-.fi
-
-Prints out the content of somefilewithlonglines truncating any line that is
-longer than 80 chars.
 
 .SH BUGS
 Report bugs to rudy@matela.com.br

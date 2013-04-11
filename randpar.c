@@ -68,8 +68,11 @@ int main(int argc, char **argv)
 	char **nargv = argv + 1;
 
 	sgetopt_setlastarg(opttable, nargv);
-	sgetopt(argc, argv, opttable);
-	/* TODO: Treat sgetopt return value here */
+	if (sgetopt(argc, argv, opttable)) {
+		char *progname = basename(argv[0]);
+		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
+		return 1;
+	}
 	argc = sgetopt_nnonopts(opttable);
 
 	srand(seed < 0 ? time(0) ^ getpid(): seed);

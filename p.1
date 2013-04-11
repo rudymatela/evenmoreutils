@@ -80,11 +80,19 @@ Same command as above written in a different way.  \fBThis is not currently
 supported.\fR  It is interesting because you can pass a parameter as ``"blah
 bleh"'' which is impossible in the first version in which the space will always
 be used to separate the parameters. If your shell does not treat & as a special
-char you can just put it plain on the command line. Example of usefulness:
+char you can just put it plain on the command line.
 
 .nf
 .B p tail -f """some file""" \\\\& p tail -f """some other file with space in the name.txt"""
 .fi
+
+An example of the usefullness of & as separator on this command.
+
+.nf
+.B p -t project1 "hg pull project1" -t project2 "hg pull project2" -t project3 "hg pull project3"
+.fi
+
+Pulls 3 mercurial projects simultaneously.
 
 .SH BUGS
 Report bugs to rudy@matela.com.br

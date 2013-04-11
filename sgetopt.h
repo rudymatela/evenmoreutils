@@ -41,8 +41,10 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[]);
 
 /* Capture functions */
 int capture_int(const char *carg, void *pvar);
+int capture_int_pedantic(const char *carg, void *pvar);
 int capture_charpointer(const char *carg, void *pvar);
 int capture_presence(const char *carg, void *pvar);
+int capture_presence_as_0(const char *carg, void *pvar);
 int capture_nonoption(const char *carg, void *pvar);
 
 #endif

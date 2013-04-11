@@ -4,14 +4,15 @@ hl \- highlight expressions on a stream
 .SH SYNOPSIS
 .B hl
 [\fB\-h\fR]
-[\fB\-c\fR\fI COLOR\fR]
+[\fB\-v\fR]
 [\fB\-f\fR\fI FILE\fR]
+[\fB\-c\fR\fI COLOR\fR]
 [\fB\-b\fR]
 [\fB\-u\fR]
 [\fB\-r\fR]
 [\fB\-n\fR]
 [\fB\-i\fR]
-.IR expressions ...
+.IR expression ...
 .SH DESCRIPTION
 .B hl
 Highlight some expressions passed by parameters on files. Can be used to
@@ -19,30 +20,33 @@ process multiple files and multiple expressions. The default highlight is bold,
 but can have color or other formatting options.
 .SH OPTIONS
 .TP
-.BR \-h
+.BR \-h ", " \-\-help
 Shows help
 .TP
-.BR \-c " " \fICOLOR\fR
-Sets the color, can be: black, red, green, yellow, blue, magenta, cyan or
-white.
+.BR \-v ", " \-\-version
+Shows version
 .TP
-.BR \-f " " \fIFILE\fR
+.BR \-f " " \fIFILE\fR ", " \-\-file " " \fIFILE\fR
 Sets an input file. - can be used for standard input. When no file is passed,
 read from stdin.
 .TP
-.BR \-b
+.BR \-c " " \fICOLOR\fR ", " \-\-color " " \fICOLOR\fR
+Sets the color, can be: black, red, green, yellow, blue, magenta, cyan or
+white.
+.TP
+.BR \-b ", " \-\-bold
 Bold output (active if no color or style is passed).
 .TP
-.BR \-u
+.BR \-u ", " \-\-underlined
 Underlined output
 .TP
-.BR \-r
+.BR \-r ", " \-\-reversed
 Reverse output
 .TP
-.BR \-n
-Normal output (reset?)
+.BR \-n ", " \-\-normal
+Normal output (reset)
 .TP
-.BR \-i
+.BR \-i ", " \-\-ignore\-case
 Ignore case on regular expression
 .SH EXAMPLES
 .nf
@@ -63,12 +67,26 @@ Highlights just the status codes.
 .fi
 
 Outputs auth.log highlighting the names of users root, alice and bob as red,
-yellow and green. Ignores case when searching for the names of users. Pipes everything into `less -R' to make reading easier.
+yellow and green. Ignores case when searching for the names of users. Pipes
+everything into `less -R' to make reading easier.
 .SH BUGS
 Report bugs to rudy@matela.com.br
 
-The regular expressions do not work with spaces.  That'll be corrected on
-future versions.
+Unknown parameters -something are silently ignored.
+
+\fBhl\fR does not work well with expressions that overlap.  That is because of
+the way it handles the regular expressions (using sed internally). Example:
+
+.nf
+.B echo "axxxxcxxxdxxxxb" | hl -bc red a.*b -bc blue c.*d
+.fi
+
+Will result in axxxx highlighted in red and cxxxd highlighted in blue while
+xxxxb is not highlighted.
+
+That might
+be corrected by implementing a real engine, just for highlighting, in C (list
+all the offsets along with the options then do the changes in the stream).
 .SH SEE ALSO
 \fBfit\fR(1), \fBhilite\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBuntl\fR(1), \fBsgetopt\fR(3)
 .SH COPYRIGHT

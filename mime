@@ -20,4 +20,4 @@
 #
 # Just an alias for file -bi
 
-file -bi $*
+exec file -bi $*

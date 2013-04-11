@@ -41,14 +41,10 @@ if [ -e "${dest}.tar.xz" ]; then
 	exit 1
 fi
 
-# TODO: Create version.h and version.sh to store current version of
-# evenmoreutils.  Write hte version here.  For default leave: development
-# version.
-
-# TODO: Check if this works under make -C other/dir
 mkdir -p ${dest}
 cp -r * ${dest}
-cat version.h | sed -e "s/:development version:/$version/" > ${dest}/version.h
+cat version.h               | sed -e "s/:development version:/$version/" > ${dest}/version.h
+cat evenmoreutils-common.sh | sed -e "s/:development version:/$version/" > ${dest}/evenmoreutils-common.sh
 make -C ${dest} clean
 tar -cJf ${dest}.tar.xz ${dest}
 rm -r ${dest}

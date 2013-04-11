@@ -51,7 +51,10 @@ int main(int argc, char **argv)
 	int i;
 
 	sgetopt_setlastarg(opttable, argv + 1); /* will work destructively on argv */
-	sgetopt(argc, argv, opttable);
+	if (sgetopt(argc, argv, opttable)) {
+		printf("Error parsing one of the command line options\n");
+		return 1;
+	}
 	numnonoptions = sgetopt_nnonopts(opttable);
 
 	if (help) {

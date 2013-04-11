@@ -23,7 +23,13 @@ Shows help (not implemented)
 Shows version (not implemented)
 .TP
 .BR \-n " " \fIK\fR
-Number of columns (not implemented)
+Number of columns (cannot be used along with -l)
+.TP
+.BR \-l " " \fIK\fR
+Number of lines (cannot be used along with -n)
+.TP
+.BR \-d " " \fIDELIM\fR
+Sets the delimiter instead of TABs
 .TP
 .BR \-s " " \fISEPARATOR\fR
 Sets a separator to be used between columns.  Default is two spaces (not implemented)

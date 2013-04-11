@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# fit - truncates a stream by fitting it into a certain width
+# hl - evenmoreutils common shell utilities
 #
 # Copyright (C) 2012, 2013  Rudy Matela
 #
@@ -18,15 +18,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-#
-# Fit, fits text withing $1 columns (or $COLUMNS) or crop it! :D
-#
-# TODO: Maybe reimplement in C when doing evenmoreutils
+# This program is not intended to be called directly but instead it is intended
+# to be sourced from the several evenmoreutils utilities
 
-columns=$1
-[ -z "$columns" ] && columns=$COLUMNS
-[ -z "$columns" ] && columns=`tput cols`
-[ -z "$columns" ] && columns=`stty size | sed -e 's/.* //'`
-[ -z "$columns" ] && columns=80
+BASENAME="`basename $0`"
 
-sed -ue "s/\t/        /" | sed -ue "s/\\(.\{$columns\}\\).*/\1/"
+VERSION=":development version:"
+
+VERSION_DISCLAIMER="$BASENAME (evenmoreutils) $VERSION
+\nCopyright (C) 2012-2013  Rudy Matela
+\nThis is free software; see the source for copying conditions.  There is NO
+\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+\n"
+
+show_version() {
+	echo -ne $VERSION_DISCLAIMER
+	exit 0
+}
+
+show_help() {
+	exec man $BASENAME
+}
