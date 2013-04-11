@@ -1,9 +1,9 @@
 evenmoreutils - a collection of command line tools
 ==================================================
 
-This is evenmoreutils, a collection of command line tools.  It is inspired by
-moreutils, which is a also a collection of command line tools.  Both complement
-the standard *NIX toolset (ls, grep, less etc).  The tools are:
+This is evenmoreutils, a collection of command line tools inspired by
+moreutils.  Both complement the standard *NIX toolset (ls, grep, less etc).
+The tools are:
 
 anywait: like wait, but works on any pid from the system
 easy-getopt: an easier verision of the getopt command line tool
@@ -18,9 +18,9 @@ randpar: output a random parameter
 untl:    runs a program until it is sucessful (whle)
 sgetopt: simple getopt version (not a command, a lib)
 
-They are currently *experimental* tools. There are a lot of bugs and they'll be
-fixed with time. Some tools need a complete rewrite (in C). Code is
-quick-and-dirty on lots of them.
+They are currently *experimental* tools.  There are some known bugs (check the
+manpages of each command for details).  Code is quick-and-dirty on lots of
+them.
 
 
 Installation
@@ -34,5 +34,5 @@ Links
 
 Joey's moreutils:  http://kitenet.net/~joey/code/moreutils/
 GNU coreutils:     https://www.gnu.org/software/coreutils/
-moreutils webpage: not avaliable yet, check matela.com.br
+evenmoreutils:     not avaliable yet, check matela.com.br
 

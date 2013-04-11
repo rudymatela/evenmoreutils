@@ -39,6 +39,9 @@
  * to treat everything in a more bug prone way. IE: Tab handling
  *
  * TODO: Get tab width from termcap??
+ *
+ * NOTE: This does not work with streams containing wide chars (that is, uccupy
+ * two bytes in memory but one slot in the screen). Example, unicode: á é í ó ú
  */
 #include "sgetopt.h"
 #include "version.h"
@@ -114,6 +117,7 @@ void fitfile(FILE *pf)
 				putchar(ch);
 			} else if (wrap) {
 				putchar('\n');
+				ungetc(ch, pf);
 				count = 0;
 				break;
 			}
