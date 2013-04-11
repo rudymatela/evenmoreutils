@@ -22,9 +22,10 @@
 
 BINS=sgetopt_test hilite randpar untl
 # TODO: Make whle be installed as a symbolic link!!!!
-SHS=easy-getopt fit hl mime nup p pad whle
+SHS=anywait easy-getopt fit hl mime nup p pad whle
 OBJS=sgetopt.o
-MANS=randpar.1
+# TODO: Install whle.1 as a symbolic link
+MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 pad.1 randpar.1 untl.1 whle.1
 CFLAGS=-ansi -pedantic -Wall -Werror -Wno-variadic-macros
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share

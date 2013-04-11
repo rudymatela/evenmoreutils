@@ -5,6 +5,7 @@ This is evenmoreutils, a collection of command line tools.  It is inspired by
 moreutils, which is a also a collection of command line tools.  Both complement
 the standard *NIX toolset (ls, grep, less etc).  The tools are:
 
+anywait: like wait, but works on any pid from the system
 easy-getopt: an easier verision of the getopt command line tool
 fit:     truncates a stream by fitting it into a certain width
 hilite:  runs a command, highligh stderr

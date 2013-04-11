@@ -1,0 +1,64 @@
+.TH UNTL 1
+.SH NAME
+untl, whle \- tries to run a process until it is sucessful (or unsucessful)
+.SH SYNOPSIS
+.B untl
+[\fB\-h\fR|\fB\-\-help\fR]
+[\fB\-v\fR|\fB\-\-version\fR]
+[\fB\-u\fR|\fB\-\-until\fR]
+[\fB\-w\fR|\fB\-\-while\fR]
+[\fB\-r\fR|\fB\-\-retval\fR\fI RETVAL\fR]
+\fIcommand\fR
+.br
+.B whle
+[\fB\-h\fR|\fB\-\-help\fR]
+[\fB\-v\fR|\fB\-\-version\fR]
+[\fB\-u\fR|\fB\-\-until\fR]
+[\fB\-w\fR|\fB\-\-while\fR]
+[\fB\-r\fR|\fB\-\-retval\fR\fI RETVAL\fR]
+\fIcommand\fR
+.SH DESCRIPTION
+.B untl
+calls a process until it is successful.
+.B whle
+calls a process while it is successful, in other words, until it fails.
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help (not implemented)
+.TP
+.BR \-v
+Shows version (not implemented)
+.TP
+.BR \-u
+Forces untl behavior (default when program name is different from whle) (not implemented)
+.TP
+.BR \-w
+Forces whle behavior (default when program name is whle) (not implemented)
+.TP
+.BR \-r " " \fIRETVAL\fR
+Runs a processes until (or while) the return value equals \fIRETVAL\fR. (not implemented)
+.TP
+.BR \-i \fIINTERVAL\fR
+Sets the interval, in seconds, of each try. (not implemented)
+.SH EXAMPLES
+.nf
+.B untl ping example.com
+.fi
+
+Tries to ping example.com until it is successful.
+
+.nf
+.B untl ls /var/spool/printer
+.fi
+
+Tries to list contents of /var/spool/printer until it is successful.
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBhl\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBsgetopt\fR(3)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

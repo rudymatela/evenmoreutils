@@ -1,0 +1,20 @@
+#!/bin/bash
+# Waits for any process in the System.
+# (wait just works in the processes of this terminal
+#
+# TODO: Check if this works with zombie processes
+# TODO: Make this work on zombie process
+# TODO: Make this work when you dont want to care about zombie processes
+# TODO: Implement -i switch to tell the interval to query for the processes
+# TODO: Implement timeout switch
+
+anywait() {
+    for pid in "$@"; do
+        while [ -d /proc/$pid ]; do
+            sleep 0.5
+        done
+    done
+}
+
+anywait "$@"
+

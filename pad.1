@@ -1,0 +1,46 @@
+.TH PAD 1
+.SH NAME
+pad \- pads output with whitespaces to fit a certain width
+.SH SYNOPSIS
+.B pad
+[\fB-h\fR]
+[\fB-v\fR]
+\fIwidth\fR
+.SH DESCRIPTION
+.B pad
+pads an output until it reaches a certain width (and truncates if necessary).  TODO: Maybe make this in the same binary as fit with an option passed to symbolize it and provide something like whle for untl (a symbolic link to change behavior).
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help (not implemented)
+.TP
+.BR \-v
+Shows version (not implemented)
+.TP
+.BR \-c " " \fICHAR\fR
+Sets the padding character (not implemented)
+.SH EXAMPLES
+.nf
+.B cat somefile.txt
+Well this is a text file
+with two lines
+
+.B cat somefile.txt | pad 30
+Well this is a text file     
+with two lines              
+
+.B cat somefile.txt | pad 30 | tr ' ' _
+Well_this_is_a_text_file_____
+with_two_lines_______________
+
+.B cat somefile.txt | pad 30 -c "_"
+.fi
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBhl\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBsgetopt\fR(3), \fBwhle\fR(1)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2012, 2013 Rudy Matela.  Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

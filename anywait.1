@@ -1,0 +1,43 @@
+.TH ANYWAIT 1
+.SH NAME
+anywait \- waits for any process in the system
+.SH SYNOPSIS
+.B anywait
+\fIpid...\fR
+.SH DESCRIPTION
+.B anywait
+waits for any process in the system to terminate.  It functions in a similar manner to wait.
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help (not implemented)
+.TP
+.BR \-v
+Shows version (not implemented)
+.TP
+.BR \-i
+Sets time interval to check if process has been terminated (default is 0.5 seconds) (not implemented)
+.TP
+.BR \-n
+The next pid will be a process name and anywait will wait in a similar manner to killall (not implemented)
+.SH EXAMPLES
+.nf
+.B anywait 1337
+.fi
+
+Waits for the process with id 1337 to stop.
+
+.nf
+.B anywait 1337 31337
+.fi
+
+Waits for processes 1337 and 31337 to stop.
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBhl\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBsgetopt\fR(3), \fBwhle\fR(1)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2013 Rudy Matela.  Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

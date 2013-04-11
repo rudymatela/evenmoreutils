@@ -1,0 +1,69 @@
+.TH NUP 1
+.SH NAME
+nup \- n-up an output from a file (making it two, or n columns)
+.SH SYNOPSIS
+.B nup
+[\fB\-h\fR]
+[\fB\-v\fR]
+[\fB\-n\fR\fI K\fR]
+[\fB\-s\fR\fI SEPARATOR\fR]
+[\fB\-i\fR]
+[\fIFILE\fR]...
+.SH DESCRIPTION
+.B hl
+nup n-ups an output from a file making it two, or n columns.  If no file is
+given, standard input is used.  This command is not implemented as described
+here. Redocument or reimplement.  Probably will reimplement in C.
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help (not implemented)
+.TP
+.BR \-v
+Shows version (not implemented)
+.TP
+.BR \-n " " \fIK\fR
+Number of columns (not implemented)
+.TP
+.BR \-s " " \fISEPARATOR\fR
+Sets a separator to be used between columns.  Default is two spaces (not implemented)
+.TP
+.BR \-i
+Inverts (like in an inverse matrix) the output (not implemented)
+.SH EXAMPLES
+.nf
+.B cat somefile.txt
+This is a
+test file
+with 4 lines
+to test nup
+ 
+.B cat somefile.txt | nup
+This is a     with 4 lines
+test file     to test nup
+ 
+.B nup somefile.txt
+This is a     with 4 lines
+test file     to test nup
+ 
+.B nup -4 somefile.txt
+This is a     test file    with 4 lines     to test nup
+ 
+.B nup -s """  |  """ somefile.txt
+This is a  |  with 4 lines
+test file  |  to test nup
+ 
+.B nup -i somefile.txt
+This is a     test file
+with 4 lines  to test nup
+.fi
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBuntl\fR(1), \fBsgetopt\fR(3)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

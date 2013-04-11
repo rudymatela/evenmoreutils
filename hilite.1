@@ -1,0 +1,36 @@
+.TH HILITE 1
+.SH NAME
+hilite \- runs a command, highlighting everything it sends to stderr
+.SH SYNOPSIS
+.B hilite
+[\fB\-h\fR]
+[\fB\-v\fR]
+.SH DESCRIPTION
+.B hl
+runs a command, highlighting everything it sends to stderr
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help (not implemented)
+.TP
+.BR \-v
+Shows version (not implemented)
+.SH EXAMPLES
+.nf
+.B hilite cat somefile someotherfile
+.fi
+
+If somefile exists and someotherfile does not exist. Will output contents of
+somefile followed by a red warning for someotherfile: no such file or
+directory.
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+
+.SH SEE ALSO
+\fBfit\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBuntl\fR(1), \fBsgetopt\fR(3)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2000, 2001  Mike Schiraldi.
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
