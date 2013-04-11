@@ -1,0 +1,77 @@
+.TH HL 1
+.SH NAME
+hl \- highlight expressions on a stream
+.SH SYNOPSIS
+.B hl
+[\fB\-h\fR]
+[\fB\-c\fR\fI COLOR\fR]
+[\fB\-f\fR\fI FILE\fR]
+[\fB\-b\fR]
+[\fB\-u\fR]
+[\fB\-r\fR]
+[\fB\-n\fR]
+[\fB\-i\fR]
+.IR expressions ...
+.SH DESCRIPTION
+.B hl
+Highlight some expressions passed by parameters on files. Can be used to
+process multiple files and multiple expressions. The default highlight is bold,
+but can have color or other formatting options.
+.SH OPTIONS
+.TP
+.BR \-h
+Shows help
+.TP
+.BR \-c " " \fICOLOR\fR
+Sets the color, can be: black, red, green, yellow, blue, magenta, cyan or
+white.
+.TP
+.BR \-f " " \fIFILE\fR
+Sets an input file. - can be used for standard input. When no file is passed,
+read from stdin.
+.TP
+.BR \-b
+Bold output (active if no color or style is passed).
+.TP
+.BR \-u
+Underlined output
+.TP
+.BR \-r
+Reverse output
+.TP
+.BR \-n
+Normal output (reset?)
+.TP
+.BR \-i
+Ignore case on regular expression
+.SH EXAMPLES
+.nf
+.B cat /var/log/httpd/access_log | hl -c green """.*200.*""" -c red """.*404.*"""
+.fi
+
+Highlights lines in the apache log file containing success (200) as green and
+not found (404) as red.
+
+.nf
+.B cat /var/log/httpd/access.log | hl -c green 200 -c red 404
+.fi
+
+Highlights just the status codes.
+
+.nf
+.B cat auth.log | hl -ibc red root -ibc yellow alice -ibc green bob | less -R
+.fi
+
+Outputs auth.log highlighting the names of users root, alice and bob as red,
+yellow and green. Ignores case when searching for the names of users. Pipes everything into `less -R' to make reading easier.
+.SH BUGS
+Report bugs to rudy@matela.com.br
+
+The regular expressions do not work with spaces.  That'll be corrected on
+future versions.
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBuntl\fR(1), \fBsgetopt\fR(3)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

@@ -1,0 +1,128 @@
+#!/bin/bash
+#
+# easy-getopt - easy getopt script
+#
+# Copyright (C) 2012, 2013  Rudy Matela
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#
+# Manual:
+#
+# Convention over configuration for parsing parameters
+# Currently only supports short options
+#
+# Usage:
+# eval "`easy-getopt <option string>"
+#
+# Example:
+# eval "`easy-getopt vhf:`"
+#
+# If the parameters -v, -h, -f <file> are passed to your script, the commands
+# v, h, and f <file> are issued. To check how the program works, try running
+# without evaluing it.
+#
+# NOTE: This is a quick and dirty hack. There are lots of room for improvement,
+# for example, support for long parameters
+#
+# TODO: Use "$@" when applicable
+#
+
+
+separate-opts() {
+	echo $* | sed -e "s/[a-zA-Z]\(:\|\)/& /g"
+}
+
+mount-option-call() {
+	opt=$1
+	if echo $opt | grep -q :; then
+		opt=`echo $opt | sed -e "s/://"`
+		echo -e "\t\t-$opt) $opt \$2; shift 2;;"
+	else
+		echo -e "\t\t-$opt) $opt; shift;;"
+	fi
+}
+
+mount-option-calls() {
+	for opt in $*; do
+		mount-option-call $opt
+	done
+}
+
+mount-parsing-loop() {
+	echo -e "while true; do"
+	echo -e "\tcase \"\$1\" in"
+	mount-option-calls $*
+	echo -e "\t\t--) shift; break;;"
+	echo -e "\t\t*) echo \"Unknown parameter \$1\"; exit 1;;"
+	echo -e "\tesac"
+	echo -e "done"
+}
+
+
+# Metaprogamming!
+# Just eval this!
+easy-getopt-opts() {
+	# TODO: Provide a version for older getopt (portability) and warn the user
+	# that it will not work the same way.
+	# Reference: http://aplawrence.com/Unix/getopts.html
+	echo "eval set -- \"\`getopt -o $1 -- \"\$@\"\`\""
+	mount-parsing-loop `separate-opts $1`
+}
+
+
+string-first() {
+	echo $1 | sed -e "s/^\\(.\\).*$/\1/"
+}
+
+string-rest() {
+	echo $1 | sed -e "s/^.\\(.*\\)$/\1/"
+}
+
+setvar() {
+	first=`string-first $1`
+	rest=`string-rest $1`
+	cat <<SCRIPT
+$first() {
+	$rest=\$1
+}
+SCRIPT
+}
+
+setvars() {
+	for var in $*; do
+		setvar $var
+	done
+}
+
+# TODO: document this
+# To use: eval "`./easy-getopt-setvar ffile ooutput vversion`"
+easy-getopt-setvar() {
+	setvars $*
+}
+
+easy-getopt() {
+	optstring="$1"
+	shift
+	easy-getopt-setvar "$@"
+	easy-getopt-opts "$optstring"
+}
+
+# If no parameters, just load functions in environment if you use source
+# if parameters, run the easy-getopt
+if [ -n "$*" ]; then
+	easy-getopt "$@"
+fi
+

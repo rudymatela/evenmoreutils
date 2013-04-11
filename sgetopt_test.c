@@ -1,0 +1,74 @@
+/*
+ * sgetopt_test.c - Test for the simple getopt
+ *
+ * Copyright (C) 2013  Rudy Matela
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 2.1 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "sgetopt.h"
+#include <stdio.h>
+
+
+int custom_callback(const char *arg, void *pvar)
+{
+	printf("Custom callback with %s as parameter\n", arg);
+	return 0;
+}
+
+
+int main(int argc, char **argv)
+{
+	static int help;
+	static int version;
+	static int show_numnonoptions;
+	static int show_nonoptions;
+	static int some_integer;
+	static char *some_string;
+
+	struct soption opttable[] = {
+		{ 'h', "help",    0, capture_presence,    &help },
+		{ 'v', "version", 0, capture_presence,    &version },
+		{ 'n', 0,         0, capture_presence,    &show_numnonoptions },
+		{ 'o', 0,         0, capture_presence,    &show_nonoptions },
+		{ 'i', "integer", 1, capture_int,         &some_integer },
+		{ 's', "string",  1, capture_charpointer, &some_string },
+		{ 'c', "custom",  1, custom_callback,     0 },
+		{ 0,   0,         0, capture_nonoption,   0 }
+	};
+
+	int numnonoptions;
+	int i;
+
+	sgetopt_setlastarg(opttable, argv + 1); /* will work destructively on argv */
+	sgetopt(argc, argv, opttable);
+	numnonoptions = sgetopt_nnonopts(opttable);
+
+	if (help) {
+		printf("Usage: check source for details\n");
+		return 0;
+	}
+	if (version) {
+		printf("2013 version\n");
+		return 0;
+	}
+
+	if (show_numnonoptions)
+		printf("%i\n", numnonoptions);
+	if (show_nonoptions)
+		for (i=1; i<=numnonoptions; i++)
+			printf("%s\n", argv[i]);
+	printf("integer = %i, string = %s\n", some_integer, some_string);
+	return 0;
+}
+

@@ -1,0 +1,37 @@
+evenmoreutils - a collection of command line tools
+==================================================
+
+This is evenmoreutils, a collection of command line tools.  It is inspired by
+moreutils, which is a also a collection of command line tools.  Both complement
+the standard *NIX toolset (ls, grep, less etc).  The tools are:
+
+easy-getopt: an easier verision of the getopt command line tool
+fit:     truncates a stream by fitting it into a certain width
+hilite:  runs a command, highligh stderr
+hl:      highlight some expressions on a stream
+mime:    prints the mimetype of a file (file -bi)
+nup:     n-up an output from a program (making 
+p:       runs parallel processes tagging or highlighting their output
+pad:     pads a stream with whitespaces to fit a certain width
+randpar: output a random parameter
+untl:    runs a program until it is sucessful (whle)
+sgetopt: simple getopt version (not a command, a lib)
+
+They are currently *experimental* tools. There are a lot of bugs and they'll be
+fixed with time. Some tools need a complete rewrite (in C). Code is
+quick-and-dirty on lots of them.
+
+
+Installation
+------------
+
+Check INSTALL for instructions.
+
+
+Links
+-----
+
+Joey's moreutils:  http://kitenet.net/~joey/code/moreutils/
+GNU coreutils:     https://www.gnu.org/software/coreutils/
+moreutils webpage: not avaliable yet, check matela.com.br
+

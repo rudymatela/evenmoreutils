@@ -1,0 +1,76 @@
+evenmoreutils' TODO list
+========================
+
+This is a TODO list and a scrapbook for ideas.
+
+
+Commands
+--------
+
+Merging trees: Add a command for merging trees of directories into a third one
+that will contain links (or symbolic links) for the first ones).  Scraped idea,
+cp will do.
+
+
+Idea for writing manpages
+-------------------------
+
+Writing manpages in troff format is a bit burdensome.  Also, if you also what
+to put some command documentation in your C source files you'll have duplicated
+documentation.
+
+First problem is to find a better format to writing manpages.  Maybe just
+writing them in plaintext and letting a program guess what you mean, like:
+
+command - just a command
+
+command [-v|--version] [-h|--help] [OPTIONS] file
+
+command does something
+
+-v, --version
+	Prints version
+
+-x, --extended=N
+	Wohoo
+
+-n K
+	Blah bleh blih
+
+And that will be converted to troff format and everything will be added by
+using the common manpage conventions.  Now put that inside a comment:
+
+/*
+ * command - just a command
+ * 
+ * command [-v|--version] [-h|--help] [OPTIONS] file
+ * 
+ * command does something
+ * 
+ * -v, --version
+ * 	Prints version
+ * 
+ * -x, --extended=N
+ * 	Wohoo
+ * 
+ * -n K
+ * 	Blah bleh blih
+ */
+
+Could be also a bash comment, starting with #.  A program will read directly
+from source and build the manpages from the source file.  The documentation
+will be in one place with easy access.  A make rule for building the manpages
+would be:
+
+command.1: command.c
+	manpageize command.c -o command.1
+
+That could even work for function comments, reading the source files and
+creating .3 files with each function name.
+
+The best way for me to implement this idea is to finish writing evenmoreutils
+manpages, then rewrite them in this format (that'll take a lot of edge cases).
+Then let the format be put inside a comment in the source file.  It is
+interesting to check if docs of functions are already supported by Doxygen.
+
+
