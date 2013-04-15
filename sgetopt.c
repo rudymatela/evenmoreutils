@@ -146,6 +146,20 @@ int capture_int_pedantic(const char *carg, void *pvar)
 }
 
 
+int capture_float(const char *carg, void *pvar)
+{
+	float *pf = pvar;
+	return sscanf(carg, "%f",pf) == 1 ? 0 : 1;
+}
+
+
+int capture_double(const char *carg, void *pvar)
+{
+	double *pf = pvar;
+	return sscanf(carg, "%lf",pf) == 1 ? 0 : 1;
+}
+
+
 int capture_charpointer(const char *carg, void *pvar)
 {
 	char **ppchar = pvar;

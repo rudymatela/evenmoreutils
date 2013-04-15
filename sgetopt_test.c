@@ -34,6 +34,8 @@ int main(int argc, char **argv)
 	static int show_numnonoptions;
 	static int show_nonoptions;
 	static int some_integer;
+	static float some_float;
+	static double some_double;
 	static char *some_string;
 
 	struct soption opttable[] = {
@@ -42,6 +44,8 @@ int main(int argc, char **argv)
 		{ 'n', 0,         0, capture_presence,    &show_numnonoptions },
 		{ 'o', 0,         0, capture_presence,    &show_nonoptions },
 		{ 'i', "integer", 1, capture_int,         &some_integer },
+		{ 'f', "float",   1, capture_float,       &some_float },
+		{ 'd', "double",  1, capture_double,      &some_double },
 		{ 's', "string",  1, capture_charpointer, &some_string },
 		{ 'c', "custom",  1, custom_callback,     0 },
 		{ 0,   0,         0, capture_nonoption,   0 }
@@ -71,7 +75,7 @@ int main(int argc, char **argv)
 	if (show_nonoptions)
 		for (i=1; i<=numnonoptions; i++)
 			printf("%s\n", argv[i]);
-	printf("integer = %i, string = %s\n", some_integer, some_string);
+	printf("integer = %i, string = %s, float = %.1f, double = %.1lf\n", some_integer, some_string, some_float, some_double);
 	return 0;
 }
 

@@ -46,5 +46,7 @@ int capture_charpointer(const char *carg, void *pvar);
 int capture_presence(const char *carg, void *pvar);
 int capture_presence_as_0(const char *carg, void *pvar);
 int capture_nonoption(const char *carg, void *pvar);
+int capture_float(const char *carg, void *pvar);
+int capture_double(const char *carg, void *pvar);
 
 #endif
