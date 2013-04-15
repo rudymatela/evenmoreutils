@@ -26,7 +26,7 @@ SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
 SMANS=pad.1 whle.1 # symlinks to manpages
 MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1
-CFLAGS=-ansi -pedantic -Wall -Werror -Wno-variadic-macros
+CFLAGS=-ansi -Wall -Werror -Wno-variadic-macros
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share
 
