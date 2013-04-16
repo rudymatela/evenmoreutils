@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 	static int version;
 	static int show_numnonoptions;
 	static int show_nonoptions;
+	static int only_long;
 	static int some_integer;
 	static float some_float;
 	static double some_double;
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
 		{ 'v', "version", 0, capture_presence,    &version },
 		{ 'n', 0,         0, capture_presence,    &show_numnonoptions },
 		{ 'o', 0,         0, capture_presence,    &show_nonoptions },
+		{ 0,   "long",    0, capture_presence,    &only_long },
 		{ 'i', "integer", 1, capture_int,         &some_integer },
 		{ 'f', "float",   1, capture_float,       &some_float },
 		{ 'd', "double",  1, capture_double,      &some_double },
@@ -75,7 +77,7 @@ int main(int argc, char **argv)
 	if (show_nonoptions)
 		for (i=1; i<=numnonoptions; i++)
 			printf("%s\n", argv[i]);
-	printf("integer = %i, string = %s, float = %.1f, double = %.1lf\n", some_integer, some_string, some_float, some_double);
+	printf("integer = %i, string = %s, float = %.1f, double = %.1lf, bool(long) = %i\n", some_integer, some_string, some_float, some_double, only_long);
 	return 0;
 }
 

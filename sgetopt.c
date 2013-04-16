@@ -31,6 +31,7 @@
 #define EPRINTFR(...) { fprintf(stderr,__VA_ARGS__); return 1; }
 
 
+const static struct soption *sgetoptnormal(const struct soption optable[]);
 const static struct soption *sgetoptfromc(char c, const struct soption optable[]);
 const static struct soption *sgetoptfroms(const char *s, const struct soption optable[]);
 
@@ -43,7 +44,7 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[])
 	for (i=1; i<argc; i++) {
 		/*  reached --  or not start with -  or one char "-" */
 		if (end_options || argv[i][0] != '-' || argv[i][1] == 0) { /* normal parameter */
-			popt = sgetoptfromc(0, optable);
+			popt = sgetoptnormal(optable);
 			if (popt->func)
 				r = popt->func(argv[i], popt->arg);
 		} else if (argv[i][1] == '-') { /* --long parameter */
@@ -90,6 +91,15 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[])
 			return r;
 	}
 	return 0;
+}
+
+
+/* Returns the last option: behavior for normal parameter */
+const static struct soption *sgetoptnormal(const struct soption optable[])
+{
+	while (optable->sname || optable->lname)
+		optable++;
+	return optable;
 }
 
 
