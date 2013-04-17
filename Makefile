@@ -30,7 +30,7 @@ CFLAGS=-ansi -Wall -Werror -Wno-variadic-macros
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share
 
-.PHONY: all clean install homeinstall
+.PHONY: all clean install homeinstall dist test
 
 all: $(BINS)
 
@@ -58,3 +58,5 @@ homeinstall:
 dist:
 	./dist.sh $(VERSION) $(DESTDIR)
 
+test:
+	./test.sh
