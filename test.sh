@@ -18,6 +18,15 @@ assert() {
 }
 
 
+assert_evl() {
+	diff -rud <(eval $*) - ||
+	(
+		echo ERROR RUNNING: \`\`$*\'\'
+		exit 1
+	)
+}
+
+
 sgetopt_test_test() {
 	assert ./sgetopt_test <<REF
 integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
@@ -67,5 +76,16 @@ REF
 }
 
 
+randpar_test() {
+	assert_evl ./randpar    1 2 3       \| wc <<<"      1       1       2"
+	assert_evl ./randpar -a 1 2 3       \| wc <<<"      3       3       6"
+	assert_evl ./randpar -a 1x2 3       \| wc <<<"      2       2       6"
+	assert_evl ./randpar -a0 1x 3       \| wc <<<"      0       1       6"
+	assert_evl ./randpar -n 10 abc de f \| wc -l <<<"10"
+	assert_evl ./randpar `seq 1 100`    \| wc -l <<<"1"
+}
+
+
 sgetopt_test_test
+randpar_test
 
