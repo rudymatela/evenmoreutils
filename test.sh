@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+# Assert function, usage:
+#   assert command parameters <<REF
+#   desired output
+#   REF
 assert() {
 	reference=`mktemp -t evenmoreutils-test-XXXXXXXXXX`
 	cat > $reference
