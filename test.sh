@@ -86,6 +86,34 @@ randpar_test() {
 }
 
 
+fit_test() {
+	testfile=`mktemp evenmoreutils-test-XXXXXXXXXX`
+
+	cat > $testfile <<REF
+Well, this is a text file
+with two lines.
+REF
+
+	assert fit -w 10 $testfile <<REF
+Well, this
+with two l
+REF
+
+	assert pad -w 30 $testfile <<REF
+Well, this is a text file     
+with two lines.               
+REF
+
+	assert fit -w 20 --pad $testfile <<REF
+Well, this is a text
+with two lines.     
+REF
+
+	rm $testfile
+}
+
+
 sgetopt_test_test
 randpar_test
+fit_test
 
