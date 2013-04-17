@@ -10,15 +10,11 @@
 #   desired output
 #   REF
 assert() {
-	reference=`mktemp -t evenmoreutils-test-XXXXXXXXXX`
-	cat > $reference
-	$* |
-	diff -rud - $reference ||
+	diff -rud <($*) - ||
 	(
 		echo ERROR RUNNING: \`\`$*\'\'
 		exit 1
 	)
-	rm $reference
 }
 
 
@@ -44,6 +40,29 @@ REF
 1
 wohoo
 integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
+REF
+
+	assert ./sgetopt_test -i 10 <<REF
+integer = 10, string = (null), float = 0.0, double = 0.0, bool(long) = 0
+REF
+
+	assert ./sgetopt_test -no --string abcd <<REF
+0
+integer = 0, string = abcd, float = 0.0, double = 0.0, bool(long) = 0
+REF
+
+	assert ./sgetopt_test -no a b c -f 123 --double 3.14 <<REF
+3
+a
+b
+c
+integer = 0, string = (null), float = 123.0, double = 3.1, bool(long) = 0
+REF
+
+	assert ./sgetopt_test -no wohoo --long <<REF
+1
+wohoo
+integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 1
 REF
 }
 
