@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# evenmoreutils' test script
+#
+# just run it, and it works as a "unit test" for the utils
 
 
 # Assert function, usage:
