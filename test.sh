@@ -2,29 +2,43 @@
 
 
 assert() {
+	reference=`mktemp -t evenmoreutils-test-XXXXXXXXXX`
+	cat > $reference
 	$* |
-	diff -rud - correct.txt ||
+	diff -rud - $reference ||
 	(
 		echo ERROR RUNNING: \`\`$*\'\'
 		exit 1
 	)
+	rm $reference
 }
 
 
 sgetopt_test_test() {
-	cat > correct.txt <<END
+	assert ./sgetopt_test <<REF
 integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
-END
-	assert ./sgetopt_test
+REF
 
-	cat > correct.txt <<END
+	assert ./sgetopt_test -no <<REF
+0
 integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
-END
-	assert ./sgetopt_test -no
+REF
+
+	assert ./sgetopt_test -no a b c <<REF
+3
+a
+b
+c
+integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
+REF
+
+	assert ./sgetopt_test -no wohoo <<REF
+1
+wohoo
+integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 0
+REF
 }
 
 
 sgetopt_test_test
 
-
-rm correct.txt
