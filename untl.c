@@ -26,6 +26,8 @@
 #include <errno.h>
 #include <string.h>
 #include <libgen.h>
+#include <time.h>
+#include <math.h>
 #include "sgetopt.h"
 #include "version.h"
 
@@ -50,15 +52,31 @@ int execvpfw(const char *path, char *const argv[])
 }
 
 
+/* sleeps for seconds seconds, returns the remaining number of seconds if call
+ * was interrupted more or less like nanosleep */
+int fsleep(double seconds)
+{
+	/* I've once read in a book that multiples of 1 are not magic numbers */
+	struct timespec time, remaining;
+	time.tv_sec = floor(seconds);
+	time.tv_nsec = (seconds - floor(seconds)) * 1000000000.;
+	if (nanosleep(&time, &remaining)) {
+		return (double)remaining.tv_sec + (double)remaining.tv_nsec / 1000000000.;
+	} else {
+		return 0.0;
+	}
+}
+
+
 int main(int argc, char **argv)
 {
 	static int help;
 	static int version;
-	static int interval = 1;
+	static double interval = 1.;
 	struct soption opttable[] = {
 		{ 'h', "help",     0, capture_presence,    &help },
 		{ 'v', "version",  0, capture_presence,    &version },
-		{ 'i', "interval", 1, capture_int,         &interval },
+		{ 'i', "interval", 1, capture_double,      &interval },
 		{ 0,   0,          0, 0,                   0 }
 	};
 
@@ -86,7 +104,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	while (!!execvpfw(argv[1], argv+1) == status) {
-		sleep(interval);
+		fsleep(interval);
 	}
 	return 0;
 }
