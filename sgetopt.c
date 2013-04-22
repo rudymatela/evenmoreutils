@@ -43,6 +43,7 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[], char 
 	int n_normal_args = 0;
 	const struct soption *popt;
 	for (i=1; i<argc; i++) {
+		r = 0;
 		/*  reached --  or not start with -  or one char "-" */
 		if (end_options || argv[i][0] != '-' || argv[i][1] == 0) { /* normal parameter */
 			if (stop_at_nonoption)
