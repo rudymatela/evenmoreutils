@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	int numnonoptions;
 	int i;
 
-	if (sgetopt(argc, argv, opttable, argv+1)) {
+	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
 		printf("Error parsing one of the command line options\n");
 		return 1;
 	}

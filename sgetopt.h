@@ -36,7 +36,7 @@ struct soption {
 
 
 /* Main function */
-int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[]);
+int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[], int stop_at_nonoption);
 
 
 /* Capture functions */

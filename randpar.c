@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	char **nargv = argv + 1;
 
 	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable, NULL)) {
+	if (sgetopt(argc, argv, opttable, NULL, 0)) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
 		return 1;

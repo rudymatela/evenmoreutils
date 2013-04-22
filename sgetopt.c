@@ -36,15 +36,17 @@ const static struct soption *sgetoptfromc(char c, const struct soption optable[]
 const static struct soption *sgetoptfroms(const char *s, const struct soption optable[]);
 
 
-int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[])
+int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[], int stop_at_nonoption)
 {
 	int i, j, r;
-	int end_options = 0; /* reached `--' parameter */
+	int end_options = 0; /* reached `--' parameter   or   first nonoption when stop_at_nonoption is true */
 	int n_normal_args = 0;
 	const struct soption *popt;
 	for (i=1; i<argc; i++) {
 		/*  reached --  or not start with -  or one char "-" */
 		if (end_options || argv[i][0] != '-' || argv[i][1] == 0) { /* normal parameter */
+			if (stop_at_nonoption)
+				end_options = 1;
 			popt = sgetoptnormal(optable);
 			if (popt->func)
 				r = popt->func(argv[i], popt->arg);
