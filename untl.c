@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 		{ 0,   0,          0, 0,                   0 }
 	};
 
-	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
+	if (sgetopt(argc, argv, opttable, argv+1, 1)) {
 		printf("Error parsing one of the command line options\n");
 		return 1;
 	}
