@@ -26,6 +26,8 @@
 #include <errno.h>
 #include <string.h>
 #include <libgen.h>
+#include "sgetopt.h"
+#include "version.h"
 
 
 /* wtf... */
@@ -50,6 +52,31 @@ int execvpfw(const char *path, char *const argv[])
 
 int main(int argc, char **argv)
 {
+	static int help;
+	static int version;
+	struct soption opttable[] = {
+		{ 'h', "help",    0, capture_presence,    &help },
+		{ 'v', "version", 0, capture_presence,    &version },
+		{ 0,   0,         0, 0,                   0 }
+	};
+
+	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
+		printf("Error parsing one of the command line options\n");
+		return 1;
+	}
+
+	if (help) {
+		char *progname = basename(argv[0]);
+		printf("Usage: %s [options] parameters...\n"
+		       "  check source or manpage `man %s' for details.\n", progname, progname);
+		return 0;
+	}
+
+	if (version) {
+		print_version(basename(argv[0]));
+		return 0;
+	}
+
 	/* whle waits for 0 status, everything else for everything else */
 	int status = strcmp(basename(argv[0]), "whle") != 0;
 	if (argc <= 1) {

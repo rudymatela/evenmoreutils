@@ -34,6 +34,8 @@ MANPREFIX=$(PREFIX)/share
 
 all: $(BINS)
 
+untl: sgetopt.o
+
 sgetopt_test: sgetopt.o
 
 randpar: sgetopt.o
