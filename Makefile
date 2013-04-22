@@ -58,5 +58,5 @@ homeinstall:
 dist:
 	./dist.sh $(VERSION) $(DESTDIR)
 
-test:
+test: all
 	./test.sh
