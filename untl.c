@@ -54,10 +54,12 @@ int main(int argc, char **argv)
 {
 	static int help;
 	static int version;
+	static int interval = 1;
 	struct soption opttable[] = {
-		{ 'h', "help",    0, capture_presence,    &help },
-		{ 'v', "version", 0, capture_presence,    &version },
-		{ 0,   0,         0, 0,                   0 }
+		{ 'h', "help",     0, capture_presence,    &help },
+		{ 'v', "version",  0, capture_presence,    &version },
+		{ 'i', "interval", 1, capture_int,         &interval },
+		{ 0,   0,          0, 0,                   0 }
 	};
 
 	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
@@ -84,7 +86,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	while (!!execvpfw(argv[1], argv+1) == status) {
-		sleep(1);
+		sleep(interval);
 	}
 	return 0;
 }
