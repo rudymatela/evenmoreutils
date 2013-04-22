@@ -50,18 +50,17 @@ int main(int argc, char **argv)
 		{ 'd', "double",  1, capture_double,      &some_double },
 		{ 's', "string",  1, capture_charpointer, &some_string },
 		{ 'c', "custom",  1, custom_callback,     0 },
-		{ 0,   0,         0, capture_nonoption,   0 }
+		{ 0,   0,         0, 0,                   0 }
 	};
 
 	int numnonoptions;
 	int i;
 
-	sgetopt_setlastarg(opttable, argv + 1); /* will work destructively on argv */
-	if (sgetopt(argc, argv, opttable)) {
+	if (sgetopt(argc, argv, opttable, argv+1)) {
 		printf("Error parsing one of the command line options\n");
 		return 1;
 	}
-	numnonoptions = sgetopt_nnonopts(opttable);
+	numnonoptions = ppcharlen(argv+1);
 
 	if (help) {
 		printf("Usage: check source for details\n");

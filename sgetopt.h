@@ -36,7 +36,7 @@ struct soption {
 
 
 /* Main function */
-int sgetopt(int argc, char * const argv[], const struct soption optable[]);
+int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[]);
 
 
 /* Capture functions */
@@ -48,5 +48,9 @@ int capture_presence_as_0(const char *carg, void *pvar);
 int capture_nonoption(const char *carg, void *pvar);
 int capture_float(const char *carg, void *pvar);
 int capture_double(const char *carg, void *pvar);
+
+
+/* Auxiliar functions */
+int ppcharlen(char * const ppchar[]);
 
 #endif

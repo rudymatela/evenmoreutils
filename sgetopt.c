@@ -36,10 +36,11 @@ const static struct soption *sgetoptfromc(char c, const struct soption optable[]
 const static struct soption *sgetoptfroms(const char *s, const struct soption optable[]);
 
 
-int sgetopt(int argc, char * const argv[], const struct soption optable[])
+int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[])
 {
 	int i, j, r;
 	int end_options = 0; /* reached `--' parameter */
+	int n_normal_args = 0;
 	const struct soption *popt;
 	for (i=1; i<argc; i++) {
 		/*  reached --  or not start with -  or one char "-" */
@@ -47,6 +48,8 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[])
 			popt = sgetoptnormal(optable);
 			if (popt->func)
 				r = popt->func(argv[i], popt->arg);
+			if (normal_args)
+				normal_args[n_normal_args++] = argv[i];
 		} else if (argv[i][1] == '-') { /* --long parameter */
 			const char *option = argv[i]+2;
 			const char *argument = NULL;
@@ -90,6 +93,8 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[])
 		if (r)
 			return r;
 	}
+	if (normal_args)
+		normal_args[n_normal_args] = 0;
 	return 0;
 }
 
@@ -217,3 +222,9 @@ int capture_nonoption(const char *carg, void *pvar)
 }
 
 
+int ppcharlen(char * const ppchar[])
+{
+	int i = -1;
+	while (ppchar[++i]);
+	return i;
+}

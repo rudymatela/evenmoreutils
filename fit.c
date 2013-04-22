@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 	width = gettermwidth();
 
 	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable)) {
+	if (sgetopt(argc, argv, opttable, NULL)) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
 		return 1;
