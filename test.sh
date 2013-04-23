@@ -10,7 +10,7 @@
 #   desired output
 #   REF
 assert() {
-	diff -rud <($*) - ||
+	diff -rud <($* 2>&1) - ||
 	(
 		echo ERROR RUNNING: \`\`$*\'\'
 		exit 1
@@ -72,6 +72,24 @@ REF
 1
 wohoo
 integer = 0, string = (null), float = 0.0, double = 0.0, bool(long) = 1
+REF
+
+	assert ./sgetopt_test -i asdf <<REF
+Error parsing one of the command line options
+REF
+
+	assert ./sgetopt_test -iasdf <<REF
+Error parsing one of the command line options
+REF
+
+	assert ./sgetopt_test -i <<REF
+Missing argument to \`-i'
+Error parsing one of the command line options
+REF
+
+	assert ./sgetopt_test --integer <<REF
+Missing argument to \`--integer'
+Error parsing one of the command line options
 REF
 }
 

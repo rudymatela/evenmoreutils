@@ -79,7 +79,7 @@ int sgetopt(int argc, char * const argv[], const struct soption optable[], char 
 			popt = sgetoptfromc(option, optable);
 			if (!popt)
 				EPRINTFR("Unknown option -%c\n", option);
-			if (popt->has_arg && !(i<argc || argv[i][j+1]))
+			if (popt->has_arg && !(argv[i][j+1] || i+1<argc))
 				EPRINTFR("Missing argument to `-%c'\n", option)
 			/* supports -oPARAM or -o PARAM (argv ternary) */
 			r = popt->func(
