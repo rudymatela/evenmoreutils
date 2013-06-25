@@ -3,6 +3,8 @@ evenmoreutils' TODO list
 
 This is a TODO list and a scrapbook for ideas.
 
+Add a unbuffered option to sed.
+
 
 sgetopt changes
 ---------------
