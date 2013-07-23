@@ -21,7 +21,7 @@
 # Targets: all, clean, install, homeinstall, dist VERSION=x.x
 
 BINS=sgetopt_test hilite randpar untl fit
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
 SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
 SMANS=pad.1 whle.1 # symlinks to manpages

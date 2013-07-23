@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Sponges to a file only if the contents would be changed
+#
+
+spongif-quit() {
+	rm $tmpfile
+	exit 0
+}
+
+dstfile="$1"
+tmpfile=`mktemp -t spongif.XXXXXXXXXX` &&
+cat > $tmpfile &&
+diff -q $dstfile $tmpfile > /dev/null && spongif-quit
+cat $tmpfile > $dstfile &&
+rm -f $tmpfile
