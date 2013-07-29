@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# anywait - like wait, but works on any pid of the system
+# repeat - repeats a command
 #
-# Copyright (C) 2012, 2013  Rudy Matela
+# Copyright (C) 2013  Rudy Matela
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,19 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-# TODO: Check if this works with zombie processes
-# TODO: Make this work on zombie process
-# TODO: Make this work when you dont want to care about zombie processes
-# TODO: Implement -i switch to tell the interval to query for the processes
-# TODO: Implement timeout switch
+# TODO: Integrate this with whle / untl, possible parameters:
+# -l / --limit N     number of times to execute (limit)
+# -i / --interval S  number of seconds of interval (already exists on whle)
 
-anywait() {
-    for pid in "$@"; do
-        while [ -d /proc/$pid ]; do
-            sleep 0.5
-        done
-    done
-}
-
-anywait "$@"
-
+times=$1
+shift
+for i in `seq 1 $times`; do
+	"$@"
+	sleep 0.5
+done
