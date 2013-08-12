@@ -1,0 +1,67 @@
+.TH AGE 1
+.SH NAME
+age \- determines file age
+.SH SYNOPSIS
+.B age
+\fIfiles...\fR
+.SH DESCRIPTION
+.B age
+determines file age or does file age checks.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Shows help (not implemented)
+.TP
+.BR \-v ", " \-\-version
+Shows version (not implemented)
+.TP
+.BR \-n ", " \-\-nanoseconds
+Nanosecond precision in file age output mode
+.TP
+.BR \-\-ot " " \fIAGE\fR
+Checks if file is older than \fIAGE\fR
+.TP
+.BR \-\-nt " " \fIAGE\fR
+Checks if file is newer than \fIAGE\fR
+.TP
+.BR \-\-ne " " \fIAGE\fR
+Checks if file is newer or equal than \fIAGE\fR
+.TP
+.BR \-\-oe " " \fIAGE\fR
+Checks if file is older or equal than \fIAGE\fR
+.TP
+.BR \-a ", " \-\-access " " \fIAGE\fR
+Use access (not implemented).
+.TP
+.BR \-m ", " \-\-modify " " \fIAGE\fR
+Use modify (not implemented).
+.TP
+.BR \-c ", " \-\-change " " \fIAGE\fR
+Use change. This is the default.
+.SH EXAMPLES
+.nf
+.B age file.txt
+.fi
+
+Prints file age, in number of seconds since epoch.
+
+.nf
+.B age -p file.txt
+.fi
+
+Prints file age, in number of seconds since epoch with nanosecond precision.
+
+.nf
+.B age --nt 10 file.txt
+.fi
+
+Returns 0 if file was created less than 10 seconds ago.
+
+.SH BUGS
+Report bugs to rudy@matela.com.br
+.SH SEE ALSO
+\fBfit\fR(1), \fBhilite\fR(1), \fBhl\fR(1), \fBmime\fR(1), \fBnup\fR(1), \fBp\fR(1), \fBpad\fR(1), \fBrandpar\fR(1), \fBsgetopt\fR(3), \fBwhle\fR(1)
+.SH COPYRIGHT
+.sp
+Copyright (C) 2013 Rudy Matela.  Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.

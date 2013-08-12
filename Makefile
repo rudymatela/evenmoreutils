@@ -20,12 +20,12 @@
 #
 # Targets: all, clean, install, homeinstall, dist VERSION=x.x
 
-BINS=sgetopt_test hilite randpar untl fit
+BINS=sgetopt_test hilite randpar untl fit age
 SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
 SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
 SMANS=pad.1 whle.1 # symlinks to manpages
-MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1
+MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1
 CFLAGS=-Wall -Werror -Wno-variadic-macros
 LDFLAGS=-lm
 PREFIX=/usr
@@ -42,6 +42,8 @@ sgetopt_test: sgetopt.o
 randpar: sgetopt.o
 
 fit: sgetopt.o
+
+age: sgetopt.o
 
 clean:
 	rm -f $(BINS) $(OBJS)
