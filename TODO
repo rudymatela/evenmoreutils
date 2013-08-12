@@ -5,6 +5,10 @@ This is a TODO list and a scrapbook for ideas.
 
 Add a unbuffered option to sed.
 
+Use ascii-doc for manpages??
+http://www.methods.co.nz/asciidoc/asciidoc.1.txt
+http://www.methods.co.nz/asciidoc/#_overview_and_examples
+
 
 sgetopt changes
 ---------------
