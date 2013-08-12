@@ -26,13 +26,16 @@
 #include <sys/stat.h>
 
 
+static int stat_time(const char *path, struct timespec *buf, char type);
+
+
 int main(int argc, char **argv)
 {
 	/* Program options */
 	static int help;
 	static int version;
 	
-	struct stat statbuf;
+	struct timespec timebuf;
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
@@ -63,14 +66,42 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	if (stat(argv[1],&statbuf)!=0) {
+	if (stat_time(argv[1],&timebuf,'m')!=0) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", progname, argv[1]);
 		return 1;
 	}
 	
-	printf("%li.%09li\n", statbuf.st_mtim.tv_sec, statbuf.st_mtim.tv_nsec);
+	printf("%li.%09li\n", timebuf.tv_sec, timebuf.tv_nsec);
 
 	return 0;
 }
+
+
+static int stat_time(const char *path, struct timespec *buf, char type)
+{
+	struct stat statbuf;
+	int r;
+
+	r = stat(path,&statbuf);
+	if (r)
+		return r;
+
+	switch (type) {
+	case 'a':
+		(*buf) = statbuf.st_atim;
+		break;
+
+	case 'm':
+		(*buf) = statbuf.st_mtim;
+		break;
+
+	case 'c':
+		(*buf) = statbuf.st_ctim;
+		break;
+	}
+
+	return r;
+}
+
 
