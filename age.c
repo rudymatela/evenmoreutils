@@ -23,6 +23,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <libgen.h>
+#include <sys/stat.h>
 
 
 int main(int argc, char **argv)
@@ -30,6 +31,8 @@ int main(int argc, char **argv)
 	/* Program options */
 	static int help;
 	static int version;
+	
+	struct stat statbuf;
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
@@ -60,7 +63,13 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	printf("Not implemented.\n");
+	if (stat(argv[1],&statbuf)!=0) {
+		char *progname = basename(argv[0]);
+		fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", progname, argv[1]);
+		return 1;
+	}
+	
+	printf("%li.%09li\n", statbuf.st_mtim.tv_sec, statbuf.st_mtim.tv_nsec);
 
 	return 0;
 }
