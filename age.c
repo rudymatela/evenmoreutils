@@ -55,6 +55,9 @@ int main(int argc, char **argv)
 		{ 'a', "access",  0, capture_optcode,     &stat_type },
 		{ 'm', "modify",  0, capture_optcode,     &stat_type },
 		{ 'c', "change",  0, capture_optcode,     &stat_type },
+		while reading sgetopt.c, I've noticed that would mean a change in
+		sgetopt architecture: when function does not have an arg, use the
+		option itself as arg (or the option code)
 		*/
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
@@ -64,8 +67,7 @@ int main(int argc, char **argv)
 
 	sgetopt_setlastarg(opttable, nargv);
 	if (sgetopt(argc, argv, opttable, NULL, 0)) {
-		char *progname = basename(argv[0]);
-		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
+		fprintf(stderr,"%s: error parsing one of the command line options\n", basename(argv[0]));
 		return 1;
 	}
 	argc = sgetopt_nnonopts(opttable);
