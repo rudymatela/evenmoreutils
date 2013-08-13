@@ -38,27 +38,24 @@ int main(int argc, char **argv)
 	static int version;
 	static double lower_bound = 0./0.; /* NaN */
 	static double upper_bound = 0./0.;
+	static int access,
+	           modify,
+	           change;
 
 	double file_age;
-
 	int check_upper,
 	    check_lower;
-	
 	int i;
+	char stat_type = 'm';
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
 		{ 'o', "older",   1, capture_double,      &lower_bound },
 		{ 'n', "newer",   1, capture_double,      &upper_bound },
-		/* TODO:
-		{ 'a', "access",  0, capture_optcode,     &stat_type },
-		{ 'm', "modify",  0, capture_optcode,     &stat_type },
-		{ 'c', "change",  0, capture_optcode,     &stat_type },
-		while reading sgetopt.c, I've noticed that would mean a change in
-		sgetopt architecture: when function does not have an arg, use the
-		option itself as arg (or the option code)
-		*/
+		{ 'a', "access",  0, capture_presence,    &access },
+		{ 'm', "modify",  0, capture_presence,    &modify },
+		{ 'c', "change",  0, capture_presence,    &change },
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
@@ -84,11 +81,18 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	if (access)
+		stat_type = 'a';
+	if (modify)
+		stat_type = 'm';
+	if (change)
+		stat_type = 'c';
+
 	check_upper = upper_bound == upper_bound; /* != NaN */
 	check_lower = lower_bound == lower_bound; /* != NaN */
 
 	for (i=1; i<=argc; i++) {
-		file_age = stat_age(argv[i],'m');
+		file_age = stat_age(argv[i],stat_type);
 		if (file_age != file_age /* NaN */) {
 			fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", basename(argv[0]), argv[i]);
 			return 1;
