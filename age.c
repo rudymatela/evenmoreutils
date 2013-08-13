@@ -36,12 +36,24 @@ int main(int argc, char **argv)
 	/* Program options */
 	static int help;
 	static int version;
-	
+	static double lower_bound = 0./0.; /* NaN */
+	static double upper_bound = 0./0.;
+
 	double file_age;
+
+	int check_upper,
+	    check_lower;
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
+		{ 'o', "older",   1, capture_double,       &lower_bound },
+		{ 'n', "newer",   1, capture_double,       &upper_bound },
+		/* TODO:
+		{ 'a', "access",  0, capture_optcode,     &stat_type },
+		{ 'm', "modify",  0, capture_optcode,     &stat_type },
+		{ 'c', "change",  0, capture_optcode,     &stat_type },
+		*/
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
@@ -68,6 +80,9 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	check_upper = upper_bound == upper_bound; /* != NaN */
+	check_lower = lower_bound == lower_bound; /* != NaN */
+
 	file_age = stat_age(argv[1],'m');
 	if (file_age != file_age /* NaN */) {
 		char *progname = basename(argv[0]);
@@ -75,7 +90,13 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	printf("%lf\n", file_age);
+	if (check_upper || check_lower) {
+		if ((check_upper && file_age > upper_bound) ||
+		    (check_lower && file_age < lower_bound))
+			return 1;
+	} else {
+		printf("%lf\n", file_age);
+	}
 
 	return 0;
 }
@@ -93,7 +114,7 @@ static double stat_age(const char *path, char type)
 	struct timespec file_time;
 	struct timespec curr_time;
 	if (stat_time(path, &file_time, type) || clock_gettime(CLOCK_REALTIME, &curr_time))
-		return 0.0/0.0; /* Returning NaN on error */
+		return 0./0.; /* Returning NaN on error */
 	return difftimespec(&curr_time, &file_time);
 }
 
