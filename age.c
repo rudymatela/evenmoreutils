@@ -43,6 +43,8 @@ int main(int argc, char **argv)
 
 	int check_upper,
 	    check_lower;
+	
+	int i;
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
@@ -83,19 +85,20 @@ int main(int argc, char **argv)
 	check_upper = upper_bound == upper_bound; /* != NaN */
 	check_lower = lower_bound == lower_bound; /* != NaN */
 
-	file_age = stat_age(argv[1],'m');
-	if (file_age != file_age /* NaN */) {
-		char *progname = basename(argv[0]);
-		fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", progname, argv[1]);
-		return 1;
-	}
-
-	if (check_upper || check_lower) {
-		if ((check_upper && file_age > upper_bound) ||
-		    (check_lower && file_age < lower_bound))
+	for (i=1; i<=argc; i++) {
+		file_age = stat_age(argv[i],'m');
+		if (file_age != file_age /* NaN */) {
+			fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", basename(argv[0]), argv[i]);
 			return 1;
-	} else {
-		printf("%lf\n", file_age);
+		}
+
+		if (check_upper || check_lower) {
+			if ((check_upper && file_age > upper_bound) ||
+				(check_lower && file_age < lower_bound))
+				return 1;
+		} else {
+			printf("%lf\n", file_age);
+		}
 	}
 
 	return 0;
