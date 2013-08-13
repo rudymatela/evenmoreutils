@@ -27,7 +27,8 @@
 
 
 static int stat_time(const char *path, struct timespec *buf, char type);
-static int stat_age(const char *path, struct timespec *buf, char type);
+static double difftimespec(struct timespec *buftime1, struct timespec *buftime0);
+static double stat_age(const char *path, char type);
 
 
 int main(int argc, char **argv)
@@ -36,7 +37,7 @@ int main(int argc, char **argv)
 	static int help;
 	static int version;
 	
-	struct timespec file_age;
+	double file_age;
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
@@ -67,33 +68,37 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	if (stat_age(argv[1],&file_age,'m')!=0) {
+	file_age = stat_age(argv[1],'m');
+	if (file_age != file_age /* NaN */) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", progname, argv[1]);
 		return 1;
 	}
 
-	printf("%li.%09li\n", file_age.tv_sec, file_age.tv_nsec);
+	printf("%lf\n", file_age);
 
 	return 0;
 }
 
 
-static int stat_age(const char *path, struct timespec *buf, char type)
+static double difftimespec(struct timespec *buftime1, struct timespec *buftime0)
+{
+	double diff_time;
+	diff_time  = buftime1->tv_sec  - buftime0->tv_sec;
+	diff_time += (double)(buftime1->tv_nsec - buftime0->tv_nsec) / 1000000000.;
+	return diff_time;
+}
+
+
+static double stat_age(const char *path, char type)
 {
 	struct timespec file_time;
 	struct timespec curr_time;
 	int r;
 	r = stat_time(path, &file_time, type) || clock_gettime(CLOCK_REALTIME, &curr_time);
 	if (r)
-		return r;
-	buf->tv_sec  = curr_time.tv_sec  - file_time.tv_sec;
-	buf->tv_nsec = curr_time.tv_nsec - file_time.tv_nsec;
-	if (buf->tv_nsec < 0) {
-		buf->tv_nsec += 1000000000;
-		buf->tv_sec --;
-	}
-	return r;
+		return 0.0/0.0; /* NaN */
+	return difftimespec(&curr_time, &file_time);
 }
 
 
