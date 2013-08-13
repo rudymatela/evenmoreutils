@@ -49,8 +49,8 @@ int main(int argc, char **argv)
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
-		{ 'o', "older",   1, capture_double,       &lower_bound },
-		{ 'n', "newer",   1, capture_double,       &upper_bound },
+		{ 'o', "older",   1, capture_double,      &lower_bound },
+		{ 'n', "newer",   1, capture_double,      &upper_bound },
 		/* TODO:
 		{ 'a', "access",  0, capture_optcode,     &stat_type },
 		{ 'm', "modify",  0, capture_optcode,     &stat_type },
