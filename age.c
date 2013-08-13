@@ -83,10 +83,8 @@ int main(int argc, char **argv)
 
 static double difftimespec(struct timespec *buftime1, struct timespec *buftime0)
 {
-	double diff_time;
-	diff_time  = buftime1->tv_sec  - buftime0->tv_sec;
-	diff_time += (double)(buftime1->tv_nsec - buftime0->tv_nsec) / 1000000000.;
-	return diff_time;
+	return          buftime1->tv_sec  - buftime0->tv_sec +
+	       (double)(buftime1->tv_nsec - buftime0->tv_nsec) / 1000000000.;
 }
 
 
@@ -94,10 +92,8 @@ static double stat_age(const char *path, char type)
 {
 	struct timespec file_time;
 	struct timespec curr_time;
-	int r;
-	r = stat_time(path, &file_time, type) || clock_gettime(CLOCK_REALTIME, &curr_time);
-	if (r)
-		return 0.0/0.0; /* NaN */
+	if (stat_time(path, &file_time, type) || clock_gettime(CLOCK_REALTIME, &curr_time))
+		return 0.0/0.0; /* Returning NaN on error */
 	return difftimespec(&curr_time, &file_time);
 }
 
