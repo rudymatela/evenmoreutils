@@ -10,7 +10,12 @@ http://www.methods.co.nz/asciidoc/asciidoc.1.txt
 http://www.methods.co.nz/asciidoc/#_overview_and_examples
 
 After reading the source in syntax highlighted vim, that seems to be the case.
-Simple and effective.  Maybe combine with proposal from below (embed in C files??)
+Simple and effective.  Maybe combine with proposal from below (embed in C
+files?)
+
+
+Oops, there is also md2man: https://github.com/sunaku/md2man
+which is too new and not so pervasive as 2002's asciidoc converted.
 
 
 Commands
