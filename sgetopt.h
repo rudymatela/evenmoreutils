@@ -34,6 +34,15 @@ struct soption {
 #define sgetopt_setlastarg(T,A) (sgetopt_getlastarg(T) = (A))
 #define sgetopt_nnonopts(T) capture_nonoption(0, sgetopt_getlastarg(T))
 
+/* Use with caution, works ok with: int, char, float, double, long */
+#define declare_fixed_capture(fname, type, value) \
+	int fname(const char *carg, void *pvar) \
+	{ \
+		type *pc = pvar; \
+		*pc = value; \
+		return 0; \
+	}
+
 
 /* Main function */
 int sgetopt(int argc, char * const argv[], const struct soption optable[], char *normal_args[], int stop_at_nonoption);

@@ -29,10 +29,10 @@
 static int stat_time(const char *path, struct timespec *buf, char type);
 static double difftimespec(struct timespec *buftime1, struct timespec *buftime0);
 static double stat_age(const char *path, char type);
-static int capture_stat_type_a(const char *carg, void *pvar);
-static int capture_stat_type_m(const char *carg, void *pvar);
-static int capture_stat_type_c(const char *carg, void *pvar);
 
+static declare_fixed_capture(capture_stat_type_a, char, 'a');
+static declare_fixed_capture(capture_stat_type_m, char, 'm');
+static declare_fixed_capture(capture_stat_type_c, char, 'c');
 
 int main(int argc, char **argv)
 {
@@ -145,30 +145,5 @@ static int stat_time(const char *path, struct timespec *buf, char type)
 	}
 
 	return r;
-}
-
-
-/* TODO: Use macros instead of these three? */
-static int capture_stat_type_a(const char *carg, void *pvar)
-{
-	char *pc = pvar;
-	*pc = 'a';
-	return 0;
-}
-
-
-static int capture_stat_type_m(const char *carg, void *pvar)
-{
-	char *pc = pvar;
-	*pc = 'm';
-	return 0;
-}
-
-
-static int capture_stat_type_c(const char *carg, void *pvar)
-{
-	char *pc = pvar;
-	*pc = 'c';
-	return 0;
 }
 
