@@ -79,6 +79,7 @@ int main(int argc, char **argv)
 	static double interval = 1.;
 	static int limit = 0; /* 0 for unlimited */
 	static int run_type = '\0';
+	static int retval = 0;
 
 	int i;
 
@@ -89,6 +90,7 @@ int main(int argc, char **argv)
 		{ 'l', "limit",    1, capture_int,         &limit },
 		{ 'w', "while",    0, capture_w,           &run_type },
 		{ 'u', "until",    0, capture_u,           &run_type },
+		{ 'r', "retval",   1, capture_int,         &retval },
 		{ 0,   0,          0, 0,                   0 }
 	};
 
@@ -123,9 +125,9 @@ int main(int argc, char **argv)
 	}
 	for (i = 0; !limit || i < limit; i ++) {
 		int r = execvpfw(argv[1], argv+1);
-		if (run_type=='u' && r==0) /* untl */
+		if (run_type=='u' && r==retval) /* untl */
 			break;
-		else if (run_type=='w' && r!=0) /* whle */
+		else if (run_type=='w' && r!=retval) /* whle */
 			break;
 		fsleep(interval);
 	}
