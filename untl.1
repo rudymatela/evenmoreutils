@@ -1,12 +1,15 @@
 .TH UNTL 1
 .SH NAME
-untl, whle \- tries to run a process until it is sucessful (or unsucessful)
+untl, whle, repeat \- run a command repeatedly, until/while it is sucessful
 .SH SYNOPSIS
 .B untl
 [\fB\-h\fR|\fB\-\-help\fR]
 [\fB\-v\fR|\fB\-\-version\fR]
 [\fB\-u\fR|\fB\-\-until\fR]
 [\fB\-w\fR|\fB\-\-while\fR]
+[\fB\-\-repeat\fR]
+[\fB\-i\fR|\fB\-\-interval\fR\fI INTERVAL\fR]]
+[\fB\-l\fR|\fB\-\-limit\fR\fI LIMIT\fR]]
 [\fB\-r\fR|\fB\-\-retval\fR\fI RETVAL\fR]
 \fIcommand\fR
 .br
@@ -15,32 +18,59 @@ untl, whle \- tries to run a process until it is sucessful (or unsucessful)
 [\fB\-v\fR|\fB\-\-version\fR]
 [\fB\-u\fR|\fB\-\-until\fR]
 [\fB\-w\fR|\fB\-\-while\fR]
+[\fB\-\-repeat\fR]
+[\fB\-i\fR|\fB\-\-interval\fR\fI INTERVAL\fR]]
+[\fB\-l\fR|\fB\-\-limit\fR\fI LIMIT\fR]]
+[\fB\-r\fR|\fB\-\-retval\fR\fI RETVAL\fR]
+\fIcommand\fR
+.br
+.B repeat
+[\fB\-h\fR|\fB\-\-help\fR]
+[\fB\-v\fR|\fB\-\-version\fR]
+[\fB\-u\fR|\fB\-\-until\fR]
+[\fB\-w\fR|\fB\-\-while\fR]
+[\fB\-\-repeat\fR]
+[\fB\-i\fR|\fB\-\-interval\fR\fI INTERVAL\fR]]
+[\fB\-l\fR|\fB\-\-limit\fR\fI LIMIT\fR]]
 [\fB\-r\fR|\fB\-\-retval\fR\fI RETVAL\fR]
 \fIcommand\fR
 .SH DESCRIPTION
 .B untl
 calls a process until it is successful.
+.br
 .B whle
 calls a process while it is successful, in other words, until it fails.
+.br
+.B repeat
+calls a process repeatedly.
 .SH OPTIONS
 .TP
-.BR \-h
+.BR \-h ", " \-\-help
 Shows help
 .TP
-.BR \-v
+.BR \-v ", " \-\-version
 Shows version
 .TP
-.BR \-u
-Forces untl behavior (default when program name is different from whle)
+.BR \-u ", " \-\-untl
+Forces untl behavior (default when program name is different from whle or repeat)
 .TP
-.BR \-w
+.BR \-w ", " \-\-whle
 Forces whle behavior (default when program name is whle)
 .TP
-.BR \-r " " \fIRETVAL\fR
-Runs a processes until (or while) the return value equals \fIRETVAL\fR.
+.BR \-\-repeat
+Forces repeat behavior (default when program name is repeat)
 .TP
-.BR \-i \fIINTERVAL\fR
-Sets the interval, in seconds, of each try. Default is 1
+.BR \-r ", " \-\-retval " " \fIRETVAL\fR
+Runs a processes until (or while) the return value equals \fIRETVAL\fR when in
+\fBuntl\fR or \fBwhle\fR mode.  When in \fBrepeat\fR mode, this option has no
+effect.
+.TP
+.BR \-i ", " \-\-interval " " \fIINTERVAL\fR
+Sets the interval, in seconds, of each try.  Default is 1.  This option does
+accept floating point values.
+.TP
+.BR \-l ", " \-\-limit " " \fILIMIT\fR
+Limit the number of tries.
 .SH EXAMPLES
 .nf
 .B untl ping example.com
