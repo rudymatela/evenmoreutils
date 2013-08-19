@@ -16,13 +16,13 @@ Commands
 pork: pipe fork. Runs a program, piping it's standard output to another program
 while passing it's standard error output to yet another program. Can be useful for implementing a poor man's version of hilite.
 
-pork somecommand -- cat -- hl -c red .*
+	pork somecommand -- cat -- hl -c red .*
 
 Will make function pork also. Which will receive a function and two others and
 does the job of porking (and the functions can be calls to execve! :P So it's
 functionality is easily exported as a program.
 
-pork -- Scraped idea, bash will do
+	pork -- Scraped idea, bash will do
 
 
 Merging trees: Add a command for merging trees of directories into a third one
@@ -40,48 +40,48 @@ documentation.
 First problem is to find a better format to writing manpages.  Maybe just
 writing them in plaintext and letting a program guess what you mean, like:
 
-command - just a command
+	command - just a command
 
-command [-v|--version] [-h|--help] [OPTIONS] file
+	command [-v|--version] [-h|--help] [OPTIONS] file
 
-command does something
+	command does something
 
--v, --version
-	Prints version
+	-v, --version
+		Prints version
 
--x, --extended=N
-	Wohoo
+	-x, --extended=N
+		Wohoo
 
--n K
-	Blah bleh blih
+	-n K
+		Blah bleh blih
 
 And that will be converted to troff format and everything will be added by
 using the common manpage conventions.  Now put that inside a comment:
 
-/*
- * command - just a command
- * 
- * command [-v|--version] [-h|--help] [OPTIONS] file
- * 
- * command does something
- * 
- * -v, --version
- * 	Prints version
- * 
- * -x, --extended=N
- * 	Wohoo
- * 
- * -n K
- * 	Blah bleh blih
- */
+	/*
+	 * command - just a command
+	 * 
+	 * command [-v|--version] [-h|--help] [OPTIONS] file
+	 * 
+	 * command does something
+	 * 
+	 * -v, --version
+	 * 	Prints version
+	 * 
+	 * -x, --extended=N
+	 * 	Wohoo
+	 * 
+	 * -n K
+	 * 	Blah bleh blih
+	 */
 
 Could be also a bash comment, starting with #.  A program will read directly
 from source and build the manpages from the source file.  The documentation
 will be in one place with easy access.  A make rule for building the manpages
 would be:
 
-command.1: command.c
-	manpageize command.c -o command.1
+	command.1: command.c
+		manpageize command.c -o command.1
 
 That could even work for function comments, reading the source files and
 creating .3 files with each function name.
