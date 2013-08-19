@@ -73,10 +73,15 @@ int main(int argc, char **argv)
 	static int help;
 	static int version;
 	static double interval = 1.;
+	static int limit = 0; /* 0 for unlimited */
+
+	int i;
+
 	struct soption opttable[] = {
 		{ 'h', "help",     0, capture_presence,    &help },
 		{ 'v', "version",  0, capture_presence,    &version },
 		{ 'i', "interval", 1, capture_double,      &interval },
+		{ 'l', "limit",    1, capture_int,         &limit },
 		{ 0,   0,          0, 0,                   0 }
 	};
 
@@ -103,7 +108,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "%s: error: no command provided\n", argv[0]);
 		return 1;
 	}
-	while (!!execvpfw(argv[1], argv+1) == status) {
+	for (i = 0; (!limit || i < limit) && !!execvpfw(argv[1], argv+1) == status; i ++) {
 		fsleep(interval);
 	}
 	return 0;
