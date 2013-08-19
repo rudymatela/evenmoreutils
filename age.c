@@ -30,9 +30,9 @@ static int stat_time(const char *path, struct timespec *buf, char type);
 static double difftimespec(struct timespec *buftime1, struct timespec *buftime0);
 static double stat_age(const char *path, char type);
 
-static declare_fixed_capture(capture_stat_type_a, char, 'a');
-static declare_fixed_capture(capture_stat_type_m, char, 'm');
-static declare_fixed_capture(capture_stat_type_c, char, 'c');
+static declare_fixed_capture(capture_a, char, 'a');
+static declare_fixed_capture(capture_m, char, 'm');
+static declare_fixed_capture(capture_c, char, 'c');
 
 int main(int argc, char **argv)
 {
@@ -53,9 +53,9 @@ int main(int argc, char **argv)
 		{ 'v', "version", 0, capture_presence,    &version },
 		{ 'o', "older",   1, capture_double,      &lower_bound },
 		{ 'n', "newer",   1, capture_double,      &upper_bound },
-		{ 'a', "access",  0, capture_stat_type_a, &stat_type },
-		{ 'm', "modify",  0, capture_stat_type_m, &stat_type },
-		{ 'c', "change",  0, capture_stat_type_c, &stat_type },
+		{ 'a', "access",  0, capture_a,           &stat_type },
+		{ 'm', "modify",  0, capture_m,           &stat_type },
+		{ 'c', "change",  0, capture_c,           &stat_type },
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
