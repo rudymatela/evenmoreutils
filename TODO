@@ -10,41 +10,6 @@ http://www.methods.co.nz/asciidoc/asciidoc.1.txt
 http://www.methods.co.nz/asciidoc/#_overview_and_examples
 
 
-sgetopt changes
----------------
-
-While thinking on how to parse parameters on untl and whle, I've came across
-the problem that, on them, I want to stop parsing parameters at the first non
-option argument. The way sgetopt is implemented now, there is no way to tell
-it. The idea is do add an extra parameter: stop_at_nonoption, boolean, which
-will tell if you want it to stop reading at the first nonoptional parameter.
-
-Since I'm adding a parameter to it, I'm starting to think that
-capture_nonoption is not such a good idea after all. These changes might even
-make the call to the function easier:
-
-    sgetopt_setlastarg(opttable, argv + 1); /* will work destructively on argv */
-    if (sgetopt(argc, argv, opttable)) {
-		...
-    }
-    numnonoptions = sgetopt_nnonopts(opttable);
-
-Would become:
-
-	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
-		...
-	}
-
-or
-
-	if (sgetopt(argc, argv, opttable, NULL, 0)) {
-		...
-	}
-
-No need return the number of normal arguments since the user can infer it from
-the array returned (NULL terminated array of strings).
-
-
 Commands
 --------
 
