@@ -38,8 +38,10 @@ struct soption {
 #define declare_fixed_capture(fname, type, value) \
 	int fname(const char *carg, void *pvar) \
 	{ \
-		type *pc = pvar; \
-		*pc = value; \
+		type *p = pvar; \
+		if (!p) \
+			return 1; \
+		*p = value; \
 		return 0; \
 	}
 
