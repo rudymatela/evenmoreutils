@@ -74,6 +74,7 @@ int main(int argc, char **argv)
 	static int version;
 	static double interval = 1.;
 	static int limit = 0; /* 0 for unlimited */
+	static int run_type = 'u'; /* untl */
 
 	int i;
 
@@ -103,12 +104,18 @@ int main(int argc, char **argv)
 	}
 
 	/* whle waits for 0 status, everything else for everything else */
-	int status = strcmp(basename(argv[0]), "whle") != 0;
+	if (strcmp(basename(argv[0]), "whle") == 0)
+		run_type = 'w';
 	if (argc <= 1) {
 		fprintf(stderr, "%s: error: no command provided\n", argv[0]);
 		return 1;
 	}
-	for (i = 0; (!limit || i < limit) && !!execvpfw(argv[1], argv+1) == status; i ++) {
+	for (i = 0; !limit || i < limit; i ++) {
+		int r = execvpfw(argv[1], argv+1);
+		if (run_type=='u' && r==0) /* untl */
+			break;
+		else if (run_type=='w' && r!=0) /* whle */
+			break;
 		fsleep(interval);
 	}
 	return 0;
