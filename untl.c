@@ -70,6 +70,7 @@ int fsleep(double seconds)
 
 static declare_fixed_capture(capture_w, int, 'w');
 static declare_fixed_capture(capture_u, int, 'u');
+static declare_fixed_capture(capture_r, int, 'r');
 
 
 int main(int argc, char **argv)
@@ -88,9 +89,10 @@ int main(int argc, char **argv)
 		{ 'v', "version",  0, capture_presence,    &version },
 		{ 'i', "interval", 1, capture_double,      &interval },
 		{ 'l', "limit",    1, capture_int,         &limit },
+		{ 'r', "retval",   1, capture_int,         &retval },
 		{ 'w', "while",    0, capture_w,           &run_type },
 		{ 'u', "until",    0, capture_u,           &run_type },
-		{ 'r', "retval",   1, capture_int,         &retval },
+		{ '\0', "repeat",  0, capture_r,           &run_type },
 		{ 0,   0,          0, 0,                   0 }
 	};
 
@@ -115,6 +117,8 @@ int main(int argc, char **argv)
 		/* Guess the run_type from program basename */
 		if (strcmp(basename(argv[0]), "whle") == 0)
 			run_type = 'w';
+		else if (strcmp(basename(argv[0]), "repeat") == 0)
+			run_type = 'r';
 		else
 			run_type = 'u';
 	}
