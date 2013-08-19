@@ -68,13 +68,17 @@ int fsleep(double seconds)
 }
 
 
+static declare_fixed_capture(capture_w, int, 'w');
+static declare_fixed_capture(capture_u, int, 'u');
+
+
 int main(int argc, char **argv)
 {
 	static int help;
 	static int version;
 	static double interval = 1.;
 	static int limit = 0; /* 0 for unlimited */
-	static int run_type = 'u'; /* untl */
+	static int run_type = '\0';
 
 	int i;
 
@@ -83,6 +87,8 @@ int main(int argc, char **argv)
 		{ 'v', "version",  0, capture_presence,    &version },
 		{ 'i', "interval", 1, capture_double,      &interval },
 		{ 'l', "limit",    1, capture_int,         &limit },
+		{ 'w', "while",    0, capture_w,           &run_type },
+		{ 'u', "until",    0, capture_u,           &run_type },
 		{ 0,   0,          0, 0,                   0 }
 	};
 
@@ -103,9 +109,14 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	/* whle waits for 0 status, everything else for everything else */
-	if (strcmp(basename(argv[0]), "whle") == 0)
-		run_type = 'w';
+	if (!run_type) {
+		/* Guess the run_type from program basename */
+		if (strcmp(basename(argv[0]), "whle") == 0)
+			run_type = 'w';
+		else
+			run_type = 'u';
+	}
+
 	if (argc <= 1) {
 		fprintf(stderr, "%s: error: no command provided\n", argv[0]);
 		return 1;
