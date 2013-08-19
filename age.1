@@ -22,13 +22,14 @@ Checks if file is older than \fIAGE\fR
 Checks if file is newer than \fIAGE\fR
 .TP
 .BR \-a ", " \-\-access " " \fIAGE\fR
-Use access (not implemented).
+Use age of last access.  Overrides \fI-m\fR and \fI-c\fR.
 .TP
 .BR \-m ", " \-\-modify " " \fIAGE\fR
-Use modify (not implemented).
+Use age of last modification.  Overrides \fI-a\fR and \fI-c\fR.  This is the
+default.
 .TP
 .BR \-c ", " \-\-change " " \fIAGE\fR
-Use change. This is the default.
+Use age of last change.  Overrides \fI-a\fR and \fI-m\fR.
 .SH EXAMPLES
 .nf
 .B age file.txt

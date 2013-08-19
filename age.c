@@ -29,6 +29,9 @@
 static int stat_time(const char *path, struct timespec *buf, char type);
 static double difftimespec(struct timespec *buftime1, struct timespec *buftime0);
 static double stat_age(const char *path, char type);
+static int capture_stat_type_a(const char *carg, void *pvar);
+static int capture_stat_type_m(const char *carg, void *pvar);
+static int capture_stat_type_c(const char *carg, void *pvar);
 
 
 int main(int argc, char **argv)
@@ -38,24 +41,21 @@ int main(int argc, char **argv)
 	static int version;
 	static double lower_bound = 0./0.; /* NaN */
 	static double upper_bound = 0./0.;
-	static int access,
-	           modify,
-	           change;
+	static char stat_type = 'm';
 
 	double file_age;
 	int check_upper,
 	    check_lower;
 	int i;
-	char stat_type = 'm';
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
 		{ 'o', "older",   1, capture_double,      &lower_bound },
 		{ 'n', "newer",   1, capture_double,      &upper_bound },
-		{ 'a', "access",  0, capture_presence,    &access },
-		{ 'm', "modify",  0, capture_presence,    &modify },
-		{ 'c', "change",  0, capture_presence,    &change },
+		{ 'a', "access",  0, capture_stat_type_a, &stat_type },
+		{ 'm', "modify",  0, capture_stat_type_m, &stat_type },
+		{ 'c', "change",  0, capture_stat_type_c, &stat_type },
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
@@ -80,13 +80,6 @@ int main(int argc, char **argv)
 		print_version(basename(argv[0]));
 		return 0;
 	}
-
-	if (access)
-		stat_type = 'a';
-	if (modify)
-		stat_type = 'm';
-	if (change)
-		stat_type = 'c';
 
 	check_upper = upper_bound == upper_bound; /* != NaN */
 	check_lower = lower_bound == lower_bound; /* != NaN */
@@ -154,4 +147,28 @@ static int stat_time(const char *path, struct timespec *buf, char type)
 	return r;
 }
 
+
+/* TODO: Use macros instead of these three? */
+static int capture_stat_type_a(const char *carg, void *pvar)
+{
+	char *pc = pvar;
+	*pc = 'a';
+	return 0;
+}
+
+
+static int capture_stat_type_m(const char *carg, void *pvar)
+{
+	char *pc = pvar;
+	*pc = 'm';
+	return 0;
+}
+
+
+static int capture_stat_type_c(const char *carg, void *pvar)
+{
+	char *pc = pvar;
+	*pc = 'c';
+	return 0;
+}
 
