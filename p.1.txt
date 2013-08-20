@@ -1,0 +1,102 @@
+P(1)
+====
+
+
+NAME
+----
+p - runs processes in parallel and wait for their termination
+
+
+SYNOPSIS
+--------
+*p* [*-h*] [*-v*] [*-c* 'COLOR'] [*-b*] [*-u*] [*-r*] [*-n*] command [ ['OPTIONS'] command ]
+
+
+DESCRIPTION
+-----------
+*p* runs processes in parallel and wait for their termination.  The processes
+can be marked to have different colors and the output can be tagged with the
+processes names (in fact, this is the original main purpose of the script).
+
+An idea for the future, is to have a parameter ``-&'' to indicate that commands
+will be separated by &.  And wihout it they must be passed by using quotes
+"process1 arg1" "process2 arg2" (This is the current setting).
+
+
+OPTIONS
+-------
+*-h*::
+	Shows help (not implemented)
+
+*-h*::
+	Shows version (not implemented)
+
+*-c* 'COLOR'::
+	Sets the color, can be: black, red, green, yellow, blue, magenta, cyan or
+	white.
+
+*-b*::
+	Bold output (active if no color or style is passed).
+
+*-u*::
+	Underlined output
+
+*-r*::
+	Reverse output
+
+*-n*::
+	Normal output (reset)
+	
+*-t*::
+	Sets a tag / title to be printed along with the process.
+
+
+EXAMPLES
+--------
+*p -bc blue "ping 127.0.0.1" -uc red "ping 192.168.0.1" -rc yellow "ping 192.168.1.1" -t example "ping example.com"*
+
+Runs 4 ping processes in parallel. The first pinging localhost with output in
+bold and blue color.  The second, 192.168.0.1, underlined with red color. The
+third reversed with yellow color.  The fourth tagged with title example.
+
+*p "tail -f /var/log/httpd/access_log" -bc red "tail -f /var/log/httpd/error_log"*
+
+Runs two ``tail -f''s in one terminal.  One with apache access log, the other
+with the apache error log highlighted in red.
+
+*p tail -f /var/log/httpd/access_log \& -bc red tail -f /var/log/httpd/error_log*
+
+or
+
+*p tail -f /var/log/httpd/access_log "&" -bc red tail -f /var/log/httpd/error_log*
+
+Same command as above written in a different way.  *This is not currently
+supported.*  It is interesting because you can pass a parameter as "blah bleh"
+which is impossible in the first version in which the space will always be used
+to separate the parameters. If your shell does not treat & as a special char
+you can just put it plain on the command line.
+
+*p tail -f "some file" \& p tail -f "some other file with space in the name.txt"*
+
+An example of the usefullness of & as separator on this command.
+
+*p -t project1 "hg pull project1" -t project2 "hg pull project2" -t project3 "hg pull project3"*
+
+Pulls 3 mercurial projects simultaneously.
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*fit*(1), *hilite*(1), *hl*(1), *mime*(1), *nup*(1), *pad*(1), *randpar*(1), *untl*(1), *sgetopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
