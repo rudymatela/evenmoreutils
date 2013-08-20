@@ -1,6 +1,5 @@
 MIME(1)
 =======
-:doctype: manpage
 
 
 NAME
