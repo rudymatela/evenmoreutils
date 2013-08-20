@@ -20,6 +20,12 @@
 #
 # Targets: all, clean, install, homeinstall, dist VERSION=x.x
 
+
+# Implicit rules
+%.1: %.1.txt
+	a2x --format manpage $<
+
+
 BINS=sgetopt_test hilite randpar untl fit age
 SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif repeat
 SYMS=pad whle # symlinks to binaries or shells
