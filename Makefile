@@ -23,14 +23,14 @@
 
 # Implicit rules
 %.1: %.1.txt
-	a2x --format manpage $<
+	a2x -a revdate=`date +%Y-%m-%d` --format manpage $<
 
 
 BINS=sgetopt_test hilite randpar untl fit age
 SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif repeat
 SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
-SMANS=pad.1 whle.1 # symlinks to manpages
+SMANS=pad.1 whle.1 repeat.1 # symlinks to manpages
 MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1 repeat.1
 CFLAGS=-Wall -Werror -Wno-variadic-macros
 LDFLAGS=-lm
@@ -39,7 +39,7 @@ MANPREFIX=$(PREFIX)/share
 
 .PHONY: all clean install homeinstall dist test
 
-all: $(BINS)
+all: $(BINS) $(MANS)
 
 untl: sgetopt.o
 

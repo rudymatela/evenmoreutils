@@ -1,0 +1,36 @@
+MIME(1)
+=======
+:doctype: manpage
+
+
+NAME
+----
+mime - determine file mimetype
+
+
+SYNOPSIS
+--------
+*mime* 'file' ...
+
+
+DESCRIPTION
+-----------
+*mime* determines the file mimetype.  It is just an alias for `file -bi`
+
+
+BUGS
+----
+The manpage is longer than the code.
+
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*fit*(1), *mime*(1), *nup*(1), *p*(1), *pad*(1), *randpar*(1), *untl*(1), *sgetopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
