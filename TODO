@@ -100,3 +100,19 @@ Then let the format be put inside a comment in the source file.  It is
 interesting to check if docs of functions are already supported by Doxygen.
 
 
+
+Ched
+----
+
+Cached command run
+
+ched someprogram someparameter someother
+
+Will store on:
+.cache/ched/someprogram/HASHOFSOMEPARAMETERANDSOMEOTHER.[stdout,stderr] the
+output of the command on the first run.  On the second run of the same command
+with same parameters, the content from the cache store will be used instead.
+This should be very useful on, for example, on smart completion for bash on
+slow commands like mercurial.  In this case, maybe a cache of 10 seconds to one
+minute will suffice.  I think it is interesting to do a use case just with
+mercurial to check the speed and if this command will really be useful.
