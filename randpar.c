@@ -100,6 +100,11 @@ int main(int argc, char **argv)
 
 	delimiter = zero ? '\0': '\n';
 	if (repeat) {
+		if (argc==0) {
+			char *progname = basename(argv[0]);
+			fprintf(stderr,"%s: error: no parameters to choose from.\n", progname);
+			return 1;
+		}
 		for (i=0; i<n; i++) {
 			fputs(nargv[rand()%argc],stdout);
 			putc(delimiter,stdout);
