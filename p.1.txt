@@ -89,6 +89,8 @@ BUGS
 ----
 Report bugs to rudy@matela.com.br
 
+Does not work with title (``-t'') having a slash (``/'').  That'll be corrected on future versions.
+
 
 SEE ALSO
 --------
