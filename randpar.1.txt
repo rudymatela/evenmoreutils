@@ -1,0 +1,55 @@
+RANDPAR(1)
+==========
+
+
+NAME
+----
+randpar - prints a random parameter on stdout
+
+
+SYNOPSIS
+--------
+*randpar* [*-0*|*--print0*] [*-n* 'K'] [*-a*|*--all*] 'arguments'...
+
+
+DESCRIPTION
+-----------
+*randpar* prints one (or some) of the parameters passed by command line.
+
+
+OPTIONS
+-------
+*-n* 'K'::
+	Set the number of parameters to print, default is one parameter.
+
+*-0*, *--print0*::
+	Output null character instead of linebreaks to separate parameters.  This is provided to be used in conjunction with xargs -0.
+
+*-a*, *--all*::
+	Outputs all parameters passed in a random order.
+
+*-h*, *--help*::
+	Shows help.
+
+*-v*, *--version*::
+	Shows version.
+
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+If you pass a string as parameter to *-n* the program will consider 'K' as 0 and will fail with 'SIGSEGV'.  That'll be corrected on future versions.
+
+
+SEE ALSO
+--------
+*fit*(1), *hilite*(1), *hl*(1), *untl*(1), *sgetopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
