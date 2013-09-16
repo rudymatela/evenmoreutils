@@ -1,0 +1,106 @@
+CHED(1)
+=======
+
+
+NAME
+----
+ched - cached command run
+
+
+SYNOPSIS
+--------
+*ched* 'command'
+
+
+DESCRIPTION
+-----------
+*ched* is a cached command runner.  At the first time running a command, (ca)*ched*
+stores its output in a cache.  At subsequent calls to the command with *ched*, up
+to a certain time threshold, the output of cache is used.
+
+This is a prototype version.
+
+Caution should be noted when using this to run commands with side effects.
+
+
+OPTIONS
+-------
+*-h*, *--help*::
+	Shows help (not implemented)
+
+*-v*, *--version*::
+	Shows version (not implemented)
+
+*-t*, *--timeout*='SECONDS'::
+	Holds cache until 'SECONDS' seconds.  Default is 10 seconds.  (not
+	implemented)
+
+*-e*, *--cache-stderr*::
+	Activates stderr caching.  (not implemented)
+
+*--dont-cache-on-error*::
+	Don't cache on error.  (not implemented)
+
+*--ignore-working-dir*::
+	Ignore working dir when chaching.  This should be used with commands that
+	do not have a different output when executed on different working
+	directories.
+
+*-s*, *--shell-exec*::
+	For default, ched executes commands directly.  Use this option to execute
+	commands with ``sh -c''.  This is useful when running bash functions for
+	example.
+
+*-x*, *--exec*::
+	Executes a command directly without using ``sh -c''.  Reverts the effect of
+	'-s' option.  This is the default.
+
+
+EXAMPLES
+--------
+*ched ls*
+
+Does a cached list of a directory.
+
+*ched links -dump example.com/friends_list*
+
+Does a cached access of a url.
+
+*ched hg status*
+
+Does a mercurial status command on some directory.  This might be useful when
+implementing scripts for bash smart completion. On Mercurial version 2.7, it is
+enough to change two lines in the completion file
+(``/usr/share/bash-completion/completions/hg'').  Please note that is enough to
+create another with the modified contents and source it.  The two lines are
+shown below:
+
+    ...
+    -    HGPLAIN=1 "$hg" "$@" 2>/dev/null
+    +    HGPLAIN=1 "/path/to/ched" "$hg" "$@" 2>/dev/null
+    ...
+
+    ...
+    -    local files="$(_hg_cmd status -n$1 "glob:$cur**")"
+    +    local files="$(_hg_cmd status -n$1 "glob:**" | grep "^$cur")"
+    ...
+
+
+
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*age*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
