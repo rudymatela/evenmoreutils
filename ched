@@ -4,6 +4,13 @@
 #
 # For now, a quick-and-dirty version in shell:
 
+cache_timeout=5
+if [ "$1" == "-t" ]
+then
+	cache_timeout="$2"
+	shift 2
+fi
+
 md5() {
 	echo "`pwd` $@" |
 	md5sum |
@@ -12,7 +19,7 @@ md5() {
 
 the_cache="$HOME/.cache/ched/`md5 "$@"`"
 
-if age --newer 5 $the_cache
+if age --newer $cache_timeout $the_cache
 then
 	cat $the_cache
 else
