@@ -23,7 +23,7 @@
 
 # Implicit rules
 %.1: %.1.txt
-	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` --doctype manpage --format manpage $<
+	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
 BINS=sgetopt_test hilite randpar untl fit age
