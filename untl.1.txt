@@ -1,0 +1,84 @@
+UNTL(1)
+=======
+:asciidoc-br:
+
+NAME
+----
+untl - while - repeat - run a command repeatedly, until/while it is sucessful
+
+
+SYNOPSIS
+--------
+*untl* [*-i* 'INTERVAL'] [*-l* 'LIMIT'] [*-r* 'RETVAL'] [other options] 'command'
+
+*whle* [*-i* 'INTERVAL'] [*-l* 'LIMIT'] [*-r* 'RETVAL'] [other options] 'command'
+
+*repeat* [*-i* 'INTERVAL'] [*-l* 'LIMIT'] [*-r* 'RETVAL'] [other options] 'command'
+
+
+DESCRIPTION
+-----------
+*untl* calls a process until it is successful.
+
+*whle* calls a process while it is sucessful, in other words, until it fails.
+
+*repeat* calls a process repeatedly.
+
+
+OPTIONS
+-------
+*-h*, *--help*::
+	Shows help
+
+*-v*, *--version*::
+	Shows version
+
+*-u*, *--untl*::
+	Forces untl behavior (default when program name is different from whle or
+	repeat)
+
+*-w*, *--whle*::
+	Forces whle behavior (default when program name is whle)
+
+*--repeat*::
+	Forces repeat behavior (default when program name is repeat)
+
+*-r*, *--retval*='RETVAL'::
+	Runs a processes until (or while) the return value equals RETVAL when in
+	untl or whle mode.  When in repeat mode, this option has no effect.
+
+*-i*, *--interval*='INTERVAL'::
+	Sets the interval, in seconds, of each try.  Default is 1.  This option
+	does accept  floating point values.
+
+*-l*, *--limit*='LIMIT'::
+	Limit the number of tries.
+
+
+EXAMPLES
+--------
+
+**untl ping example.com**
+
+Tries to ping example.com until it is successful.
+
+**untl ls /var/spool/printer**
+
+Tries to list contents of /var/spool/printer until it is successful.
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*anywait*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
