@@ -1,0 +1,101 @@
+HL(1)
+=====
+
+
+NAME
+----
+hl - highlight expressions on a stream
+
+
+SYNOPSIS
+--------
+*hl* [*-f* 'FILE'] [*-c* 'COLOR'] [*-b*] [*-u*] [*-r*] [*-n*] [*-i*] 'expression' [[*-burnic 'COLOR'*] 'expression' [...]]
+
+
+DESCRIPTION
+-----------
+*hl* highlights expressions passed by parameters on files.  Can be used with
+multiple files and multiple expressions.  The default highlight is bold, but
+can have color or other formatting options.
+
+
+OPTIONS
+-------
+
+*-f*, *--file*='FILE'::
+	Sets an input file. ``-'' can be used for standard input. When no file is
+	passed, read from stdin.
+
+*-c*, *--color*='COLOR'::
+	Sets the color, can be: black, red, green, yellow, blue, magenta, cyan or
+	white.
+
+*-b*, *--bold*::
+	Bold output (active if no color or style is passed).
+
+*-u*, *--underlined*::
+	Underlined output
+
+*-r*, *--reversed*::
+	Reverse output
+
+*-n*, *--normal*::
+	Normal output (reset)
+
+*-i*, *--ignore-case*::
+	Ignore case on regular expression
+
+*-h*, *--help*::
+	Shows help
+
+*-v*, *--version*::
+	Shows version
+
+
+EXAMPLES
+--------
+
+**cat /var/log/httpd/access_log | hl -c green ".*200.*" -c red ".*404.*"**
+
+Highlights lines in the apache log file containing success (200) as green and
+not found (404) as red.
+
+**cat /var/log/httpd/access.log | hl -c green 200 -c red 404**
+
+Highlights just the status codes.
+
+**cat auth.log | hl -ibc red root -ibc yellow alice -ibc green bob | less -R**
+
+Outputs auth.log highlighting the names of users root, alice and bob as red,
+yellow and green. Ignores  case  when  searching for the names of users. Pipes
+everything into `less -R' to make reading easier.
+
+
+BUGS
+----
+
+Report bugs to rudy@matela.com.br
+
+Unknown parameters -something are silently ignored.
+
+*hl* does not work well with expressions that overlap.  This is because of the way it handles the regular expressions (using sed internally).  Example:
+
+    echo axxxxcxxxdxxxxb | hl -bc red a.*b -bc blue c.*d
+
+Will result in axxxx highlighted in red and cxxxd highlighted in blue while xxxxb is not highlighted.
+
+That might be corrected by implementing a real engine, just for highlighting, in C (list  all  the  offsets  along  with  the
+options then do the changes in the stream).
+
+
+
+SEE ALSO
+--------
+*fit*(1), *hilite*(1), *hl*(1), *mime*(1), *nup*(1), *pad*(1), *randpar*(1), *untl*(1), *sgetopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
