@@ -40,8 +40,6 @@ BUGS
 ----
 Report bugs to rudy@matela.com.br
 
-If you pass a string as parameter to *-n* the program will consider 'K' as 0 and will fail with 'SIGSEGV'.  That'll be corrected on future versions.
-
 
 SEE ALSO
 --------
