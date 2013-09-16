@@ -1,0 +1,52 @@
+HILITE(1)
+=========
+
+
+NAME
+----
+hilite - runs a command, highlighting everything it sends to stderr
+
+
+SYNOPSIS
+--------
+hilite 'command'
+
+
+DESCRIPTION
+-----------
+*hilite* runs a command, highlighting everything it sends to stderr
+
+
+OPTIONS
+-------
+
+*-h*::
+	Shows help (not implemented)
+
+*-v*::
+	Shows version (not implemented)
+
+
+EXAMPLES
+--------
+**hilite cat somefile someotherfile**
+
+If  somefile  exists  and  someotherfile  does  not  exist.  Will  output  contents of somefile followed by a red warning for
+someotherfile: no such file or directory.
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*hl*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2000, 2001  Mike Schiraldi.
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
