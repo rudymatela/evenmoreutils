@@ -1,0 +1,79 @@
+AGE(1)
+====
+
+
+NAME
+----
+age - determines file age
+
+
+SYNOPSIS
+--------
+*age* 'files...'
+
+
+DESCRIPTION
+-----------
+*age* determines file age or does file age checks with nanosecond precision.
+
+
+OPTIONS
+-------
+*-h*, *--help*::
+	Shows help
+
+*-v*, *--version*::
+	Shows version
+
+*-o*, *--older*='AGE'::
+	Checks if file is older than 'AGE'
+
+*-n*, *--newer*='AGE'::
+	Checks if file is newer than 'AGE'
+
+*-a*, *--access*::
+	Use age of last access.  Overrides '-m' and '-c'.
+
+*-m*, *--modify*::
+	Use age of last modification.  Overrides '-a' and '-c'.  This is the default.
+
+*-c*, *--change*::
+	Use age of last change.  Overrides '-a' and '-m'.
+
+
+EXAMPLES
+--------
+*age file.txt*
+
+Prints file age, in number of seconds since epoch.  The output is a floating
+point with nanosecond precision.
+
+*age -n 10 file.txt*
+
+Returns 0 if file was created less than 10 seconds ago.  Returns a nonzero
+value otherwise.
+
+*age -o 60 file.txt*
+
+Returns 0 if file is older than a minute.
+
+*age -n 0.2 file.txt*
+
+Returns 0 if file is less than 200 miliseconds old.
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*fit*(1), *hilite*(1), *hl*(1), *mime*(1), *nup*(1), *pad*(1), *randpar*(1), *untl*(1), *sgetopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
