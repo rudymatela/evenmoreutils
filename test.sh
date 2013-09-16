@@ -119,6 +119,7 @@ randpar_test() {
 	assert_evl ./randpar -a0 1x 3       \| wc <<<"      0       1       5"
 	assert_evl ./randpar -n 10 abc de f \| wc -l <<<"10"
 	assert_evl ./randpar `seq 1 100`    \| wc -l <<<"1"
+	assert_evl ./randpar 1 2 3 -n0 4    \| wc -l <<<"0"
 }
 
 
