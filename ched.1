@@ -80,9 +80,9 @@ For default, ched executes commands directly\&. Use this option to execute comma
 .PP
 \fB\-x\fR, \fB\-\-exec\fR
 .RS 4
-Reverts the effect of
+Executes a command directly without using \(lqsh \-c\(rq\&. Reverts the effect of
 \fI\-s\fR
-option\&.
+option\&. This is the default\&.
 .RE
 .SH "EXAMPLES"
 .sp
@@ -90,13 +90,39 @@ option\&.
 .sp
 Does a cached list of a directory\&.
 .sp
-\fBched hg status\fR
-.sp
-Does a mercurial status command on some directory\&. This might be useful when implementing scripts for bash smart completion\&.
-.sp
 \fBched links \-dump example\&.com/friends_list\fR
 .sp
 Does a cached access of a url\&.
+.sp
+\fBched hg status\fR
+.sp
+Does a mercurial status command on some directory\&. This might be useful when implementing scripts for bash smart completion\&. On Mercurial version 2\&.7, it is enough to change two lines in the completion file (\(lq/usr/share/bash\-completion/completions/hg\(rq)\&. Please note that is enough to create another with the modified contents and source it\&. The two lines are shown below:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\&.\&.\&.
+\-    HGPLAIN=1 "$hg" "$@" 2>/dev/null
++    HGPLAIN=1 "/path/to/ched" "$hg" "$@" 2>/dev/null
+\&.\&.\&.
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\&.\&.\&.
+\-    local files="$(_hg_cmd status \-n$1 "glob:$cur**")"
++    local files="$(_hg_cmd status \-n$1 "glob:**" | grep "^$cur")"
+\&.\&.\&.
+.fi
+.if n \{\
+.RE
+.\}
 .SH "BUGS"
 .sp
 Report bugs to rudy@matela\&.com\&.br
