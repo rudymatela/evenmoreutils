@@ -4,7 +4,7 @@ UNTL(1)
 
 NAME
 ----
-untl - while - repeat - run a command repeatedly, until/while it is sucessful
+untl, whle, repeat - run a command repeatedly, until/while it is sucessful
 
 
 SYNOPSIS
