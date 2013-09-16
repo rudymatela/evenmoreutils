@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# This could be implemented in C for maximum efficiency (the actual purpose of the cache)
+#
+# For now, a quick-and-dirty version in shell:
+
+md5() {
+	echo "`pwd` $@" |
+	md5sum |
+	head -c 32
+}
+
+the_cache="$HOME/.cache/ched/`md5 "$@"`"
+
+if age --newer 5 $the_cache
+then
+	cat $the_cache
+else
+	$@ | tee $the_cache
+fi

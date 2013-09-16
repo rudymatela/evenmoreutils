@@ -27,7 +27,7 @@
 
 
 BINS=sgetopt_test hilite randpar untl fit age
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif repeat
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif repeat ched
 SYMS=pad whle # symlinks to binaries or shells
 OBJS=sgetopt.o
 SMANS=pad.1 whle.1 repeat.1 # symlinks to manpages
