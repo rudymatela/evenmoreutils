@@ -32,8 +32,7 @@ OPTIONS
 	Shows version (not implemented)
 
 *-t*, *--timeout*='SECONDS'::
-	Holds cache until 'SECONDS' seconds.  Default is 10 seconds.  (not
-	implemented)
+	Holds cache until 'SECONDS' seconds.  Default is 5 seconds.
 
 *-e*, *--cache-stderr*::
 	Activates stderr caching.  (not implemented)
