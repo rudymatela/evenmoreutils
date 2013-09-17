@@ -1,0 +1,96 @@
+FIT(1)
+======
+
+
+NAME
+----
+fit, pad - truncates files by width and print on the standard output
+
+
+SYNOPSIS
+--------
+*fit* [*-w* 'WIDTH'] [*-t* 'TABSIZE'] [*-c*] [*-p*] [*-W*] [*-M*] ['files']...
+
+*pad* [*-w* 'WIDTH'] [*-t* 'TABSIZE'] [*-c*] [*-p*] [*-W*] [*-M*] ['files']...
+
+
+DESCRIPTION
+-----------
+*fit* truncates a stream by fitting it into a certain width.  The width is read
+from the environment variable 'COLUMNS' or guessed using termcap information. 
+It can be overridden by passing a parame ter.  It is capable of padding the
+output making it exactly the width.
+
+*pad* pads the output wrapping lines when necessary.  This is the same as ``*fit -W -p*''.
+
+
+
+OPTIONS
+-------
+
+*-w*, *--width*='WIDTH'::
+Forces the width.  When no value is passed it is guessed by the COLUMNS
+environment variable. When it has no value, from the termcap.  If guessing is
+not possible and no value is passed 80 is the value.
+
+*-t*, *--tabsize*='TABSIZE'::
+	Sets the tabsize. Default is 8.
+
+*-c*, *--converttabs*::
+	Convert tabs to tabsize spaces.
+
+*-p*, *--pad*::
+	Pads output with spaces until it fits exactly the width.
+
+*-W*, *--wrap*::
+	Wraps output. Default is no.  When called as *pad* default is yes.
+
+*-M*, *--no-wrap*::
+	Do not wrap output.  Default is yes.  When called as pad default is no.
+
+
+EXAMPLES
+--------
+Some examples of use with the same file:
+
+	$ cat somefile.txt
+	Well this is a text file
+	with two lines
+
+	$ fit somefile.txt
+	Well this is a text file
+	with two lines
+
+	$ fit -w 10 somefile.txt
+	Well, this
+	with two l
+
+	$ pad -w 30 somefile.txt
+	Well, this is a text file     
+	with two lines.               
+
+	$ cat somefile.txt | pad -w 30 | tr ' ' _
+	Well,_this_is_a_text_file_____
+	with_two_lines._______________
+
+	$ fit -w 20 --pad somefile.txt | tr ' ' _
+	Well,_this_is_a_text
+	with_two_lines._____
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*fit*(1), *pad*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2012, 2013 Rudy Matela. Free use of this software is granted
+under the terms of the GNU General Public License version 2 or any later
+version.
+
