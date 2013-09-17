@@ -1,0 +1,100 @@
+NUP(1)
+======
+
+
+NAME
+----
+nup - n-up an output from a file (making it two, or n columns)
+
+
+SYNOPSIS
+--------
+*nup* [*-n* 'K'] [*-s* 'SEPARATOR'] [*-i*] ['FILE']...
+
+
+DESCRIPTION
+-----------
+*nup* n-ups an output from a file making it two, or n columns.  If no file is given,
+standard input is used.  This command is not implemented as described  here.  Redocu‐
+ment or reimplement.  Probably will reimplement in C.
+
+
+OPTIONS
+-------
+*-h*::
+	Shows help (not implemented)
+
+*-v*::
+	Shows version (not implemented)
+
+*-n* 'K'::
+	Number of columns (cannot be used along with -l)
+
+*-l* 'K'::
+	Number of lines (cannot be used along with -n)
+
+*-d* 'DELIM'::
+	Sets the delimiter instead of TABs
+
+*-s* 'SEPARATOR'::
+	Sets  a  separator  to  be  used  between columns.  Default is two spaces
+	(not implemented)
+
+*-i*::
+	Inverts (like in an inverse matrix) the output (not implemented)
+
+
+EXAMPLES
+--------
+
+	$ cat somefile.txt
+	This is a
+	test file
+	with 4 lines
+	to test nup
+
+The default version does a 2-up:
+
+	$ cat somefile.txt | nup
+	This is a     with 4 lines
+	test file     to test nup
+
+It also works passing the file as parameter:
+
+	$ nup somefile.txt
+	This is a     with 4 lines
+	test file     to test nup
+
+You can pass -<NUMBER> to indicate the number of columns:
+
+	$ nup -4 somefile.txt
+	This is a     test file    with 4 lines     to test nup
+
+Two columns with a separator:
+
+	$ nup -s "  |  " somefile.txt
+	This is a  |  with 4 lines
+	test file  |  to test nup
+
+Inverted n-upping:
+
+	$ nup -i somefile.txt
+	This is a     test file
+	with 4 lines  to test nup
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*fit*(1), *pad*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
