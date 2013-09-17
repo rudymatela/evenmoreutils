@@ -1,0 +1,63 @@
+ANYWAIT(1)
+==========
+
+
+NAME
+----
+anywait - waits for any process in the system
+
+
+SYNOPSIS
+--------
+*anywait* 'pid...'
+
+
+DESCRIPTION
+-----------
+*anywait* waits for any process in the system to terminate.  It functions in a
+similar manner to wait.
+
+
+OPTIONS
+-------
+*-h*::
+	Shows help (not implemented)
+
+*-v*::
+	Shows version (not implemented)
+
+*-i*::
+	Sets time interval to check if process has been  terminated  (default  is
+	0.5 seconds) (not implemented)
+
+*-n*::
+	The next pid will be a process name and anywait will wait in a similar
+	manner to killall (not implemented)
+
+
+EXAMPLES
+--------
+**anywait 1337**
+
+Waits for the process with id 1337 to stop.
+
+**anywait 1337 31337**
+
+Waits for processes 1337 and 31337 to stop.
+
+
+BUGS
+----
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*untl*(1)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2013 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
