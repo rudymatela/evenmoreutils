@@ -2,7 +2,7 @@
 #
 #
 #
-# Copyright (C) 2013  Rudy Matela
+# Copyright (C) 2013, 2014  Rudy Matela
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@
 
 
 BINS=sgetopt_test hilite randpar untl fit age
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif repeat ched
-SYMS=pad whle # symlinks to binaries or shells
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif ched
+SYMS=pad whle repeat # symlinks to binaries or shells
 OBJS=sgetopt.o
 MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1 ched.1
 GMANS=pad.1 whle.1 repeat.1 # copies generated automatically by asciidoc
