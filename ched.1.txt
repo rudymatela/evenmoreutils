@@ -37,23 +37,23 @@ OPTIONS
 *-e*, *--cache-stderr*::
 	Activates stderr caching.  (not implemented)
 
+*-s*, *--shell-exec*::
+	For default, ched executes commands directly.  Use this option to execute
+	commands with ``sh -c''.  This is useful when running bash functions for
+	example. (not implemented)
+
+*-x*, *--exec*::
+	Executes a command directly without using ``sh -c''.  Reverts the effect of
+	'-s' option.  This is the default. (not implemented)
+
 *--dont-cache-on-error*::
-	Don't cache on error.  (not implemented)
+	Don't cache on error.  Cancels '--ignore-working-dir' option. (not
+	implemented)
 
 *--ignore-working-dir*::
 	Ignore working dir when chaching.  This should be used with commands that
 	do not have a different output when executed on different working
-	directories.
-
-*-s*, *--shell-exec*::
-	For default, ched executes commands directly.  Use this option to execute
-	commands with ``sh -c''.  This is useful when running bash functions for
-	example.
-
-*-x*, *--exec*::
-	Executes a command directly without using ``sh -c''.  Reverts the effect of
-	'-s' option.  This is the default.
-
+	directories. (not implemented)
 
 EXAMPLES
 --------
