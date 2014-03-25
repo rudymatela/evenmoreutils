@@ -1,7 +1,7 @@
 /*
  * version.h - Version file for evenmoreutils
  *
- * Copyright (C) 2013  Rudy Matela
+ * Copyright (C) 2012-2014  Rudy Matela
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 
 #define VERSION_DISCLAIMER \
 "%s (evenmoreutils) " VERSION "\n" \
-"Copyright (C) 2012-2013  Rudy Matela\n" \
+"Copyright (C) 2012-2014  Rudy Matela\n" \
 "This is free software; see the source for copying conditions.  There is NO\n" \
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 
