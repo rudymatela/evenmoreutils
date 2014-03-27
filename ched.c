@@ -62,14 +62,19 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	printf("Timeout %i Non option arguments given (%i):",timeout,argc);
-	for (i=1; i<=argc; i++) {
-		printf(" %s",argv[i]);
+	if (nargv[0]==NULL) {
+		fprintf(stderr,"%s: error, no command given\n",basename(argv[0]));
+		return 1;
 	}
-	printf("\n");
-	/*execvp(argv[1],argv+1);*/
 
-	return 0;
+	execvp(nargv[0],nargv);
+
+	fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
+	for (i=1; nargv[i]; i++)
+		fprintf(stderr," %s",argv[i]);
+	fprintf(stderr,"'\n");
+
+	return 1;
 }
 
 
