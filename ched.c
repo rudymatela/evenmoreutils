@@ -27,6 +27,64 @@
 #include <sys/types.h>
 #include <bsd/md5.h>
 
+#define BUFSIZE 0x1000
+
+
+/* pork -- pipe-fork -- Forks creating a pipe */
+/* the parent process stdin is linked with child process stdout */
+/* child's stdout --> parent's stdin */
+int pork() {
+	int fildes[2];
+	int rpid;
+	int err;
+
+	err = pipe(fildes);
+	if (err)
+		return -1;
+
+	rpid = fork();
+	if (rpid < 0) {
+		close(fildes[0]);
+		close(fildes[1]);
+		return -1;
+	}
+
+	if (rpid) { /* pop */
+		close(fildes[1]);
+		dup2(fildes[0], 0); /* stdin becomes reading end of pipe */
+		close(fildes[0]);
+	} else { /* kid */
+		close(fildes[0]);
+		dup2(fildes[1], 1); /* stdout becomes writing end of pipe */
+		close(fildes[1]);
+		setvbuf(stdout, NULL, _IONBF, 0); /* newly created stdout is unbuffered */
+	}
+
+	return rpid;
+}
+
+
+/* Consume stdin, writing to stdout and out */
+/* Returns 0 on success, negative otherwise */
+int tee_file(FILE *out) {
+	char buffer[BUFSIZE];
+	int nbytes;
+	while ((nbytes = read(0, buffer, BUFSIZE)) > 0) {
+		write(1, buffer, nbytes);
+		fwrite(buffer, nbytes, 1, out);
+	}
+	return nbytes;
+}
+
+
+int tee_file_path(const char *path, int append)
+{
+	FILE *pf = fopen(path, append ? "a" : "w");
+	int r = tee_file(pf);
+	fclose(pf);
+	return r;
+}
+
 
 /* buf must be of size MD5_DIGEST_STRING_LENGTH */
 char *MD5Args(char **args, char *buf)
@@ -40,17 +98,23 @@ char *MD5Args(char **args, char *buf)
 }
 
 
+void cat_file_path(char *path)
+{
+	printf("Here is your cache\n");
+}
+
+
 int main(int argc, char **argv)
 {
 	/* Program options */
 	static int help;
 	static int version;
-	static int timeout;
+	static double timeout; /* cache timeout */
 
 	struct soption opttable[] = {
 		{ 'h', "help",                0, capture_presence,    &help },
 		{ 'v', "version",             0, capture_presence,    &version },
-		{ 't', "timeout",             1, capture_int,         &timeout },
+		{ 't', "timeout",             1, capture_double,      &timeout },
 		{ 0,   0,                     0, capture_nonoption,   0 }
 	};
 
@@ -91,13 +155,20 @@ int main(int argc, char **argv)
 
 	MD5Args(nargv,digest);
 	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",cachefile);
-	execvp(nargv[0],nargv);
 
-	fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
-	for (i=1; nargv[i]; i++)
-		fprintf(stderr," %s",argv[i]);
-	fprintf(stderr,"'\n");
-
+	if (access(cachefile, R_OK) == 0) { /* there is a cache */
+		cat_file_path(cachefile);
+	} else {                           /* no cache, run and tee */
+		if (pork()) { /* pop */
+			tee_file_path(cachefile, 0);
+		} else { /* kid */
+			execvp(nargv[0],nargv);
+			fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
+			for (i=1; nargv[i]; i++)
+				fprintf(stderr," %s",argv[i]);
+			fprintf(stderr,"'\n");
+		}
+	}
 	return 1;
 }
 
