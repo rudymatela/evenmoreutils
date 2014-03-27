@@ -26,8 +26,8 @@
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
-BINS=sgetopt_test hilite randpar untl fit age
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif ched
+BINS=sgetopt_test hilite randpar untl fit age ched
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
 SYMS=pad whle repeat # symlinks to binaries or shells
 OBJS=sgetopt.o
 MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1 ched.1
@@ -51,6 +51,8 @@ randpar: sgetopt.o
 fit: sgetopt.o
 
 age: sgetopt.o
+
+ched: sgetopt.o
 
 clean:
 	rm -f $(BINS) $(OBJS) $(AMANS)
