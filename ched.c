@@ -19,9 +19,25 @@
 #include "sgetopt.h"
 #include "version.h"
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <libgen.h>
+
+#include <sys/types.h>
+#include <bsd/md5.h>
+
+
+/* buf must be of size MD5_DIGEST_STRING_LENGTH */
+char *MD5Args(char **args, char *buf)
+{
+	int i;
+	MD5_CTX context;
+	MD5Init(&context);
+	for (i=0; args[i]; i++)
+		MD5Update(&context, (const u_int8_t*)args[i], strlen(args[i])+1);
+	return MD5End(&context, buf);
+}
 
 
 int main(int argc, char **argv)
@@ -39,6 +55,7 @@ int main(int argc, char **argv)
 	};
 
 	int i;
+	char digest[MD5_DIGEST_STRING_LENGTH];
 
 	/* After the call to getopt will point to an array of all nonoptions */
 	char **nargv = argv + 1;
@@ -67,6 +84,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",MD5Args(nargv,digest));
 	execvp(nargv[0],nargv);
 
 	fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);

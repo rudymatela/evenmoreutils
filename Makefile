@@ -52,6 +52,7 @@ fit: sgetopt.o
 
 age: sgetopt.o
 
+ched: LDLIBS=-lbsd
 ched: sgetopt.o
 
 clean:
