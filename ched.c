@@ -55,7 +55,12 @@ int main(int argc, char **argv)
 	};
 
 	int i;
-	char digest[MD5_DIGEST_STRING_LENGTH];
+	/* For now storing on current dir, to ease implementation */
+	/* on final version store on user-wide cache, this might be useful because
+	 * of running ched on directories with no write permissions */
+	/* also easy to cleanup */
+	char cachefile[MD5_DIGEST_STRING_LENGTH+1] = ".";
+	char *digest = cachefile+1;
 
 	/* After the call to getopt will point to an array of all nonoptions */
 	char **nargv = argv + 1;
@@ -84,7 +89,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",MD5Args(nargv,digest));
+	MD5Args(nargv,digest);
+	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",cachefile);
 	execvp(nargv[0],nargv);
 
 	fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
