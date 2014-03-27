@@ -79,6 +79,7 @@ int tee_file(FILE *out) {
 
 int tee_file_path(const char *path, int append)
 {
+	/* TODO: Check for errors here */
 	FILE *pf = fopen(path, append ? "a" : "w");
 	int r = tee_file(pf);
 	fclose(pf);
@@ -98,9 +99,25 @@ char *MD5Args(char **args, char *buf)
 }
 
 
-void cat_file_path(char *path)
+void cat_file(FILE *pf)
 {
-	printf("Here is your cache\n");
+	char buffer[BUFSIZE];
+	int nbytes;
+	do {
+		nbytes = fread(buffer, 1, BUFSIZE, pf);
+		fwrite(buffer, nbytes, 1, stdout);
+	} while (nbytes == BUFSIZE);
+}
+
+
+int cat_file_path(char *path)
+{
+	FILE *pf = fopen(path, "r");
+	if (!pf)
+		return -1;
+	cat_file(pf);
+	fclose(pf);
+	return 0;
 }
 
 
