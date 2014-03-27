@@ -18,6 +18,7 @@
  */
 #include "sgetopt.h"
 #include "version.h"
+#include "muni.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@
 #include <bsd/md5.h>
 
 #define BUFSIZE 0x1000
+#define DEFAULT_CACHE_TIMEOUT 10.0
 
 
 /* pork -- pipe-fork -- Forks creating a pipe */
@@ -126,7 +128,7 @@ int main(int argc, char **argv)
 	/* Program options */
 	static int help;
 	static int version;
-	static double timeout; /* cache timeout */
+	static double timeout = DEFAULT_CACHE_TIMEOUT;
 
 	struct soption opttable[] = {
 		{ 'h', "help",                0, capture_presence,    &help },
@@ -173,7 +175,7 @@ int main(int argc, char **argv)
 	MD5Args(nargv,digest);
 	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",cachefile);
 
-	if (access(cachefile, R_OK) == 0) { /* there is a cache */
+	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
 	} else {                           /* no cache, run and tee */
 		if (pork()) { /* pop */

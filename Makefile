@@ -53,7 +53,7 @@ fit: sgetopt.o
 age: sgetopt.o muni.o
 
 ched: LDLIBS=-lbsd
-ched: sgetopt.o
+ched: sgetopt.o muni.o
 
 clean:
 	rm -f $(BINS) $(OBJS) $(AMANS)
