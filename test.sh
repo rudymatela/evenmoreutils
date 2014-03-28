@@ -22,6 +22,12 @@
 # for the utils.  If it replies with silence, everything is ok.
 
 
+# Auxiliary function
+stdin_md5() {
+	md5sum | sed -e "s/ *-//"
+}
+
+
 # Assert function, usage:
 #   assert command parameters <<REF
 #   desired output
@@ -150,7 +156,29 @@ REF
 }
 
 
+ched_test() {
+	wd=`pwd`
+	assert ched echo "blah" <<REF
+blah
+REF
+	assert ched echo "blah" <<REF
+blah
+REF
+	assert cat ~/.cache/ched/"`echo -ne "echo\\x00blah\\x00$wd" | stdin_md5`" <<REF
+blah
+REF
+	assert ched echo -e "blah\nbleh" <<REF
+blah
+bleh
+REF
+	assert ched echo -e "blah\nbleh" <<REF
+blah
+bleh
+REF
+}
+
+
 sgetopt_test_test
 randpar_test
 fit_test
-
+ched_test
