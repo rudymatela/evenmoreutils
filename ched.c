@@ -36,6 +36,7 @@
 
 #define BUFSIZE 0x1000
 #define DEFAULT_CACHE_TIMEOUT 10.0
+#define CACHE_PARENT_PATH ".cache"
 #define CACHE_PATH ".cache/ched"
 
 
@@ -168,25 +169,13 @@ char *cache_custom_path(char *digest, char *dir)
 }
 
 
-/* TODO: This needs to work when there are no parents */
-int mkdir_p(char *path)
+/* Flags no error when directory exists */
+int mkdir_(char *path)
 {
 	int status = mkdir(path, S_IRWXU);
 	return status != 0 && errno == EEXIST ? 0 : status;
 }
 
-
-int mkdir_p_basename(char *path)
-{
-	char *end = strrchr(path, '/');
-	int status;
-	if (end == NULL)
-		return 0; /* no need to make dir */
-	*end = '\0'; /* end string just before the last dir component */
-	status = mkdir_p(path);
-	*end = '/'; /* turn back into whole path again */
-	return status;
-}
 
 
 int main(int argc, char **argv)
@@ -195,7 +184,6 @@ int main(int argc, char **argv)
 	static int help;
 	static int version;
 	static int ignore_wd;
-	static char *cache_dir;
 	static double timeout = DEFAULT_CACHE_TIMEOUT;
 
 	struct soption opttable[] = {
@@ -203,7 +191,6 @@ int main(int argc, char **argv)
 		{ 'v', "version",             0, capture_presence,    &version },
 		{ 'i', "ignore-working-dir",  0, capture_presence,    &ignore_wd },
 		{ 't', "timeout",             1, capture_double,      &timeout },
-		{ 'c', "cache-dir",           1, capture_charpointer, &cache_dir },
 		{ 0,   0,                     0, capture_nonoption,   0 }
 	};
 
@@ -243,11 +230,10 @@ int main(int argc, char **argv)
 	}
 
 	MD5Args(nargv,digest,!ignore_wd);
-	cachefile = cache_dir ?
-	              cache_custom_path(digest, cache_dir):
-	              cache_path(digest);
-
-	mkdir_p_basename(cachefile);
+	cachefile = cache_path(digest);
+	
+	mkdir_(CACHE_PARENT_PATH);
+	mkdir_(CACHE_PATH);
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);

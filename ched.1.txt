@@ -90,7 +90,7 @@ since it can be easily done as shown above, this idea was dropped.
 FILES
 -----
 
-By default, the cache for each command is stored under md5 named files under ``$HOME/.cache/ched''.
+The cache for each command is stored under md5 named files under ``$HOME/.cache/ched''.
 
 
 BUGS
