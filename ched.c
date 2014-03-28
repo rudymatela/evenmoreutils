@@ -30,6 +30,7 @@
 
 #define BUFSIZE 0x1000
 #define DEFAULT_CACHE_TIMEOUT 10.0
+#define CACHE_PATH ".cache/ched"
 
 
 /* pork -- pipe-fork -- Forks creating a pipe */
@@ -123,6 +124,20 @@ int cat_file_path(char *path)
 }
 
 
+char *cache_path(char *digest)
+{
+	char *home = getenv("HOME");
+	size_t lenhome = strlen(home),
+	       lencpath = strlen("/" CACHE_PATH "/"),
+           len = lenhome + lencpath + MD5_DIGEST_STRING_LENGTH;
+	char *cache_path = malloc(len);
+	memcpy(cache_path, home, lenhome);
+	memcpy(cache_path+lenhome, "/" CACHE_PATH "/", lencpath);
+	memcpy(cache_path+lenhome+lencpath, digest, MD5_DIGEST_STRING_LENGTH);
+	return cache_path;
+}
+
+
 int main(int argc, char **argv)
 {
 	/* Program options */
@@ -173,7 +188,8 @@ int main(int argc, char **argv)
 	}
 
 	MD5Args(nargv,digest);
-	fprintf(stderr,"DEBUG: md5 of cache file: %s\n",cachefile);
+	fprintf(stderr,"DEBUG: md5 of cache file: %s/.cache/ched/%s\n", getenv("HOME"), digest);
+	fprintf(stderr,"DEBUG: md5 of cache file: %s\n", cache_path(digest));
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
