@@ -9,7 +9,7 @@ ched - cached command run
 
 SYNOPSIS
 --------
-*ched* 'command'
+*ched* [*-t* 'TIMEOUT'] 'command'
 
 
 DESCRIPTION
@@ -26,29 +26,19 @@ Caution should be noted when using this to run commands with side effects.
 OPTIONS
 -------
 *-h*, *--help*::
-	Shows help (not implemented)
+	Shows help
 
 *-v*, *--version*::
-	Shows version (not implemented)
+	Shows version
 
 *-t*, *--timeout*='SECONDS'::
-	Holds cache until 'SECONDS' seconds.  Default is 5 seconds.
+	Holds cache until 'SECONDS' seconds.  Default is 10 seconds.
 
 *-e*, *--cache-stderr*::
 	Activates stderr caching.  (not implemented)
 
-*-s*, *--shell-exec*::
-	For default, ched executes commands directly.  Use this option to execute
-	commands with ``sh -c''.  This is useful when running bash functions for
-	example. (not implemented)
-
-*-x*, *--exec*::
-	Executes a command directly without using ``sh -c''.  Reverts the effect of
-	'-s' option.  This is the default. (not implemented)
-
 *--dont-cache-on-error*::
-	Don't cache on error.  Cancels '--ignore-working-dir' option. (not
-	implemented)
+	Don't cache on error.  (not implemented)
 
 *--ignore-working-dir*::
 	Ignore working dir when chaching.  This should be used with commands that
@@ -61,9 +51,9 @@ EXAMPLES
 
 Does a cached list of a directory.
 
-*ched links -dump example.com/friends_list*
+*ched -t 60 links -dump example.com/friends_list*
 
-Does a cached access of a url.
+Does a cached access of a url with a cache timeout of 60 seconds.
 
 *ched hg status*
 
@@ -84,8 +74,23 @@ shown below:
     +    local files="$(_hg_cmd status -n$1 "glob:**" | grep "^$cur")"
     ...
 
+If you want to run a cached shell command or a shell function, be sure to
+export in the case of the function and to prepend the command with ``sh -c'':
+
+	helloworld() {
+		echo "hello world $1"
+	}
+	export -f helloworld
+	ched sh -c "helloworld yourname"
+
+Originally it was thought to have the option *--shell-exec* to activate that,
+since it can be easily done as shown above, this idea was dropped.
 
 
+FILES
+-----
+
+By default, the cache for each command is stored under md5 named files under ``$HOME/.cache/ched''.
 
 
 BUGS
