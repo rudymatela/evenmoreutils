@@ -15,10 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * TODO: This program needs error treating to be fixed (not checking if
- * functions that should fail are failing).
  */
 #include "sgetopt.h"
 #include "version.h"
