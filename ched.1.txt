@@ -34,16 +34,15 @@ OPTIONS
 *-t*, *--timeout*='SECONDS'::
 	Holds cache until 'SECONDS' seconds.  Default is 10 seconds.
 
+*-i*, *--ignore-working-dir*::
+	Ignore working dir when chaching.  This can be used with commands that have
+	the same output when executed on different working directories.
+
 *-e*, *--cache-stderr*::
 	Activates stderr caching.  (not implemented)
 
 *--dont-cache-on-error*::
 	Don't cache on error.  (not implemented)
-
-*--ignore-working-dir*::
-	Ignore working dir when chaching.  This should be used with commands that
-	do not have a different output when executed on different working
-	directories. (not implemented)
 
 EXAMPLES
 --------
