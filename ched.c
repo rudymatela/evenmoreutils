@@ -15,6 +15,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * TODO: This program needs error treating to be fixed (not checking if
+ * functions that should fail are failing).
  */
 #include "sgetopt.h"
 #include "version.h"
@@ -24,6 +28,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <libgen.h>
+
+#include <errno.h>
 
 #include <sys/types.h>
 #include <bsd/md5.h>
@@ -138,17 +144,52 @@ char *cache_path(char *digest)
 }
 
 
+char *cache_custom_path(char *digest, char *dir)
+{
+	size_t lendir = strlen(dir),
+	       len = lendir + 1 + MD5_DIGEST_STRING_LENGTH;
+	char *cache_path = malloc(len);
+	memcpy(cache_path, dir, lendir);
+	cache_path[lendir] = '/';
+	memcpy(cache_path+lendir+1, digest, MD5_DIGEST_STRING_LENGTH);
+	return cache_path;
+}
+
+
+/* TODO: This needs to work when there are no parents */
+int mkdir_p(char *path)
+{
+	int status = mkdir(path, S_IRWXU);
+	return status != 0 && errno == EEXIST ? 0 : status;
+}
+
+
+int mkdir_p_basename(char *path)
+{
+	char *end = strrchr(path, '/');
+	int status;
+	if (end == NULL)
+		return 0; /* no need to make dir */
+	*end = '\0'; /* end string just before the last dir component */
+	status = mkdir_p(path);
+	*end = '/'; /* turn back into whole path again */
+	return status;
+}
+
+
 int main(int argc, char **argv)
 {
 	/* Program options */
 	static int help;
 	static int version;
+	static char *cache_dir;
 	static double timeout = DEFAULT_CACHE_TIMEOUT;
 
 	struct soption opttable[] = {
 		{ 'h', "help",                0, capture_presence,    &help },
 		{ 'v', "version",             0, capture_presence,    &version },
 		{ 't', "timeout",             1, capture_double,      &timeout },
+		{ 'c', "cache-dir",           1, capture_charpointer, &cache_dir },
 		{ 0,   0,                     0, capture_nonoption,   0 }
 	};
 
@@ -187,7 +228,12 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	cachefile = cache_path(MD5Args(nargv,digest));
+	MD5Args(nargv,digest);
+	cachefile = cache_dir ?
+	              cache_custom_path(digest, cache_dir):
+	              cache_path(digest);
+
+	mkdir_p_basename(cachefile);
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
