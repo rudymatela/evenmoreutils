@@ -157,8 +157,8 @@ int main(int argc, char **argv)
 	/* on final version store on user-wide cache, this might be useful because
 	 * of running ched on directories with no write permissions */
 	/* also easy to cleanup */
-	char cachefile[MD5_DIGEST_STRING_LENGTH+1] = ".";
-	char *digest = cachefile+1;
+	char digest[MD5_DIGEST_STRING_LENGTH];
+	char *cachefile;
 
 	/* After the call to getopt will point to an array of all nonoptions */
 	char **nargv = argv + 1;
@@ -187,9 +187,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	MD5Args(nargv,digest);
-	fprintf(stderr,"DEBUG: md5 of cache file: %s/.cache/ched/%s\n", getenv("HOME"), digest);
-	fprintf(stderr,"DEBUG: md5 of cache file: %s\n", cache_path(digest));
+	cachefile = cache_path(MD5Args(nargv,digest));
+	fprintf(stderr,"DEBUG: md5 of cache file: %s\n", cachefile);
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
@@ -197,14 +196,17 @@ int main(int argc, char **argv)
 		if (pork()) { /* pop */
 			tee_file_path(cachefile, 0);
 		} else { /* kid */
+			free(cachefile);
 			execvp(nargv[0],nargv);
 			fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
 			for (i=1; nargv[i]; i++)
 				fprintf(stderr," %s",argv[i]);
 			fprintf(stderr,"'\n");
+			return 1;
 		}
 	}
-	return 1;
+	free(cachefile);
+	return 0;
 }
 
 
