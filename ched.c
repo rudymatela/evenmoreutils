@@ -138,43 +138,17 @@ char *cache_path(char *digest)
 }
 
 
-int shellexecvp(char *args[])
-{
-	int i;
-	size_t sz = 0;
-	char *execargs[] = { "sh", "-c", NULL, NULL };
-
-	/* First pass, alloc execargs[2] */
-	for (i=0; args[i]; i++)
-		sz += strlen(args[i]) + 1; /* +3, 1x ' ' */
-	execargs[2] = malloc(sz); /* '\0' already included above */
-
-	/* Second pass, concatenate on execargs[2] */
-	strcat(execargs[2], args[0]);
-	sz = strlen(args[0]);
-	for (i=1; args[i]; i++) {
-		strcat(execargs[2], " ");
-		strcat(execargs[2], args[i]);
-		sz += 1 + strlen(args[i]);
-	}
-
-	return execvp(execargs[0], execargs);
-}
-
-
 int main(int argc, char **argv)
 {
 	/* Program options */
 	static int help;
 	static int version;
-	static int shell_exec;
 	static double timeout = DEFAULT_CACHE_TIMEOUT;
 
 	struct soption opttable[] = {
 		{ 'h', "help",                0, capture_presence,    &help },
 		{ 'v', "version",             0, capture_presence,    &version },
 		{ 't', "timeout",             1, capture_double,      &timeout },
-		{ 's', "shell-exec",          0, capture_presence,    &shell_exec },
 		{ 0,   0,                     0, capture_nonoption,   0 }
 	};
 
@@ -214,6 +188,7 @@ int main(int argc, char **argv)
 	}
 
 	cachefile = cache_path(MD5Args(nargv,digest));
+	fprintf(stderr,"DEBUG: md5 of cache file: %s\n", cachefile);
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
@@ -222,10 +197,7 @@ int main(int argc, char **argv)
 			tee_file_path(cachefile, 0);
 		} else { /* kid */
 			free(cachefile);
-			if (shell_exec)
-				shellexecvp(nargv);
-			else
-				execvp(nargv[0],nargv);
+			execvp(nargv[0],nargv);
 			fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
 			for (i=1; nargv[i]; i++)
 				fprintf(stderr," %s",argv[i]);
