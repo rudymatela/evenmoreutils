@@ -40,9 +40,13 @@
 #define CACHE_PATH ".cache/ched"
 
 
-/* pork -- pipe-fork -- Forks creating a pipe */
-/* the parent process stdin is linked with child process stdout */
-/* child's stdout --> parent's stdin */
+/*
+ * pork -- pipe-fork -- Forks creating a pipe.
+ *
+ * The parent process stdin is linked with child process stdout.
+ * In other words:
+ *   child's stdout  -->  parent's stdin
+ */
 int pork() {
 	int fildes[2];
 	int rpid;
@@ -74,22 +78,31 @@ int pork() {
 }
 
 
-/* Consume stdin, writing to stdout and out */
-/* Returns 0 on success, negative otherwise */
+/*
+ * tee_file - consume stdin, writing to both stdout and out
+ *
+ * Returns a non-negative integer on success, negative on error.
+ */
 int tee_file(FILE *out) {
 	char buffer[BUFSIZE];
 	int nbytes;
+
+	if (!out)
+		fprintf(stderr,"ched: warning, unable to open cache file for writing\n");
+
 	while ((nbytes = read(0, buffer, BUFSIZE)) > 0) {
 		write(1, buffer, nbytes);
-		fwrite(buffer, nbytes, 1, out);
+		if (out)
+			fwrite(buffer, nbytes, 1, out);
 	}
+
 	return nbytes;
 }
 
 
+/* tee_file_path - same as tee_file, but by path */
 int tee_file_path(const char *path, int append)
 {
-	/* TODO: Check for errors here */
 	FILE *pf = fopen(path, append ? "a" : "w");
 	int r = tee_file(pf);
 	fclose(pf);
@@ -106,8 +119,10 @@ void MD5UpdateWithCwd(MD5_CTX* pcontext)
 }
 
 
-/* buf must be of size MD5_DIGEST_STRING_LENGTH */
-/* must free return value */
+/*
+ * NOTE: digest_buf must be of size MD5_DIGEST_STRING_LENGTH
+ * NOTE: must free return value
+ */
 char *MD5Args(char **args, char *digest_buf, int include_cwd)
 {
 	int i;
@@ -150,21 +165,11 @@ char *cache_path(char *digest)
 	       lencpath = strlen("/" CACHE_PATH "/"),
            len = lenhome + lencpath + MD5_DIGEST_STRING_LENGTH;
 	char *cache_path = malloc(len);
+	if (!cache_path)
+		return NULL;
 	memcpy(cache_path, home, lenhome);
 	memcpy(cache_path+lenhome, "/" CACHE_PATH "/", lencpath);
 	memcpy(cache_path+lenhome+lencpath, digest, MD5_DIGEST_STRING_LENGTH);
-	return cache_path;
-}
-
-
-char *cache_custom_path(char *digest, char *dir)
-{
-	size_t lendir = strlen(dir),
-	       len = lendir + 1 + MD5_DIGEST_STRING_LENGTH;
-	char *cache_path = malloc(len);
-	memcpy(cache_path, dir, lendir);
-	cache_path[lendir] = '/';
-	memcpy(cache_path+lendir+1, digest, MD5_DIGEST_STRING_LENGTH);
 	return cache_path;
 }
 
@@ -231,12 +236,19 @@ int main(int argc, char **argv)
 
 	MD5Args(nargv,digest,!ignore_wd);
 	cachefile = cache_path(digest);
-	
-	mkdir_(CACHE_PARENT_PATH);
-	mkdir_(CACHE_PATH);
+	if (cachefile == NULL) {
+		fprintf(stderr,"%s: error, out of memory\n",basename(argv[0]));
+		return 1;
+	}
+
+	if ( mkdir_(CACHE_PARENT_PATH) || mkdir_(CACHE_PATH) )
+		fprintf(stderr,"%s: warning, unable to create cache directories (continuing anyway...)\n",basename(argv[0]));
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
-		cat_file_path(cachefile);
+		if (cat_file_path(cachefile)) {
+			fprintf(stderr,"%s: problem while reading cache file\n",basename(argv[0]));
+			return 1;
+		}
 	} else {                           /* no cache, run and tee */
 		if (pork()) { /* pop */
 			tee_file_path(cachefile, 0);
