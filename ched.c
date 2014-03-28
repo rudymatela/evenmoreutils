@@ -96,15 +96,27 @@ int tee_file_path(const char *path, int append)
 }
 
 
+void MD5UpdateWithCwd(MD5_CTX* pcontext)
+{
+	char wd[BUFSIZE];
+	if (getcwd(wd, BUFSIZE) == NULL)
+		return; /* ignore dir if it's too big */
+	MD5Update(pcontext, (const u_int8_t*)wd, strlen(wd));
+}
+
+
 /* buf must be of size MD5_DIGEST_STRING_LENGTH */
-char *MD5Args(char **args, char *buf)
+/* must free return value */
+char *MD5Args(char **args, char *digest_buf, int include_cwd)
 {
 	int i;
 	MD5_CTX context;
 	MD5Init(&context);
 	for (i=0; args[i]; i++)
 		MD5Update(&context, (const u_int8_t*)args[i], strlen(args[i])+1);
-	return MD5End(&context, buf);
+	if (include_cwd)
+		MD5UpdateWithCwd(&context);
+	return MD5End(&context, digest_buf);
 }
 
 
@@ -182,12 +194,14 @@ int main(int argc, char **argv)
 	/* Program options */
 	static int help;
 	static int version;
+	static int ignore_wd;
 	static char *cache_dir;
 	static double timeout = DEFAULT_CACHE_TIMEOUT;
 
 	struct soption opttable[] = {
 		{ 'h', "help",                0, capture_presence,    &help },
 		{ 'v', "version",             0, capture_presence,    &version },
+		{ 'i', "ignore-working-dir",  0, capture_presence,    &ignore_wd },
 		{ 't', "timeout",             1, capture_double,      &timeout },
 		{ 'c', "cache-dir",           1, capture_charpointer, &cache_dir },
 		{ 0,   0,                     0, capture_nonoption,   0 }
@@ -228,7 +242,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	MD5Args(nargv,digest);
+	MD5Args(nargv,digest,!ignore_wd);
 	cachefile = cache_dir ?
 	              cache_custom_path(digest, cache_dir):
 	              cache_path(digest);
