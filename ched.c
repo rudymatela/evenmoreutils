@@ -188,7 +188,6 @@ int main(int argc, char **argv)
 	}
 
 	cachefile = cache_path(MD5Args(nargv,digest));
-	fprintf(stderr,"DEBUG: md5 of cache file: %s\n", cachefile);
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		cat_file_path(cachefile);
