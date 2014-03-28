@@ -82,6 +82,8 @@ int pork() {
  * tee_file - consume stdin, writing to both stdout and out
  *
  * Returns a non-negative integer on success, negative on error.
+ *
+ * It works when out is NULL and issues a warning
  */
 int tee_file(FILE *out) {
 	char buffer[BUFSIZE];
@@ -105,7 +107,8 @@ int tee_file_path(const char *path, int append)
 {
 	FILE *pf = fopen(path, append ? "a" : "w");
 	int r = tee_file(pf);
-	fclose(pf);
+	if (pf)
+		fclose(pf);
 	return r;
 }
 
@@ -200,6 +203,7 @@ int main(int argc, char **argv)
 	};
 
 	int i;
+	int status;
 	/* For now storing on current dir, to ease implementation */
 	/* on final version store on user-wide cache, this might be useful because
 	 * of running ched on directories with no write permissions */
@@ -234,15 +238,18 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	MD5Args(nargv,digest,!ignore_wd);
-	cachefile = cache_path(digest);
-	if (cachefile == NULL) {
-		fprintf(stderr,"%s: error, out of memory\n",basename(argv[0]));
-		return 1;
-	}
-
-	if ( mkdir_(CACHE_PARENT_PATH) || mkdir_(CACHE_PATH) )
+	status = mkdir_(CACHE_PARENT_PATH) || mkdir_(CACHE_PATH);
+	if (status == 0) { /* ok */
+		MD5Args(nargv,digest,!ignore_wd);
+		cachefile = cache_path(digest);
+		if (cachefile == NULL) {
+			fprintf(stderr,"%s: error, out of memory\n",basename(argv[0]));
+			return 1;
+		}
+	} else {
+		cachefile = NULL; /* no need to build cachefile anyway */
 		fprintf(stderr,"%s: warning, unable to create cache directories (continuing anyway...)\n",basename(argv[0]));
+	}
 
 	if (stat_age(cachefile,'m') < timeout) { /* age of cache < timeout */
 		if (cat_file_path(cachefile)) {
