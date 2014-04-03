@@ -50,6 +50,7 @@
 #include <string.h>
 #include <libgen.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 #define DEFAULT_TERM_WIDTH 80
 #define DEFAULT_TAB_SIZE 8
@@ -78,7 +79,7 @@ int gettermwidth(void)
 	if (!width) {
 		struct winsize w;
 		w.ws_col = 0;
-		if (ioctl(0, TIOCGWINSZ, &w) != -1)
+		if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) != -1)
 			width = w.ws_col;
 	}
 	return width ? width : DEFAULT_TERM_WIDTH;
