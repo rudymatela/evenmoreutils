@@ -20,15 +20,9 @@
 #include "version.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
 #include <libgen.h>
-#include <sys/stat.h>
+#include "muni.h"
 
-
-static int stat_time(const char *path, struct timespec *buf, char type);
-static double difftimespec(struct timespec *buftime1, struct timespec *buftime0);
-static double stat_age(const char *path, char type);
 
 static declare_fixed_capture(capture_a, char, 'a');
 static declare_fixed_capture(capture_m, char, 'm');
@@ -103,47 +97,4 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-
-static double difftimespec(struct timespec *buftime1, struct timespec *buftime0)
-{
-	return          buftime1->tv_sec  - buftime0->tv_sec +
-	       (double)(buftime1->tv_nsec - buftime0->tv_nsec) / 1000000000.;
-}
-
-
-static double stat_age(const char *path, char type)
-{
-	struct timespec file_time;
-	struct timespec curr_time;
-	if (stat_time(path, &file_time, type) || clock_gettime(CLOCK_REALTIME, &curr_time))
-		return 0./0.; /* Returning NaN on error */
-	return difftimespec(&curr_time, &file_time);
-}
-
-
-static int stat_time(const char *path, struct timespec *buf, char type)
-{
-	struct stat statbuf;
-	int r;
-
-	r = stat(path,&statbuf);
-	if (r)
-		return r;
-
-	switch (type) {
-	case 'a':
-		(*buf) = statbuf.st_atim;
-		break;
-
-	case 'm':
-		(*buf) = statbuf.st_mtim;
-		break;
-
-	case 'c':
-		(*buf) = statbuf.st_ctim;
-		break;
-	}
-
-	return r;
-}
 

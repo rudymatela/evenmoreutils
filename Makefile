@@ -26,14 +26,15 @@
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
-BINS=sgetopt_test hilite randpar untl fit age
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif ched
+BINS=sgetopt_test hilite randpar untl fit age ched
+SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
 SYMS=pad whle repeat # symlinks to binaries or shells
-OBJS=sgetopt.o
+OBJS=sgetopt.o muni.o
 MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1 ched.1
 GMANS=pad.1 whle.1 repeat.1 # copies generated automatically by asciidoc
 AMANS=$(MANS) $(GMANS) # all manpages
 CFLAGS=-Wall -Werror -Wno-variadic-macros
+# TODO: Do we need this LDLIBS in all binaries, or just in some?
 LDLIBS=-lm -lrt
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share
@@ -50,7 +51,10 @@ randpar: sgetopt.o
 
 fit: sgetopt.o
 
-age: sgetopt.o
+age: sgetopt.o muni.o
+
+ched: LDLIBS=-lbsd
+ched: sgetopt.o muni.o
 
 clean:
 	rm -f $(BINS) $(OBJS) $(AMANS)
