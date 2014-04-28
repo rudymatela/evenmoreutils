@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libgen.h>
+#include <math.h>
 #include "muni.h"
 
 
@@ -57,12 +58,16 @@ int main(int argc, char **argv)
 	static double lower_bound = 0./0.; /* NaN */
 	static double upper_bound = 0./0.;
 	static char stat_type = 'm';
+	static int round_output = 0;
+	static int floor_output = 0;
+	static int minute_output = 0;
 
 	double file_age;
 	int check_upper,
 	    check_lower;
 	int i;
 
+	/* TODO: maybe change minutes / round / floor / trunc to -f "1.3m" -f "3.4s", etc */
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
@@ -71,6 +76,10 @@ int main(int argc, char **argv)
 		{ 'a', "access",  0, capture_a,           &stat_type },
 		{ 'm', "modify",  0, capture_m,           &stat_type },
 		{ 'c', "change",  0, capture_c,           &stat_type },
+		{ 0,   "round",   0, capture_presence,    &round_output },
+		{ 0,   "floor",   0, capture_presence,    &floor_output },
+		{ 0,   "trunc",   0, capture_presence,    &floor_output },
+		{ 0,   "minutes", 0, capture_presence,    &minute_output },
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
@@ -111,7 +120,13 @@ int main(int argc, char **argv)
 				(check_lower && file_age < lower_bound))
 				return 1;
 		} else {
-			printf("%lf\n", file_age);
+			if (minute_output)
+				file_age /= 60.0;
+			if (floor_output)
+				file_age = floor(file_age);
+			else if (round_output)
+				file_age = round(file_age);
+			printf(round_output || floor_output ? "%.0lf\n" : "%lf\n", file_age);
 		}
 	}
 
