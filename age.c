@@ -28,6 +28,27 @@ static declare_fixed_capture(capture_a, char, 'a');
 static declare_fixed_capture(capture_m, char, 'm');
 static declare_fixed_capture(capture_c, char, 'c');
 
+
+int capture_duration(const char *carg, void *pvar)
+{
+	double *pf = pvar;
+	char mult = 's'; /* multiplier: either s, m or h */
+	int r = sscanf(carg, "%lf%c",pf,&mult);
+	if (r != 1 && r != 2)
+		return 1;
+	switch (mult) {
+	case 'h':
+		*pf *= 60.;
+	case 'm':
+		*pf *= 60.;
+	case 's':
+		return 0;
+	default: /* unknown multiplier */
+		return 1;
+	}
+}
+
+
 int main(int argc, char **argv)
 {
 	/* Program options */
@@ -45,8 +66,8 @@ int main(int argc, char **argv)
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
-		{ 'o', "older",   1, capture_double,      &lower_bound },
-		{ 'n', "newer",   1, capture_double,      &upper_bound },
+		{ 'o', "older",   1, capture_duration,    &lower_bound },
+		{ 'n', "newer",   1, capture_duration,    &upper_bound },
 		{ 'a', "access",  0, capture_a,           &stat_type },
 		{ 'm', "modify",  0, capture_m,           &stat_type },
 		{ 'c', "change",  0, capture_c,           &stat_type },
