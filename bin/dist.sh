@@ -46,7 +46,7 @@ mkdir -p ${dest}
 # Copies every file that is not hidden
 cp -r * ${dest}
 
-# Set versions
+# Set versions -- TODO: make this undependant of :development version: string (match whole line)
 cat lib/version.h               | sed -e "s/:development version:/$version/" > ${dest}/lib/version.h
 cat src/evenmoreutils-common.sh | sed -e "s/:development version:/$version/" > ${dest}/src/evenmoreutils-common.sh
 
