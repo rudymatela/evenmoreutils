@@ -57,7 +57,8 @@ test -f ${dest}/INSTALL.md && mv ${dest}/INSTALL.md ${dest}/INSTALL
 # Cleanup -- tarbalize -- remove tempdir
 make -C ${dest} clean
 tar -cJf ${dest}.tar.xz ${dest}
+tar -czf ${dest}.tar.gz ${dest}
 rm -r ${dest}
 
-echo "Written ${dest}.tar.xz."
+echo "Written ${dest}.tar.xz and ${dest}.tar.gz.  Don't forget to test them."
 
