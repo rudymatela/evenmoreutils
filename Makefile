@@ -71,7 +71,7 @@ homeinstall:
 	make DESTDIR=~ PREFIX= MANPREFIX= install
 
 dist:
-	./dist.sh $(VERSION) $(DESTDIR)
+	./bin/dist.sh $(VERSION) $(DESTDIR)
 
 test: all
-	./test.sh
+	./bin/test.sh
