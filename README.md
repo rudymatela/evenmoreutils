@@ -19,8 +19,8 @@ etc).  The name is a reference to the GNU [coreutils].  The tools are:
 * **[repeat]**:  repeats a command, indefinitely or *n* times
 * **[untl]**:    runs a program until it is sucessful
 * **[whle]**:    runs a program until it fails
-* sgetopt:   an easier-to-use version of the getopt library
-* easy-getopt: an easier-to-use version of the getopt command line tool
+* **sgetopt**:   an easier-to-use version of the getopt library
+* **easy-getopt**: an easier-to-use version of the getopt command line tool
 
 They are currently *experimental* tools.  There are some known bugs (check the
 manpages of each command for details).  Code is quick-and-dirty on lots of
