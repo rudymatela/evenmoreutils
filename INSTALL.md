@@ -1,5 +1,5 @@
-Installaation Instructions
-**************************
+Installation Instructions
+*************************
 
 Copyright (C) 2013  Rudy Matela
 
@@ -61,8 +61,5 @@ Check the Makefile for default options.
 Where is ./configure?
 =====================
 
-Stop the autoconf insanity!
 http://freecode.com/articles/stop-the-autoconf-insanity-why-we-need-a-new-build-system
-
-Pure make rules. Autoconf sucks. If you don't agree, you're wrong!
 
