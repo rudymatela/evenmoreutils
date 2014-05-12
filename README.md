@@ -5,20 +5,20 @@ This is evenmoreutils, a collection of command line tools inspired by
 [moreutils].  Both complement the standard \*NIX toolset (ls, grep, less
 etc).  The name is a reference to the GNU [coreutils].  The tools are:
 
-* [age]:     prints file age in seconds / checks older/newer than seconds
-* [anywait]: like [wait], but works on any pid from the system
-* [ched]:    cached run of a command
-* [fit]:     truncates a stream by fitting it into a certain width
-* [hilite]:  runs a command, highlight stderr
-* [hl]:      highlight some expressions on a stream
-* [mime]:    prints the mimetype of a file (alias for ``file -bi``)
-* [nup]:     n-up an output from a program
-* [p]:       runs parallel processes tagging or highlighting their output
-* [pad]:     pads a stream with whitespaces to fit a certain width
-* [randpar]: output a random parameter
-* [repeat]:  repeats a command, indefinitely or *n* times
-* [untl]:    runs a program until it is sucessful
-* [whle]:    runs a program until it fails
+* **[age]**:     prints file age in seconds / checks older/newer than seconds
+* **[anywait]**: like [wait], but works on any pid from the system
+* **[ched]**:    cached run of a command
+* **[fit]**:     truncates a stream by fitting it into a certain width
+* **[hilite]**:  runs a command, highlight stderr
+* **[hl]**:      highlight some expressions on a stream
+* **[mime]**:    prints the mimetype of a file (alias for ``file -bi``)
+* **[nup]**:     n-up an output from a program
+* **[p]**:       runs parallel processes tagging or highlighting their output
+* **[pad]**:     pads a stream with whitespaces to fit a certain width
+* **[randpar]**: output a random parameter
+* **[repeat]**:  repeats a command, indefinitely or *n* times
+* **[untl]**:    runs a program until it is sucessful
+* **[whle]**:    runs a program until it fails
 * sgetopt:   an easier-to-use version of the getopt library
 * easy-getopt: an easier-to-use version of the getopt command line tool
 
