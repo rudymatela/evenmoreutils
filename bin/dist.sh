@@ -51,8 +51,8 @@ cat lib/version.h               | sed -e "s/:development version:/$version/" > $
 cat src/evenmoreutils-common.sh | sed -e "s/:development version:/$version/" > ${dest}/src/evenmoreutils-common.sh
 
 # Removes .md from README and INSTALL if necessary
-test -f ${dest}/README.md &&  mv ${dest}/README.md  ${dest}/README
-test -f ${dest}/INSTALL.md && mv ${dest}/INSTALL.md ${dest}/INSTALL
+test -f ${dest}/README.md    && mv ${dest}/README.md    ${dest}/README
+test -f ${dest}/INSTALL.adoc && mv ${dest}/INSTALL.adoc ${dest}/INSTALL
 
 # Cleanup -- tarbalize -- remove tempdir
 make -C ${dest} clean
