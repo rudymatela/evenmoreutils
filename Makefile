@@ -43,6 +43,8 @@ MANPREFIX=$(PREFIX)/share
 
 all: $(BINS) $(MANS)
 
+man: $(MANS)
+
 src/untl: lib/sgetopt.o
 
 src/sgetopt_test: lib/sgetopt.o

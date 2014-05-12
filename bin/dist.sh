@@ -55,7 +55,7 @@ test -f ${dest}/README.md &&  mv ${dest}/README.md  ${dest}/README
 test -f ${dest}/INSTALL.md && mv ${dest}/INSTALL.md ${dest}/INSTALL
 
 # Cleanup -- tarbalize -- remove tempdir
-make -C ${dest} clean
+make -C ${dest} clean man
 tar -cJf ${dest}.tar.xz ${dest}
 tar -czf ${dest}.tar.gz ${dest}
 rm -r ${dest}
