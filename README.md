@@ -44,20 +44,20 @@ specific files.
 [coreutils]: https://www.gnu.org/software/coreutils/
 
 [INSTALL]: INSTALL.md
-[age]:     man/age.1.txt
-[anywait]: man/anywait.1.txt
-[ched]:    man/ched.1.txt
-[fit]:     man/fit.1.txt
-[hilite]:  man/hilite.1.txt
-[hl]:      man/hl.1.txt
-[mime]:    man/mime.1.txt
-[nup]:     man/nup.1.txt
-[p]:       man/p.1.txt
-[pad]:     man/pad.1.txt
-[randpar]: man/randpar.1.txt
-[repeat]:  man/untl.1.txt
-[untl]:    man/untl.1.txt
-[whle]:    man/untl.1.txt
+[age]:     man/age.1.adoc
+[anywait]: man/anywait.1.adoc
+[ched]:    man/ched.1.adoc
+[fit]:     man/fit.1.adoc
+[hilite]:  man/hilite.1.adoc
+[hl]:      man/hl.1.adoc
+[mime]:    man/mime.1.adoc
+[nup]:     man/nup.1.adoc
+[p]:       man/p.1.adoc
+[pad]:     man/pad.1.adoc
+[randpar]: man/randpar.1.adoc
+[repeat]:  man/untl.1.adoc
+[untl]:    man/untl.1.adoc
+[whle]:    man/untl.1.adoc
 
 [wait]:    http://man.cx/wait
 
