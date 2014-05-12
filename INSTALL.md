@@ -34,15 +34,15 @@ Installing on home directory
 Crash course:
 
 	make DESTDIR=~ PREFIX= MANPREFIX= install
+
+This installs binaries on `~/bin` and manual pages on `~/man`.  To add these as
+defaults for your user you need to add those to your executables and manual paths:
+
 	echo 'export PATH=~/bin:${PATH}' >> .bashrc
 	echo 'MANDATORY_MANPATH ~/man'   >> .manpath
-	logout && login
 
-You can easily install this software on your home directory by issuing
-`make DESTDIR=~ PREFIX= MANPREFIX= install`.  This will install binaries on
-`~/bin` and manuals on `~/man`. You can add `~/bin` to your `$PATH` variable and
-configure `~/man` as a mandatory path on `~/.manpath`.  NOTE: A shorthand for
-`make DESTDIR=~ PREFIX= MANPREFIX= install` is `make homeinstall`
+You need to logout and login again for lines above to take effect.
+
 
 
 Installation Options
@@ -51,10 +51,10 @@ Installation Options
 Crash course for packagers: `make && make install DESTDIR=/alt/dir`
 
 Options
-* DESTDIR: Destination dir for the package
-* CFLAGS: Flags for the C Compiler
-* PREFIX: Prefix to be appended to DESTDIR
-* MANPREFIX: Prefix appended to DESTDIR for manual pages, defl: $(PREFIX)/share
+* `DESTDIR`: Destination dir for the package
+* `CFLAGS`: Flags for the C Compiler
+* `PREFIX`: Prefix to be appended to `DESTDIR`
+* `MANPREFIX`: Prefix appended to `DESTDIR` for manual pages, defl: `$(PREFIX)/share`
 
 Check the Makefile for default options.
 
