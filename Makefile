@@ -22,7 +22,7 @@
 
 
 # Implicit rules
-%.1: %.1.txt
+%.1: %.1.adoc
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
