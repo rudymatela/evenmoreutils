@@ -31,7 +31,7 @@ official repositories.
 Installing on home directory
 ----------------------------
 
-Crash course:
+To install on your home directory, run:
 
 	make DESTDIR=~ PREFIX= MANPREFIX= install
 
