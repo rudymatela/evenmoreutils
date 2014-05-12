@@ -42,9 +42,19 @@ if [ -e "${dest}.tar.xz" ]; then
 fi
 
 mkdir -p ${dest}
+
+# Copies every file that is not hidden
 cp -r * ${dest}
-cat version.h               | sed -e "s/:development version:/$version/" > ${dest}/version.h
-cat evenmoreutils-common.sh | sed -e "s/:development version:/$version/" > ${dest}/evenmoreutils-common.sh
+
+# Set versions
+cat lib/version.h               | sed -e "s/:development version:/$version/" > ${dest}/lib/version.h
+cat src/evenmoreutils-common.sh | sed -e "s/:development version:/$version/" > ${dest}/src/evenmoreutils-common.sh
+
+# Removes .md from README and INSTALL if necessary
+test -f ${dest}/README.md &&  mv ${dest}/README.md  ${dest}/README
+test -f ${dest}/INSTALL.md && mv ${dest}/INSTALL.md ${dest}/INSTALL
+
+# Cleanup -- tarbalize -- remove tempdir
 make -C ${dest} clean
 tar -cJf ${dest}.tar.xz ${dest}
 rm -r ${dest}
