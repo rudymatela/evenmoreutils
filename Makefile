@@ -30,8 +30,8 @@ BINS=sgetopt_test hilite randpar untl fit age ched
 SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
 SYMS=pad whle repeat # symlinks to binaries or shells
 OBJS=sgetopt.o muni.o
-MANS=anywait.1 fit.1 hilite.1 hl.1 mime.1 nup.1 p.1 randpar.1 untl.1 age.1 ched.1
-GMANS=pad.1 whle.1 repeat.1 # copies generated automatically by asciidoc
+MANS=man/anywait.1 man/fit.1 man/hilite.1 man/hl.1 man/mime.1 man/nup.1 man/p.1 man/randpar.1 man/untl.1 man/age.1 man/ched.1
+GMANS=man/pad.1 man/whle.1 man/repeat.1 # copies generated automatically by asciidoc
 AMANS=$(MANS) $(GMANS) # all manpages
 CFLAGS=-Wall -Werror -Wno-variadic-macros
 # TODO: Do we need this LDLIBS in all binaries, or just in some?
