@@ -26,14 +26,14 @@
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
-BINS=sgetopt_test hilite randpar untl fit age ched
-SHS=anywait easy-getopt hl mime nup p evenmoreutils-common.sh spongif
-SYMS=pad whle repeat # symlinks to binaries or shells
-OBJS=sgetopt.o muni.o
+BINS=src/sgetopt_test src/hilite src/randpar src/untl src/fit src/age src/ched
+SHS=src/anywait src/easy-getopt src/hl src/mime src/nup src/p src/evenmoreutils-common.sh src/spongif
+SYMS=src/pad src/whle src/repeat # symlinks to binaries or shells
+OBJS=lib/sgetopt.o lib/muni.o
 MANS=man/anywait.1 man/fit.1 man/hilite.1 man/hl.1 man/mime.1 man/nup.1 man/p.1 man/randpar.1 man/untl.1 man/age.1 man/ched.1
 GMANS=man/pad.1 man/whle.1 man/repeat.1 # copies generated automatically by asciidoc
 AMANS=$(MANS) $(GMANS) # all manpages
-CFLAGS=-Wall -Werror -Wno-variadic-macros
+CFLAGS=-Wall -Werror -Wno-variadic-macros -I./lib
 # TODO: Do we need this LDLIBS in all binaries, or just in some?
 LDLIBS=-lm -lrt
 PREFIX=/usr
@@ -43,18 +43,18 @@ MANPREFIX=$(PREFIX)/share
 
 all: $(BINS) $(MANS)
 
-untl: sgetopt.o
+src/untl: lib/sgetopt.o
 
-sgetopt_test: sgetopt.o
+src/sgetopt_test: lib/sgetopt.o
 
-randpar: sgetopt.o
+src/randpar: lib/sgetopt.o
 
-fit: sgetopt.o
+src/fit: lib/sgetopt.o
 
-age: sgetopt.o muni.o
+src/age: lib/sgetopt.o lib/muni.o
 
-ched: LDLIBS=-lbsd
-ched: sgetopt.o muni.o
+src/ched: LDLIBS=-lbsd
+src/ched: lib/sgetopt.o lib/muni.o
 
 clean:
 	rm -f $(BINS) $(OBJS) $(AMANS)
