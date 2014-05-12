@@ -52,7 +52,7 @@ OPTIONS
 	does accept  floating point values.
 
 *-l*, *--limit*='LIMIT'::
-	Limit the number of tries.
+	Limit the number of tries.  0 for unlimited (the default)
 
 
 EXAMPLES
@@ -65,6 +65,18 @@ Tries to ping example.com until it is successful.
 **untl ls /var/spool/printer**
 
 Tries to list contents of /var/spool/printer until it is successful.
+
+
+**untl mount /dev/cd /mnt/cdrom**
+
+Tries to mount a cd device several times until sucess.
+
+
+NOTES
+-----
+
+When passing multiple ambiguous options, the last one has overrides the
+previous ones (this is useful when aliasing commands).
 
 
 BUGS
