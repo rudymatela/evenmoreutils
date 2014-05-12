@@ -128,12 +128,13 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	for (i = 0; !limit || i < limit; i ++) {
+		if (i) /* only sleep from the second trie onward */
+			fsleep(interval);
 		int r = execvpfw(argv[1], argv+1);
 		if (run_type=='u' && r==retval) /* untl */
 			break;
 		else if (run_type=='w' && r!=retval) /* whle */
 			break;
-		fsleep(interval);
 	}
 	return 0;
 }
