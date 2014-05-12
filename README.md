@@ -43,7 +43,7 @@ specific files.
 [moreutils]: http://kitenet.net/~joey/code/moreutils/
 [coreutils]: https://www.gnu.org/software/coreutils/
 
-[INSTALL]: INSTALL
+[INSTALL]: INSTALL.md
 [age]:     man/age.1.txt
 [anywait]: man/anywait.1.txt
 [ched]:    man/ched.1.txt
