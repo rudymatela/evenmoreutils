@@ -40,8 +40,6 @@ MANS=man/anywait.1 man/fit.1 man/hilite.1 man/hl.1 man/mime.1 man/nup.1 man/p.1 
 GMANS=man/pad.1 man/whle.1 man/repeat.1 # copies generated automatically by asciidoc
 AMANS=$(MANS) $(GMANS) # all manpages
 CFLAGS=-Wall -Werror -Wno-variadic-macros -I./lib
-# TODO: Do we need this LDLIBS in all binaries, or just in some?
-LDLIBS=-lm -lrt
 PREFIX=/usr
 MANPREFIX=$(PREFIX)/share
 
@@ -51,6 +49,7 @@ all: $(BINS) $(MANS)
 
 man: $(MANS)
 
+src/untl: LDLIBS=-lm
 src/untl: lib/sgetopt.o
 
 src/sgetopt_test: lib/sgetopt.o
@@ -59,10 +58,16 @@ src/randpar: lib/sgetopt.o
 
 src/fit: lib/sgetopt.o
 
+src/age: LDLIBS=-lm
 src/age: lib/sgetopt.o lib/muni.o
 
 src/ched: LDLIBS=-lbsd
 src/ched: lib/sgetopt.o lib/muni.o
+
+lib/muni.o: LDLIBS=-lrt
+lib/muni.o: lib/muni.c lib/muni.h
+
+lib/sgetopt.o: lib/sgetopt.c lib/sgetopt.h
 
 clean:
 	rm -f $(BINS) $(OBJS) $(AMANS)
