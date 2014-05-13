@@ -19,7 +19,7 @@ etc).  The name is a reference to the GNU [coreutils].  The tools are:
 * **[repeat]**:  repeats a command, indefinitely or *n* times
 * **[untl]**:    runs a program until it is sucessful
 * **[whle]**:    runs a program until it fails
-* **sgetopt**:   an easier-to-use version of the getopt library
+* **[sgetopt]**:   an easier-to-use version of the getopt library
 * **easy-getopt**: an easier-to-use version of the getopt command line tool
 
 They are currently *experimental* tools.  There are some known bugs (check the
@@ -58,6 +58,7 @@ specific files.
 [repeat]:  man/untl.1.adoc
 [untl]:    man/untl.1.adoc
 [whle]:    man/untl.1.adoc
+[sgetopt]: man/sgetopt.1.adoc
 
 [wait]:    http://man.cx/wait
 
