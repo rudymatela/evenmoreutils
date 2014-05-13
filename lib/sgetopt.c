@@ -21,6 +21,18 @@
  * The parsing of arguments takes O(N*M) time, when it could be done in O(N)
  * time. N is the number of parameters and M is the number of options in the
  * option table.
+ *
+ * TODO: Maybe? Transform stop_at_nonoption on flags so other boolean options
+ * can be passed.
+ *
+ * TODO: Maybe? Add switch (flag?) to supress error messages (so the user can
+ * print his own).
+ *
+ * TODO: Maybe? Change all internal errors on sgetopt to negative values, have
+ * them well described on defines and let the user know that the space of
+ * positive values can be used in his own callbacks.  This can have also the
+ * good side-effect of, when using negative values, using the lower part of the
+ * int, as the position of which command line argument had problem?
  */
 #include "sgetopt.h"
 #include <stdio.h>
