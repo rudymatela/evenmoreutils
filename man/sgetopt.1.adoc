@@ -1,0 +1,93 @@
+SGETOPT(1)
+==========
+
+NAME
+----
+sgetopt - Parse command-line options
+
+
+SYNOPSIS
+--------
+
+	#include <sgetopt.h>
+
+	int sgetopt(int argc,
+	            char * const argv[],
+	            const struct soption optable[],
+	            char *normal_args[],
+	            int stop_at_nonoption);
+
+
+DESCRIPTION
+-----------
+The *sgetopt*() function parses command-line arguments.  It parses arguments in
+a similar way to *getopt*(), albeit with a different interface.
+
+The first two arguments, 'argc' and 'argv' have their usual meaning: count and
+command line arguments.  The 'optable' argument is an array of 'struct
+soption', containing the description of how to process the arguments.  The
+'normal_args' will be written with all the non-option arguments, it 'should'
+have space for 'argc+1' elements.  For convenience, 'normal_args' can be
+pointed to 'argv', which, in this case, will be overwritten.  The last argument is
+'stop_at_nonoption' which indicates wether sgetopt should stop processing at
+the first non-option: this is useful when writting programs that run other
+command line programs.
+
+The struct soption is as follows, with comments describing what are each component:
+
+	struct soption {
+		char sname;
+		char *lname;
+		int has_arg;
+		int (*func)(const char*,void*); /* must return 0 on success */
+		void *arg;
+	};
+
+In this structure, 'sname' and 'lname' are respectively the short and long
+versions of the option, e.g.: \'h\' (for -h) and "--help" (for --help).  The
+boolean 'has_arg' indicates wether the command takes an argument (-l10, -l 10,
+--length=10 or --length 10).
+
+The 'func' is a callback which will process the argument, itself takes two
+arguments, the argument to the command, if there is any, and a pointer to 'arg'
+provided in the 'soption' struct.
+
+
+RETURN VALUE
+------------
+
+This function returns 0 on success.  On error, it returns either 1 when
+processing the arguments themselves, or the error code returned by one of the
+'func' callbacks -- this way you can capture your own errors.
+
+
+EXAMPLES
+--------
+The following example program uses *getopt*() to handle two program options:
+'-n', with no associated value; and '-t' 'val', which expects an associated
+string.  This has 'intentionally' the same functionality as the first example
+provided in the *getopt*(3) manpage of version 3.66 of the Linux *man-pages*
+project.
+
+	/* TODO: Write this example */
+	/* For now, you can download the evenmoreutils source and look at
+	 * sgetopt_test for an example. */
+
+
+BUGS
+----
+This documentation can, and will eventually, be improved.
+
+Report bugs to rudy@matela.com.br
+
+
+SEE ALSO
+--------
+*getopt*(3), *getsubopt*(3)
+
+
+COPYRIGHT
+---------
+Copyright (C) 2012-2014 Rudy Matela. Free use of this software is granted under the
+terms of the GNU General Public License version 2 or any later version.
+
