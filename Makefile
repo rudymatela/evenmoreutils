@@ -19,6 +19,12 @@
 #
 #
 # Targets: all, clean, install, homeinstall, dist VERSION=x.x
+#
+#
+# TODO: Also install libraries and includes on /usr/lib and /usr/include.  When
+# doing that, separate targets: install (all), installlib (only libraries),
+# installbin (only executables).  Also only install manuals of the tools
+# installed.
 
 
 # Implicit rules
