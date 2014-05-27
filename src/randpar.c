@@ -56,15 +56,15 @@ int main(int argc, char **argv)
 	int delimiter = '\n';
 
 	struct soption opttable[] = {
-		{ 'n', 0,         1, capture_int,         &n },
-		{ '0', "print0",  0, capture_nullchar,    &delimiter },
-		{ 'd', "delimiter",1,capture_char,        &delimiter },
-		{ 'a', "all",     0, capture_presence,    &all },
-		{ 'h', "help",    0, capture_presence,    &help },
-		{ 'v', "version", 0, capture_presence,    &version },
-		{ 'r', "repeat",  0, capture_presence,    &repeat },
-		{ 's', "seed",    1, capture_int,         &seed },
-		{ 0,   0,         0, capture_nonoption,   0 }
+		{ 'n', 0,           1, capture_int,       &n },
+		{ '0', "print0",    0, capture_nullchar,  &delimiter },
+		{ 'd', "delimiter", 1, capture_char,      &delimiter },
+		{ 'a', "all",       0, capture_presence,  &all },
+		{ 'h', "help",      0, capture_presence,  &help },
+		{ 'v', "version",   0, capture_presence,  &version },
+		{ 'r', "repeat",    0, capture_presence,  &repeat },
+		{ 's', "seed",      1, capture_int,       &seed },
+		{ 0,   0,           0, capture_nonoption, 0 }
 	};
 
 	/* After the call to getopt will point to an array of all nonoptions */
