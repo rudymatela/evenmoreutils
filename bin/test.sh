@@ -120,9 +120,12 @@ REF
 
 randpar_test() {
 	assert_evl ./src/randpar    1 2 3       \| wc <<<"      1       1       2"
+	assert_evl ./src/randpar -d' ' 1 2 3    \| wc <<<"      0       1       2"
 	assert_evl ./src/randpar -a 1 2 3       \| wc <<<"      3       3       6"
 	assert_evl ./src/randpar -a 1x2 3       \| wc <<<"      2       2       6"
 	assert_evl ./src/randpar -a0 1x 3       \| wc <<<"      0       1       5"
+	assert_evl ./src/randpar -n 4 -d, a b   \| wc <<<"      0       1       8"
+	assert_evl ./src/randpar -n 9 -d\' \' a \| wc <<<"      0       9      18"
 	assert_evl ./src/randpar -n 10 abc de f \| wc -l <<<"10"
 	assert_evl ./src/randpar `seq 1 100`    \| wc -l <<<"1"
 	assert_evl ./src/randpar 1 2 3 -n0 4    \| wc -l <<<"0"

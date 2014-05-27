@@ -176,6 +176,14 @@ int capture_int_pedantic(const char *carg, void *pvar)
 }
 
 
+int capture_char(const char *carg, void *pvar)
+{
+	char *pc = pvar;
+	*pc = *carg;
+	return *pc ? 0 : 1;
+}
+
+
 int capture_float(const char *carg, void *pvar)
 {
 	float *pf = pvar;

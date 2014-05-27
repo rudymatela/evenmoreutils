@@ -43,7 +43,7 @@ OPTIONS
 *-r*, *--repeat*::
 	Allow parameters to be repeated.
 
-*-s*, *--seed*::
+*-s*, *--seed*='SEED'::
 	Fixes the random seed (deterministic behaviour).
 
 

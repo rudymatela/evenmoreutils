@@ -25,6 +25,9 @@
 #include <libgen.h>
 
 
+static declare_fixed_capture(capture_nullchar, char, '\0');
+
+
 void shuffle(int argc, char **argv)
 {
 	/* Fisher-Yates/Knuth Shuffle */
@@ -43,7 +46,6 @@ int main(int argc, char **argv)
 {
 	/* Program options */
 	static int n = 1;
-	static int zero;
 	static int all;
 	static int help;
 	static int version;
@@ -51,11 +53,12 @@ int main(int argc, char **argv)
 	static int seed = -1;
 
 	int i;
-	int delimiter;
+	int delimiter = '\n';
 
 	struct soption opttable[] = {
 		{ 'n', 0,         1, capture_int,         &n },
-		{ '0', "print0",  0, capture_presence,    &zero },
+		{ '0', "print0",  0, capture_nullchar,    &delimiter },
+		{ 'd', "delimiter",1,capture_char,        &delimiter },
 		{ 'a', "all",     0, capture_presence,    &all },
 		{ 'h', "help",    0, capture_presence,    &help },
 		{ 'v', "version", 0, capture_presence,    &version },
@@ -98,7 +101,6 @@ int main(int argc, char **argv)
 		repeat = 1;
 	}
 
-	delimiter = zero ? '\0': '\n';
 	if (repeat) {
 		if (argc==0) {
 			char *progname = basename(argv[0]);
