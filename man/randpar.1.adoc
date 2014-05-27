@@ -23,7 +23,13 @@ OPTIONS
 	Set the number of parameters to print, default is one parameter.
 
 *-0*, *--print0*::
-	Output null character instead of linebreaks to separate parameters.  This is provided to be used in conjunction with xargs -0.
+	Output null character instead of linebreaks to separate parameters.  This
+	is provided to be used in conjunction with xargs -0.  This overrides any
+	calls to *-d*.
+
+*-d*, *--delimiter*='D'::
+	Output the character 'D' as delimiter instead of linebreaks.  This
+	overrides *-0*.
 
 *-a*, *--all*::
 	Outputs all parameters passed in a random order.
@@ -34,6 +40,11 @@ OPTIONS
 *-v*, *--version*::
 	Shows version.
 
+*-r*, *--repeat*::
+	Allow parameters to be repeated.
+
+*-s*, *--seed*::
+	Fixes the random seed (deterministic behaviour).
 
 
 BUGS
