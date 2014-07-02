@@ -32,7 +32,8 @@
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
-BINS=src/sgetopt_test src/sgetopt_simple src/hilite src/randpar src/untl src/fit src/age src/ched
+BINS=src/hilite src/randpar src/untl src/fit src/age src/ched
+TBINS=src/sgetopt_test src/sgetopt_simple
 SHS=src/anywait src/easy-getopt src/hl src/mime src/p src/evenmoreutils-common.sh src/spongif
 SYMS=src/pad src/whle src/repeat # symlinks to binaries or shells
 OBJS=lib/sgetopt.o lib/muni.o
@@ -45,7 +46,7 @@ MANPREFIX=$(PREFIX)/share
 
 .PHONY: all clean install homeinstall dist test
 
-all: $(BINS) $(MANS)
+all: $(BINS) $(TBINS) $(MANS)
 
 man: $(MANS)
 
@@ -72,7 +73,7 @@ lib/muni.o: lib/muni.c lib/muni.h
 lib/sgetopt.o: lib/sgetopt.c lib/sgetopt.h
 
 clean:
-	rm -f $(BINS) $(OBJS) $(AMANS)
+	rm -f $(BINS) $(TBINS) $(OBJS) $(AMANS)
 
 install: all
 	mkdir -p                $(DESTDIR)$(PREFIX)/bin
