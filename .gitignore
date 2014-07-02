@@ -8,3 +8,4 @@ src/randpar
 src/sgetopt_simple
 src/sgetopt_test
 src/untl
+*.swp
