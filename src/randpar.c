@@ -70,13 +70,12 @@ int main(int argc, char **argv)
 	/* After the call to getopt will point to an array of all nonoptions */
 	char **nargv = argv + 1;
 
-	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable, NULL, 0)) {
+	if (sgetopt(argc, argv, opttable, nargv, 0)) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
 		return 1;
 	}
-	argc = sgetopt_nnonopts(opttable);
+	argc = ppcharlen(nargv);
 
 	srand(seed < 0 ? time(0) ^ getpid(): seed);
 
