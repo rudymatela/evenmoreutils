@@ -58,7 +58,7 @@ p() {
 				if [ -n "$code" ]; then
 					pidfile=`mktemp -t evenmoreutils-p-XXXXXXXXXX`
 					( echo $BASHPID > $pidfile; exec $1 ) |
-						sed -e "s/^/$code/" -e "s/$/$N/" &
+						sed -ue "s/^/$code/" -e "s/$/$N/" &
 					pids="$pids `cat $pidfile` $!"
 					rm $pidfile
 				else

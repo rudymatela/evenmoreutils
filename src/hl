@@ -91,7 +91,7 @@ hl() {
 		esac
 		shift
 	done
-	exec sed -e "$commands" "${files[@]}"
+	exec sed -ue "$commands" "${files[@]}"
 }
 
 hl "$@"
