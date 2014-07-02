@@ -32,7 +32,7 @@
 	a2x -a mansource=evenmoreutils -a revdate=`date +%Y-%m-%d` -a manmanual='Evenmoreutils Manual' --doctype manpage --format manpage $<
 
 
-BINS=src/sgetopt_test src/hilite src/randpar src/untl src/fit src/age src/ched
+BINS=src/sgetopt_test src/sgetopt_simple src/hilite src/randpar src/untl src/fit src/age src/ched
 SHS=src/anywait src/easy-getopt src/hl src/mime src/p src/evenmoreutils-common.sh src/spongif
 SYMS=src/pad src/whle src/repeat # symlinks to binaries or shells
 OBJS=lib/sgetopt.o lib/muni.o
@@ -53,6 +53,8 @@ src/untl: LDLIBS=-lm
 src/untl: lib/sgetopt.o
 
 src/sgetopt_test: lib/sgetopt.o
+
+src/sgetopt_simple: lib/sgetopt.o
 
 src/randpar: lib/sgetopt.o
 
