@@ -1,0 +1,10 @@
+lib/*.o
+man/*.1
+src/age
+src/ched
+src/fit
+src/hilite
+src/randpar
+src/sgetopt_simple
+src/sgetopt_test
+src/untl
