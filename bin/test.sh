@@ -178,6 +178,9 @@ REF
 blah
 bleh
 REF
+	assert ./src/ched -t0 ls-l-a-1 -l -a -1 src <<REF
+ls-l-a-1: error, unable to run command \`ls-l-a-1 -l -a -1 src'
+REF
 }
 
 

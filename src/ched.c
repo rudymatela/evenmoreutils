@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 		{ 'v', "version",             0, capture_presence,    &version },
 		{ 'i', "ignore-working-dir",  0, capture_presence,    &ignore_wd },
 		{ 't', "timeout",             1, capture_double,      &timeout },
-		{ 0,   0,                     0, capture_nonoption,   0 }
+		{ 0,   0,                     0, 0,                   0 }
 	};
 
 	int i;
@@ -210,12 +210,10 @@ int main(int argc, char **argv)
 	/* After the call to getopt will point to an array of all nonoptions */
 	char **nargv = argv + 1;
 
-	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable, NULL, 1)) {
+	if (sgetopt(argc, argv, opttable, nargv, 1)) {
 		fprintf(stderr,"%s: error parsing one of the command line options\n", basename(argv[0]));
 		return 1;
 	}
-	argc = sgetopt_nnonopts(opttable);
 
 	if (help) {
 		char *progname = basename(argv[0]);
@@ -258,9 +256,9 @@ int main(int argc, char **argv)
 		} else { /* kid */
 			free(cachefile);
 			execvp(nargv[0],nargv);
-			fprintf(stderr,"%s: error, unable to run command `%s",basename(argv[0]),nargv[0]);
+			fprintf(stderr,"%s: error, unable to run command `%s",basename(nargv[0]),nargv[0]);
 			for (i=1; nargv[i]; i++)
-				fprintf(stderr," %s",argv[i]);
+				fprintf(stderr," %s",nargv[i]);
 			fprintf(stderr,"'\n");
 			return 1;
 		}
