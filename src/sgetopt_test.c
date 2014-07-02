@@ -53,14 +53,13 @@ int main(int argc, char **argv)
 		{ 0,   0,         0, 0,                   0 }
 	};
 
-	int numnonoptions;
 	int i;
 
+	/* After this call, argv+1 will point to all non-options */
 	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
 		printf("Error parsing one of the command line options\n");
 		return 1;
 	}
-	numnonoptions = ppcharlen(argv+1);
 
 	if (help) {
 		printf("Usage: check source for details\n");
@@ -72,9 +71,9 @@ int main(int argc, char **argv)
 	}
 
 	if (show_numnonoptions)
-		printf("%i\n", numnonoptions);
+		printf("%i\n", ppcharlen(argv+1));
 	if (show_nonoptions)
-		for (i=1; i<=numnonoptions; i++)
+		for (i=1; argv[i]; i++)
 			printf("%s\n", argv[i]);
 	printf("integer = %i, string = %s, float = %.1f, double = %.1lf, bool(long) = %i\n", some_integer, some_string, some_float, some_double, only_long);
 	return 0;
