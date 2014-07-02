@@ -83,15 +83,10 @@ int main(int argc, char **argv)
 		{ 0,   0,         0, capture_nonoption,   0 }
 	};
 
-	/* After the call to getopt will point to an array of all nonoptions */
-	char **nargv = argv + 1;
-
-	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable, NULL, 0)) {
+	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
 		fprintf(stderr,"%s: error parsing one of the command line options\n", basename(argv[0]));
 		return 1;
 	}
-	argc = sgetopt_nnonopts(opttable);
 
 	if (help) {
 		char *progname = basename(argv[0]);
@@ -108,7 +103,7 @@ int main(int argc, char **argv)
 	check_upper = upper_bound == upper_bound; /* != NaN */
 	check_lower = lower_bound == lower_bound; /* != NaN */
 
-	for (i=1; i<=argc; i++) {
+	for (i=1; argv[i]; i++) {
 		file_age = stat_age(argv[i],stat_type);
 		if (file_age != file_age /* NaN */) {
 			fprintf(stderr,"%s: error, unable to retrieve `%s' attributes\n", basename(argv[0]), argv[i]);

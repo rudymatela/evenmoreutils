@@ -181,7 +181,19 @@ REF
 }
 
 
+# This test, altough unlikely, may raise false positives
+age_test() {
+	testfile=`mktemp evenmoreutils-test-XXXXXXXXXX`
+	touch $testfile && assert ./src/age --trunc $testfile <<<"0" &&
+	sleep 1         && assert ./src/age --trunc $testfile <<<"1" &&
+	sleep 1         && assert ./src/age --trunc $testfile <<<"2" &&
+	sleep 0         && assert ./src/age --trunc $testfile --minutes <<<"0"
+	rm $testfile
+}
+
+
 sgetopt_test_test
 randpar_test
 fit_test
 ched_test
+age_test
