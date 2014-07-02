@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 		{ 0,   "floor",   0, capture_presence,    &floor_output },
 		{ 0,   "trunc",   0, capture_presence,    &floor_output },
 		{ 0,   "minutes", 0, capture_presence,    &minute_output },
-		{ 0,   0,         0, capture_nonoption,   0 }
+		{ 0,   0,         0, 0,                   0 }
 	};
 
 	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
