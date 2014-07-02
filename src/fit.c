@@ -168,9 +168,6 @@ int main(int argc, char **argv)
 		{ 0,   0,             0, capture_nonoption,   0 }
 	};
 
-	/* After the call to getopt will point to an array of all nonoptions */
-	char **nargv = argv + 1;
-
 	/* Configures the default behavior for when the program is pad */
 	if (strcmp(basename(argv[0]), "pad") == 0) {
 		wrap = 1;
@@ -179,13 +176,11 @@ int main(int argc, char **argv)
 
 	width = gettermwidth();
 
-	sgetopt_setlastarg(opttable, nargv);
-	if (sgetopt(argc, argv, opttable, NULL, 0)) {
+	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
 		char *progname = basename(argv[0]);
 		fprintf(stderr,"%s: error parsing one of the command line options\n", progname);
 		return 1;
 	}
-	argc = sgetopt_nnonopts(opttable);
 
 	if (help) {
 		char *progname = basename(argv[0]);
@@ -199,8 +194,8 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	if (*nargv)
-		fitfiles(nargv);
+	if (argv[1])
+		fitfiles(argv+1);
 	else
 		fitfile(stdin);
 	return 0;
