@@ -184,7 +184,7 @@ int mkdir_(char *path)
 int mkdir_home(char *path)
 {
 	char *home = getenv("HOME");
-	char *absolute = malloc(strlen(home)+strlen(path)+1);
+	char *absolute = malloc(strlen(home)+strlen(path)+2);
 	int r;
 	if (!absolute)
 		return 0;
