@@ -181,6 +181,20 @@ int mkdir_(char *path)
 }
 
 
+int mkdir_home(char *path)
+{
+	char *home = getenv("HOME");
+	char *absolute = malloc(strlen(home)+strlen(path)+1);
+	int r;
+	if (!absolute)
+		return 0;
+	sprintf(absolute, "%s/%s", home, path);
+	r = mkdir_(absolute);
+	free(absolute);
+	return r;
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -232,7 +246,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	status = mkdir_(CACHE_PARENT_PATH) || mkdir_(CACHE_PATH);
+	status = mkdir_home(CACHE_PARENT_PATH) || mkdir_home(CACHE_PATH);
 	if (status == 0) { /* ok */
 		MD5Args(nargv,digest,!ignore_wd);
 		cachefile = cache_path(digest);
