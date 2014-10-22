@@ -15,6 +15,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * TODO:
+ * $ freq file
+ * Found:     200 / 256  (70%)
+ * Most f.:  'a' 'c'  156 (16%)
+ * Least f.: 'b'      300 (2%)
+ * Absent:   'e' 'j' 0xAB 0xAE ... (50 others xx%)
+ * isprint(): 306 (70%)  -- isascii() 200 (xx%) -- ispunct xx (xx%)
+ * isalnum(): 150 (30%)  -- isalpha() 100 (40%) -- isdigit 30 (10%)
  */
 #include "sgetopt.h"
 #include "version.h"
