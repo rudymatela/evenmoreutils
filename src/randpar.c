@@ -51,6 +51,7 @@ int main(int argc, char **argv)
 	static int version;
 	static int repeat;
 	static int seed = -1;
+	static int newline = 0;
 
 	int i;
 	int delimiter = '\n';
@@ -59,6 +60,7 @@ int main(int argc, char **argv)
 		{ 'n', 0,           1, capture_int,       &n },
 		{ '0', "print0",    0, capture_nullchar,  &delimiter },
 		{ 'd', "delimiter", 1, capture_char,      &delimiter },
+		{ 'l', "newline",   0, capture_presence,  &newline },
 		{ 'a', "all",       0, capture_presence,  &all },
 		{ 'h', "help",      0, capture_presence,  &help },
 		{ 'v', "version",   0, capture_presence,  &version },
@@ -108,13 +110,13 @@ int main(int argc, char **argv)
 		}
 		for (i=0; i<n; i++) {
 			fputs(nargv[rand()%argc],stdout);
-			putc(delimiter,stdout);
+			putc(newline&&i+1==n?'\n':delimiter,stdout);
 		}
 	} else {
 		shuffle(argc, nargv);
 		for (i=0; i<n; i++) {
 			fputs(nargv[i],stdout);
-			putc(delimiter,stdout);
+			putc(newline&&i+1==n?'\n':delimiter,stdout);
 		}
 	}
 	return 0;

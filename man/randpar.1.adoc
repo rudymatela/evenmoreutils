@@ -31,6 +31,9 @@ OPTIONS
 	Output the character 'D' as delimiter instead of linebreaks.  This
 	overrides *-0*.
 
+*-l*, *--newline*::
+	Print a newline instead of delimiter after the last value in the output.
+
 *-a*, *--all*::
 	Outputs all parameters passed in a random order.
 
