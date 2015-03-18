@@ -72,10 +72,18 @@ int main(int argc, char **argv)
 
 	if (show_numnonoptions)
 		printf("%i\n", ppcharlen(argv+1));
+
 	if (show_nonoptions)
 		for (i=1; argv[i]; i++)
 			printf("%s\n", argv[i]);
-	printf("integer = %i, string = %s, float = %.1f, double = %.1lf, bool(long) = %i\n", some_integer, some_string, some_float, some_double, only_long);
+
+	printf("integer = %i, string = %s, float = %.1f, "
+	       "double = %.1lf, bool(long) = %i\n",
+	       some_integer,
+	       some_string,
+	       some_float,
+	       some_double,
+	       only_long);
 	return 0;
 }
 
