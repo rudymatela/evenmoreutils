@@ -30,7 +30,6 @@ int custom_callback(const char *arg, void *pvar)
 int main(int argc, char **argv)
 {
 	static int help;
-	static int version;
 	static int show_numnonoptions;
 	static int show_nonoptions;
 	static int only_long;
@@ -41,7 +40,6 @@ int main(int argc, char **argv)
 
 	struct soption opttable[] = {
 		{ 'h', "help",    0, capture_presence,    &help },
-		{ 'v', "version", 0, capture_presence,    &version },
 		{ 'n', 0,         0, capture_presence,    &show_numnonoptions },
 		{ 'o', 0,         0, capture_presence,    &show_nonoptions },
 		{ 0,   "long",    0, capture_presence,    &only_long },
@@ -63,10 +61,6 @@ int main(int argc, char **argv)
 
 	if (help) {
 		printf("Usage: check source for details\n");
-		return 0;
-	}
-	if (version) {
-		printf("2013 version\n");
 		return 0;
 	}
 

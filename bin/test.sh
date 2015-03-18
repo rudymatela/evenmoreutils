@@ -115,6 +115,10 @@ REF
 Missing argument to \`--integer'
 Error parsing one of the command line options
 REF
+
+	assert ./src/sgetopt_test --help <<REF
+Usage: check source for details
+REF
 }
 
 
