@@ -1,7 +1,6 @@
 #include <sgetopt.h>
-#include <stdio.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
@@ -14,7 +13,7 @@ int main(int argc, char **argv)
 	};
 
 	if (sgetopt(argc, argv, opttable, argv+1, 0)) {
-		fprintf(stderr,"Error parsing one of the command line options\n");
+		fprintf(stderr,"Usage: %s [-t nsecs] [-n] name\n",argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -31,4 +30,3 @@ int main(int argc, char **argv)
 
 	exit(EXIT_SUCCESS);
 }
-

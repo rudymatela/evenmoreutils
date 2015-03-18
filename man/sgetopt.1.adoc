@@ -36,16 +36,16 @@ command line programs.
 The struct soption is as follows, with comments describing what are each component:
 
 	struct soption {
-		char sname;
-		char *lname;
-		int has_arg;
-		int (*func)(const char*,void*); /* must return 0 on success */
-		void *arg;
+	    char sname;                      /* short name, e.g.: 'h'    */
+	    char *lname;                     /* long name,  e.g.: "help" */
+	    int has_arg;                     /* takes argument?  1 or 0  */
+	    int (*func)(const char*,void*);  /* handling callback        */
+	    void *arg;                       /* value passed to callback */
 	};
 
 In this structure, 'sname' and 'lname' are respectively the short and long
 versions of the option, e.g.: \'h\' (for -h) and "--help" (for --help).  The
-boolean 'has_arg' indicates wether the command takes an argument (-l10, -l 10,
+boolean 'has_arg' indicates wether the option takes an argument (-l10, -l 10,
 --length=10 or --length 10).
 
 The 'func' is a callback which will process the argument, itself takes two
@@ -63,15 +63,53 @@ processing the arguments themselves, or the error code returned by one of the
 
 EXAMPLES
 --------
-The following example program uses *getopt*() to handle two program options:
+
+*Parsing short options*
+
+The following example program uses *sgetopt*() to handle two program options:
 '-n', with no associated value; and '-t' 'val', which expects an associated
 string.  This has 'intentionally' the same functionality as the first example
 provided in the *getopt*(3) manpage of version 3.66 of the Linux *man-pages*
 project.
 
-	/* TODO: Write this example */
-	/* For now, you can download the evenmoreutils source and look at
-	 * sgetopt_test for an example. */
+	#include <sgetopt.h>
+	#include <stdlib.h>
+	#include <stdio.h>
+	
+	int main(int argc, char **argv)
+	{
+	    static int flags, nsecs = -1;
+	
+	    static struct soption opttable[] = {
+	        { 'n', NULL, 0, capture_presence, &flags },
+	        { 't', NULL, 1, capture_int,      &nsecs },
+	        { 0,   0,    0, 0,                0 }
+	    };
+	
+	    if (sgetopt(argc, argv, opttable, argv+1, 0)) {
+	        fprintf(stderr,"Usage: %s [-t nsecs] [-n] name\n",argv[0]);
+	        exit(EXIT_FAILURE);
+	    }
+	
+	    printf("flags=%d; nsecs=%d\n", flags, nsecs);
+	
+	    if (argv[1] == NULL) {
+	        fprintf(stderr, "Expected argument after options\n");
+	        exit(EXIT_FAILURE);
+	    }
+	
+	    printf("name argument = %s\n", argv[1]);
+	
+	    /* Other code ommitted */
+	
+	    exit(EXIT_SUCCESS);
+	}
+
+TODO: Fix indentation above.
+TODO: Make another simple example while keeping this one.
+
+*Parsing long options*
+
 
 
 BUGS
