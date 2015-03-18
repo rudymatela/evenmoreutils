@@ -28,29 +28,32 @@ command line arguments.  The 'optable' argument is an array of 'struct
 soption', containing the description of how to process the arguments.  The
 'normal_args' will be written with all the non-option arguments, it 'should'
 have space for 'argc+1' elements.  For convenience, 'normal_args' can be
-pointed to 'argv', which, in this case, will be overwritten.  The last argument is
-'stop_at_nonoption' which indicates wether sgetopt should stop processing at
-the first non-option: this is useful when writting programs that run other
-command line programs.
+pointed to 'argv+1', which, in this case, will be overwritten.  The last
+argument is 'stop_at_nonoption' which indicates wether sgetopt should stop
+processing at the first non-option: this is useful when writting programs that
+run other command line programs.
 
 The struct soption is as follows, with comments describing what are each component:
 
-	struct soption {
-	    char sname;                      /* short name, e.g.: 'h'    */
-	    char *lname;                     /* long name,  e.g.: "help" */
-	    int has_arg;                     /* takes argument?  1 or 0  */
-	    int (*func)(const char*,void*);  /* handling callback        */
-	    void *arg;                       /* value passed to callback */
-	};
+------------------------------------------------------------------
+struct soption {
+    char  sname;                    /* short name, e.g.: 'h'   */
+    char *lname;                    /* long name, e.g.: "help" */
+    int   has_arg;                  /* takes argument?  1 or 0 */
+    int (*func)(const char*,void*); /* option-parser callback  */
+    void *arg;                      /* passed to callback      */
+};
+------------------------------------------------------------------
 
 In this structure, 'sname' and 'lname' are respectively the short and long
-versions of the option, e.g.: \'h\' (for -h) and "--help" (for --help).  The
+versions of the option, e.g.: \'h' (for -h) and "help" (for --help).  The
 boolean 'has_arg' indicates wether the option takes an argument (-l10, -l 10,
 --length=10 or --length 10).
 
 The 'func' is a callback which will process the argument, itself takes two
 arguments, the argument to the command, if there is any, and a pointer to 'arg'
-provided in the 'soption' struct.
+provided in the 'soption' struct.  It should return 0 on success or anything
+else on error.
 
 
 RETURN VALUE
@@ -58,63 +61,158 @@ RETURN VALUE
 
 This function returns 0 on success.  On error, it returns either 1 when
 processing the arguments themselves, or the error code returned by one of the
-'func' callbacks -- this way you can capture your own errors.
+'func' callbacks.
+
+
+PREDEFINED OPTION-PARSER CALLBACKS
+----------------------------------
+
+Option-parser callbacks should be passed to all soption structs except the
+last.  Several are already provided by the sgetopt header.
+
+*capture_presence*::
+	will write 1 to an integer pointed by 'arg'.  This should be used for flag
+	options (ones without arguments) like '--help' or '--version'.
+
+*capture_int*::
+*capture_float*::
+*capture_double*::
+*capture_char*::
+	will write whatever was passed next to the memory position pointed by
+	'arg'.  Those expect an option.
+
+*capture_charpointer*::
+	will make the char pointer pointed by 'arg' point to the associated
+	argument.  E.g.: When handling '-DFLAG' or '--define=FLAG' will make the
+	char pointer point to the string 'FLAG'.
+
+*capture_int_pedantic*::
+	will write the integer value passed with the option (e.g.: '-n3') to the
+	value pointed by 'arg'.  It will fail if anything more than the integer is
+	present in the argument string.
+
+See examples for more details.
 
 
 EXAMPLES
 --------
 
-*Parsing short options*
+*Simple example*
+
+The following example program uses *sgetopt*() to handle five program options:
+'-h' or '--help',
+	with no associated value,
+	that makes the program print the help and exit;
+'-o',
+	with no associated value,
+	that makes the program print all non-option (regular) arguments;
+'-i' or '--integer',
+	which expects an associated integer;
+'-s' or '--string',
+	which expects an associated string;
+and '-c' or '--custom',
+	which also expects an associated string handled via callback.
+
+------------------------------------------------------------------
+#include "sgetopt.h"
+#include <stdio.h>
+
+int custom_callback(const char *arg, void *pvar)
+{
+    printf("Custom callback with %s as parameter\n", arg);
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    static int help;
+    static int show_nonoption_args;
+    static int some_integer;
+    static char *some_string;
+
+    struct soption opttable[] = {
+        { 'h', "help",    0, capture_presence,    &help },
+        { 'o', NULL,      0, capture_presence,    &show_nonoption_args },
+        { 'i', "integer", 1, capture_int,         &some_integer },
+        { 's', "string",  1, capture_charpointer, &some_string },
+        { 'c', "custom",  1, custom_callback,     0 },
+        { 0,   0,         0, 0,                   0 }
+    };
+
+    int i;
+
+    /* argv+1 will point to all non-option arguments */
+    if (sgetopt(argc, argv, opttable, argv+1, 0)) {
+        printf("Error parsing one of the command line options\n");
+        return 1;
+    }
+
+    if (help) {
+        printf("Usage: check source for details\n");
+        return 0;
+    }
+
+    if (show_nonoption_args)
+        for (i=1; argv[i]; i++)
+            printf("%s\n", argv[i]);
+
+    printf("integer = %i, string = %s\n",
+	       some_integer, some_string);
+    return 0;
+}
+------------------------------------------------------------------
+
+
+*Parsing short options / getopt comparison*
 
 The following example program uses *sgetopt*() to handle two program options:
-'-n', with no associated value; and '-t' 'val', which expects an associated
-string.  This has 'intentionally' the same functionality as the first example
-provided in the *getopt*(3) manpage of version 3.66 of the Linux *man-pages*
-project.
+'-n', with no associated value;
+and '-t' 'val', which expects an associated string.
+This has 'intentionally' the same functionality as the first example provided
+in the *getopt*(3) manpage of version 3.66 of the Linux *man-pages* project.
+The following program is more concise than the version using *getopt*(3).
 
-	#include <sgetopt.h>
-	#include <stdlib.h>
-	#include <stdio.h>
-	
-	int main(int argc, char **argv)
-	{
-	    static int flags, nsecs = -1;
-	
-	    static struct soption opttable[] = {
-	        { 'n', NULL, 0, capture_presence, &flags },
-	        { 't', NULL, 1, capture_int,      &nsecs },
-	        { 0,   0,    0, 0,                0 }
-	    };
-	
-	    if (sgetopt(argc, argv, opttable, argv+1, 0)) {
-	        fprintf(stderr,"Usage: %s [-t nsecs] [-n] name\n",argv[0]);
-	        exit(EXIT_FAILURE);
-	    }
-	
-	    printf("flags=%d; nsecs=%d\n", flags, nsecs);
-	
-	    if (argv[1] == NULL) {
-	        fprintf(stderr, "Expected argument after options\n");
-	        exit(EXIT_FAILURE);
-	    }
-	
-	    printf("name argument = %s\n", argv[1]);
-	
-	    /* Other code ommitted */
-	
-	    exit(EXIT_SUCCESS);
-	}
+------------------------------------------------------------------
+#include <sgetopt.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-TODO: Fix indentation above.
-TODO: Make another simple example while keeping this one.
+int main(int argc, char **argv)
+{
+    static int flags, nsecs = -1;
 
-*Parsing long options*
+    static struct soption opttable[] = {
+        { 'n', NULL, 0, capture_presence, &flags },
+        { 't', NULL, 1, capture_int,      &nsecs },
+        { 0,   0,    0, 0,                 0 }
+    };
 
+    if (sgetopt(argc, argv, opttable, argv+1, 0)) {
+        fprintf(stderr, "Usage: %s [-t nsecs] [-n] name\n",
+                argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("flags=%d; nsecs=%d\n", flags, nsecs);
+
+    if (argv[1] == NULL) {
+        fprintf(stderr, "Expected argument after options\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("name argument = %s\n", argv[1]);
+
+    /* Other code ommitted */
+
+    exit(EXIT_SUCCESS);
+}
+------------------------------------------------------------------
 
 
 BUGS
 ----
-This documentation can, and will eventually, be improved.
+This library is somewhat experimental.  Expect changes to the interface in the
+future.
 
 Report bugs to rudy@matela.com.br
 
@@ -126,6 +224,6 @@ SEE ALSO
 
 COPYRIGHT
 ---------
-Copyright (C) 2012-2014 Rudy Matela. Free use of this software is granted under the
+Copyright (C) 2012-2015 Rudy Matela. Free use of this software is granted under the
 terms of the GNU General Public License version 2 or any later version.
 
