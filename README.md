@@ -5,8 +5,8 @@ This is evenmoreutils, a collection of command line tools inspired by
 [moreutils].  Both complement the standard \*NIX toolset (ls, grep, less
 etc).  The name is a reference to the GNU [coreutils].  The tools are:
 
-* **[age]**:     prints file age in seconds / checks older/newer than seconds
-* **[anywait]**: like [wait], but works on any pid from the system
+* **[age]**:     prints file age in seconds / checks if older/newer than seconds
+* **[anywait]**: like [wait], but works on any process in the system
 * **[ched]**:    cached run of a command
 * **[fit]**:     truncates a stream by fitting it into a certain width
 * **[hilite]**:  runs a command, highlight stderr
@@ -23,14 +23,19 @@ etc).  The name is a reference to the GNU [coreutils].  The tools are:
 * **easy-getopt**: an easier-to-use version of the getopt command line tool
 
 They are currently *experimental* tools.  There are some known bugs (check the
-manpages of each command for details).  Code is quick-and-dirty on lots of
+manpages of each command for details).  Code is quick-and-dirty on several of
 them.  Patches are welcome :-)
 
 
 Installation
 ------------
 
-Check [INSTALL] for instructions.
+Check [INSTALL] for instructions.  Crash course:
+
+	wget https://github.com/rudymatela/evenmoreutils/releases/download/vx.y.z/evenmoreutils-x.y.z.tar.gz
+	tar -xzvf /evenmoreutils-x.y.z.tar.gz
+	cd evenmoreutils-x.y.z
+	make && make install
 
 
 License
