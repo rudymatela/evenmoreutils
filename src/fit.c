@@ -40,8 +40,10 @@
  *
  * TODO: Get tab width from termcap??
  *
- * NOTE: This does not work with streams containing wide chars (that is, uccupy
+ * NOTE: This does not work with streams containing wide chars (that is, occupy
  * two bytes in memory but one slot in the screen). Example, unicode: á é í ó ú
+ *
+ * TODO: fit -- add support for "..." on suppressed end of lines
  */
 #include "sgetopt.h"
 #include "version.h"
@@ -165,6 +167,7 @@ int main(int argc, char **argv)
 		{ 'v', "version",     0, capture_presence,      &version },
 		{ 'W', "wrap",        0, capture_presence,      &wrap },
 		{ 'M', "no-wrap",     0, capture_presence_as_0, &wrap },
+	/*	{ 'e', "ellipsis",    0, capture_presence,      &elipsis }, TODO */
 		{ 0,   0,             0, capture_nonoption,   0 }
 	};
 
