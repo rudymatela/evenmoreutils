@@ -30,7 +30,9 @@ them.  Patches are welcome :-)
 Installation
 ------------
 
-Check [INSTALL] for instructions.  Crash course:
+Check [INSTALL] for detailed instructions and different installation options.
+
+Crash course for installing from source:
 
 	wget https://github.com/rudymatela/evenmoreutils/releases/download/vx.y.z/evenmoreutils-x.y.z.tar.gz
 	tar -xzvf /evenmoreutils-x.y.z.tar.gz
