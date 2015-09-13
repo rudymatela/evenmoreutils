@@ -32,7 +32,7 @@
 #include "version.h"
 
 
-/* wtf... */
+/* TODO: fix this.  some define missing? */
 typedef __pid_t pid_t;
 
 
